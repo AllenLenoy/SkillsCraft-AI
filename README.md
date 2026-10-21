@@ -160,6 +160,22 @@ python manage.py runserver
 ```
 Navigate to **`http://127.0.0.1:8000/`** in your browser.
 
+### 7. Seeded Demo Accounts & Credentials
+
+You can sign in via **username** or **email** at `/accounts/login/`:
+
+| Role | Username | Email (`@gmail.com`) | Password | Studio / Specialty |
+|---|---|---|---|---|
+| **Admin** | `admin` | `admin.craftconnect@gmail.com` | `admin123` | Platform Curator & Staff |
+| **Artisan** | `ramesh_artisan` | `ramesh.artisan@gmail.com` | `artisan123` | Mati & Agni Atelier (Terracotta) |
+| **Artisan** | `fatima_handloom` | `fatima.handloom@gmail.com` | `artisan123` | Kutch Heritage Guild (Ajrakh / Handloom) |
+| **Artisan** | `somnath_dhokra` | `somnath.dhokra@gmail.com` | `artisan123` | Bastar Bronze Guild (Dhokra / Bell Metal) |
+| **Artisan** | `iqbal_woodcraft` | `iqbal.woodcraft@gmail.com` | `artisan123` | Saharanpur Woodwright Guild (Woodcraft) |
+| **Artisan** | `leela_crafts` | `leela.crafts@gmail.com` | `artisan123` | Royal Heritage Atelier (Pottery & Filigree) |
+| **Patron** | `priya_buyer` | `priya.buyer@gmail.com` | `buyer123` | Conscious Buyer (Bengaluru) |
+| **Patron** | `ananya_buyer` | `ananya.buyer@gmail.com` | `buyer123` | Heritage Collector (New Delhi) |
+| **Patron** | `vikram_buyer` | `vikram.buyer@gmail.com` | `buyer123` | Architecture Patron (Mumbai) |
+
 ---
 
 ## ⚡ Supabase PostgreSQL Setup

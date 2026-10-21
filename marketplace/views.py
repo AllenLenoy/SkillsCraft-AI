@@ -245,7 +245,7 @@ class CraftArchiveYearView(ListView):
 
 
 class ProvenanceLookupView(DetailView):
-    """
+    r"""
     Syllabus Unit II: Regular expression URL mapping with SKU/Provenance code.
     Matches /provenance/(?P<batch_code>[A-Za-z]{2,5}-\d{3,6})/
     """

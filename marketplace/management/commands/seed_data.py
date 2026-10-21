@@ -58,7 +58,8 @@ class Command(BaseCommand):
         artisan_group = Group.objects.get(name="Artisans")
 
         # Admin / Guild Curator
-        admin_user, _ = User.objects.get_or_create(username="admin", defaults={"email": "admin@craftconnect.org"})
+        admin_user, _ = User.objects.get_or_create(username="admin", defaults={"email": "admin.craftconnect@gmail.com"})
+        admin_user.email = "admin.craftconnect@gmail.com"
         admin_user.is_staff = True
         admin_user.is_superuser = True
         admin_user.set_password("admin123")
@@ -66,37 +67,41 @@ class Command(BaseCommand):
         admin_user.last_name = "Verma"
         admin_user.save()
         curator_group.user_set.add(admin_user)
-        self.stdout.write(self.style.SUCCESS("  [OK] Admin Curator: admin / admin123"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Admin Curator: admin / admin123 (admin.craftconnect@gmail.com)"))
 
         # Buyer 1: Priya Sharma (Conscious Patron, Bengaluru)
-        buyer_user, _ = User.objects.get_or_create(username="priya_buyer", defaults={"email": "priya@gmail.com"})
+        buyer_user, _ = User.objects.get_or_create(username="priya_buyer", defaults={"email": "priya.buyer@gmail.com"})
+        buyer_user.email = "priya.buyer@gmail.com"
         buyer_user.set_password("buyer123")
         buyer_user.first_name = "Priya"
         buyer_user.last_name = "Sharma"
         buyer_user.save()
         patron_group.user_set.add(buyer_user)
-        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 1: priya_buyer / buyer123"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 1: priya_buyer / buyer123 (priya.buyer@gmail.com)"))
 
         # Buyer 2: Ananya Sen (Heritage Collector, New Delhi)
-        buyer2_user, _ = User.objects.get_or_create(username="ananya_buyer", defaults={"email": "ananya@patron.org"})
+        buyer2_user, _ = User.objects.get_or_create(username="ananya_buyer", defaults={"email": "ananya.buyer@gmail.com"})
+        buyer2_user.email = "ananya.buyer@gmail.com"
         buyer2_user.set_password("buyer123")
         buyer2_user.first_name = "Ananya"
         buyer2_user.last_name = "Sen"
         buyer2_user.save()
         patron_group.user_set.add(buyer2_user)
-        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 2: ananya_buyer / buyer123"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 2: ananya_buyer / buyer123 (ananya.buyer@gmail.com)"))
 
         # Buyer 3: Vikram Mehta (Architecture Patron, Mumbai)
-        buyer3_user, _ = User.objects.get_or_create(username="vikram_buyer", defaults={"email": "vikram@heritage-living.in"})
+        buyer3_user, _ = User.objects.get_or_create(username="vikram_buyer", defaults={"email": "vikram.buyer@gmail.com"})
+        buyer3_user.email = "vikram.buyer@gmail.com"
         buyer3_user.set_password("buyer123")
         buyer3_user.first_name = "Vikram"
         buyer3_user.last_name = "Mehta"
         buyer3_user.save()
         patron_group.user_set.add(buyer3_user)
-        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 3: vikram_buyer / buyer123"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 3: vikram_buyer / buyer123 (vikram.buyer@gmail.com)"))
 
         # Master Artisan 1: Ramesh Prajapati (Gorakhpur Terracotta)
-        artisan1_user, _ = User.objects.get_or_create(username="ramesh_artisan", defaults={"email": "ramesh@mati-agni.in"})
+        artisan1_user, _ = User.objects.get_or_create(username="ramesh_artisan", defaults={"email": "ramesh.artisan@gmail.com"})
+        artisan1_user.email = "ramesh.artisan@gmail.com"
         artisan1_user.set_password("artisan123")
         artisan1_user.first_name = "Ramesh"
         artisan1_user.last_name = "Prajapati"
@@ -122,7 +127,8 @@ class Command(BaseCommand):
         self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 1: ramesh_artisan / artisan123 (Mati & Agni)"))
 
         # Master Artisan 2: Fatima Khatun (Kutch Handloom & Ajrakh)
-        artisan2_user, _ = User.objects.get_or_create(username="fatima_handloom", defaults={"email": "fatima@kutch-weaves.in"})
+        artisan2_user, _ = User.objects.get_or_create(username="fatima_handloom", defaults={"email": "fatima.handloom@gmail.com"})
+        artisan2_user.email = "fatima.handloom@gmail.com"
         artisan2_user.set_password("artisan123")
         artisan2_user.first_name = "Fatima"
         artisan2_user.last_name = "Khatun"
@@ -145,10 +151,11 @@ class Command(BaseCommand):
                 "profile_image": art2_img or None,
             }
         )
-        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 2: fatima_handloom / artisan123 (Kutch Guild)"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 2: fatima_handloom / artisan123 (fatima.handloom@gmail.com)"))
 
         # Master Artisan 3: Somnath Baghel (Bastar Lost-Wax Bronze)
-        artisan3_user, _ = User.objects.get_or_create(username="somnath_dhokra", defaults={"email": "somnath@bastar-bronze.in"})
+        artisan3_user, _ = User.objects.get_or_create(username="somnath_dhokra", defaults={"email": "somnath.dhokra@gmail.com"})
+        artisan3_user.email = "somnath.dhokra@gmail.com"
         artisan3_user.set_password("artisan123")
         artisan3_user.first_name = "Somnath"
         artisan3_user.last_name = "Baghel"
@@ -171,10 +178,11 @@ class Command(BaseCommand):
                 "profile_image": art3_img or None,
             }
         )
-        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 3: somnath_dhokra / artisan123 (Bastar Guild)"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 3: somnath_dhokra / artisan123 (somnath.dhokra@gmail.com)"))
 
         # Master Artisan 4: Mohammad Iqbal (Saharanpur Woodcraft Guild)
-        artisan4_user, _ = User.objects.get_or_create(username="iqbal_woodcraft", defaults={"email": "iqbal@saharanpur-wood.in"})
+        artisan4_user, _ = User.objects.get_or_create(username="iqbal_woodcraft", defaults={"email": "iqbal.woodcraft@gmail.com"})
+        artisan4_user.email = "iqbal.woodcraft@gmail.com"
         artisan4_user.set_password("artisan123")
         artisan4_user.first_name = "Mohammad"
         artisan4_user.last_name = "Iqbal"
@@ -197,10 +205,11 @@ class Command(BaseCommand):
                 "profile_image": art4_img or None,
             }
         )
-        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 4: iqbal_woodcraft / artisan123 (Saharanpur Guild)"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 4: iqbal_woodcraft / artisan123 (iqbal.woodcraft@gmail.com)"))
 
         # Master Artisan 5: Leela Devi & Meenakshi Sahoo (Royal Heritage Filigree & Blue Pottery)
-        artisan5_user, _ = User.objects.get_or_create(username="leela_crafts", defaults={"email": "leela@heritage-crafts.in"})
+        artisan5_user, _ = User.objects.get_or_create(username="leela_crafts", defaults={"email": "leela.crafts@gmail.com"})
+        artisan5_user.email = "leela.crafts@gmail.com"
         artisan5_user.set_password("artisan123")
         artisan5_user.first_name = "Leela"
         artisan5_user.last_name = "Devi"
@@ -223,7 +232,7 @@ class Command(BaseCommand):
                 "profile_image": art5_img or None,
             }
         )
-        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 5: leela_crafts / artisan123 (Royal Heritage Atelier)"))
+        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 5: leela_crafts / artisan123 (leela.crafts@gmail.com)"))
 
         # ----------------------------------------------------------------------
         # 3. Seed Craft Categories
