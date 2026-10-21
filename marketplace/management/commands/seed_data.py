@@ -1,8 +1,9 @@
 import os
 import urllib.request
 from decimal import Decimal
+from django.core.management import call_command
 from django.core.management.base import BaseCommand
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.files.base import ContentFile
 from django.conf import settings
 from accounts.models import ArtisanProfile
@@ -48,9 +49,13 @@ class Command(BaseCommand):
                 return ""
 
         # ----------------------------------------------------------------------
-        # 2. Seed Users & Profiles across 3 Roles
+        # 2. Setup Role Groups and Provision Accounts & Profiles
         # ----------------------------------------------------------------------
         self.stdout.write("\n[1/5] Provisioning Accounts & Role Profiles...")
+        call_command("setup_groups_and_permissions")
+        curator_group = Group.objects.get(name="Guild_Curators")
+        patron_group = Group.objects.get(name="Patrons")
+        artisan_group = Group.objects.get(name="Artisans")
 
         # Admin / Guild Curator
         admin_user, _ = User.objects.get_or_create(username="admin", defaults={"email": "admin@craftconnect.org"})
@@ -60,22 +65,43 @@ class Command(BaseCommand):
         admin_user.first_name = "Kavita"
         admin_user.last_name = "Verma"
         admin_user.save()
+        curator_group.user_set.add(admin_user)
         self.stdout.write(self.style.SUCCESS("  [OK] Admin Curator: admin / admin123"))
 
-        # Buyer / Mindful Patron
+        # Buyer 1: Priya Sharma (Conscious Patron, Bengaluru)
         buyer_user, _ = User.objects.get_or_create(username="priya_buyer", defaults={"email": "priya@gmail.com"})
         buyer_user.set_password("buyer123")
         buyer_user.first_name = "Priya"
         buyer_user.last_name = "Sharma"
         buyer_user.save()
-        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer: priya_buyer / buyer123"))
+        patron_group.user_set.add(buyer_user)
+        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 1: priya_buyer / buyer123"))
 
-        # Master Artisan 1: Gorakhpur Terracotta
+        # Buyer 2: Ananya Sen (Heritage Collector, New Delhi)
+        buyer2_user, _ = User.objects.get_or_create(username="ananya_buyer", defaults={"email": "ananya@patron.org"})
+        buyer2_user.set_password("buyer123")
+        buyer2_user.first_name = "Ananya"
+        buyer2_user.last_name = "Sen"
+        buyer2_user.save()
+        patron_group.user_set.add(buyer2_user)
+        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 2: ananya_buyer / buyer123"))
+
+        # Buyer 3: Vikram Mehta (Architecture Patron, Mumbai)
+        buyer3_user, _ = User.objects.get_or_create(username="vikram_buyer", defaults={"email": "vikram@heritage-living.in"})
+        buyer3_user.set_password("buyer123")
+        buyer3_user.first_name = "Vikram"
+        buyer3_user.last_name = "Mehta"
+        buyer3_user.save()
+        patron_group.user_set.add(buyer3_user)
+        self.stdout.write(self.style.SUCCESS("  [OK] Conscious Buyer 3: vikram_buyer / buyer123"))
+
+        # Master Artisan 1: Ramesh Prajapati (Gorakhpur Terracotta)
         artisan1_user, _ = User.objects.get_or_create(username="ramesh_artisan", defaults={"email": "ramesh@mati-agni.in"})
         artisan1_user.set_password("artisan123")
         artisan1_user.first_name = "Ramesh"
         artisan1_user.last_name = "Prajapati"
         artisan1_user.save()
+        artisan_group.user_set.add(artisan1_user)
 
         art1_img = download_image(
             "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?auto=format&fit=crop&w=400&q=80",
@@ -95,12 +121,13 @@ class Command(BaseCommand):
         )
         self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 1: ramesh_artisan / artisan123 (Mati & Agni)"))
 
-        # Master Artisan 2: Kutch Handloom & Ajrakh
+        # Master Artisan 2: Fatima Khatun (Kutch Handloom & Ajrakh)
         artisan2_user, _ = User.objects.get_or_create(username="fatima_handloom", defaults={"email": "fatima@kutch-weaves.in"})
         artisan2_user.set_password("artisan123")
         artisan2_user.first_name = "Fatima"
         artisan2_user.last_name = "Khatun"
         artisan2_user.save()
+        artisan_group.user_set.add(artisan2_user)
 
         art2_img = download_image(
             "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
@@ -120,12 +147,13 @@ class Command(BaseCommand):
         )
         self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 2: fatima_handloom / artisan123 (Kutch Guild)"))
 
-        # Master Artisan 3: Bastar Lost-Wax Bronze
+        # Master Artisan 3: Somnath Baghel (Bastar Lost-Wax Bronze)
         artisan3_user, _ = User.objects.get_or_create(username="somnath_dhokra", defaults={"email": "somnath@bastar-bronze.in"})
         artisan3_user.set_password("artisan123")
         artisan3_user.first_name = "Somnath"
         artisan3_user.last_name = "Baghel"
         artisan3_user.save()
+        artisan_group.user_set.add(artisan3_user)
 
         art3_img = download_image(
             "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=400&q=80",
@@ -144,6 +172,58 @@ class Command(BaseCommand):
             }
         )
         self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 3: somnath_dhokra / artisan123 (Bastar Guild)"))
+
+        # Master Artisan 4: Mohammad Iqbal (Saharanpur Woodcraft Guild)
+        artisan4_user, _ = User.objects.get_or_create(username="iqbal_woodcraft", defaults={"email": "iqbal@saharanpur-wood.in"})
+        artisan4_user.set_password("artisan123")
+        artisan4_user.first_name = "Mohammad"
+        artisan4_user.last_name = "Iqbal"
+        artisan4_user.save()
+        artisan_group.user_set.add(artisan4_user)
+
+        art4_img = download_image(
+            "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?auto=format&fit=crop&w=400&q=80",
+            "artisans/profiles/mohammad_iqbal.jpg"
+        )
+        artisan4_prof, _ = ArtisanProfile.objects.update_or_create(
+            user=artisan4_user,
+            defaults={
+                "display_name": "Saharanpur Woodwright Guild",
+                "bio": "Senior master woodwright practicing generational Indian Rosewood (Sheesham) jali chiseling and walnut lattice carving. Using hand mallets and natural beeswax finishes.",
+                "location": "Saharanpur, Uttar Pradesh",
+                "craft_speciality": "Sheesham Jali & Walnut Woodcraft",
+                "is_approved": True,
+                "is_verified": True,
+                "profile_image": art4_img or None,
+            }
+        )
+        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 4: iqbal_woodcraft / artisan123 (Saharanpur Guild)"))
+
+        # Master Artisan 5: Leela Devi & Meenakshi Sahoo (Royal Heritage Filigree & Blue Pottery)
+        artisan5_user, _ = User.objects.get_or_create(username="leela_crafts", defaults={"email": "leela@heritage-crafts.in"})
+        artisan5_user.set_password("artisan123")
+        artisan5_user.first_name = "Leela"
+        artisan5_user.last_name = "Devi"
+        artisan5_user.save()
+        artisan_group.user_set.add(artisan5_user)
+
+        art5_img = download_image(
+            "https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=400&q=80",
+            "artisans/profiles/leela_devi.jpg"
+        )
+        artisan5_prof, _ = ArtisanProfile.objects.update_or_create(
+            user=artisan5_user,
+            defaults={
+                "display_name": "Royal Heritage Atelier",
+                "bio": "Specializing in traditional Jaipur quartz-dough Blue Pottery tableware and Cuttack 92.5 hallmark Tarakasi silver filigree. Handcrafted by master women artisans.",
+                "location": "Jaipur, Rajasthan & Cuttack, Odisha",
+                "craft_speciality": "Blue Pottery & Tarakasi Silver Filigree",
+                "is_approved": True,
+                "is_verified": True,
+                "profile_image": art5_img or None,
+            }
+        )
+        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 5: leela_crafts / artisan123 (Royal Heritage Atelier)"))
 
         # ----------------------------------------------------------------------
         # 3. Seed Craft Categories
@@ -240,7 +320,7 @@ class Command(BaseCommand):
             },
             # 3. Jaipur Blue Pottery Serving Bowl
             {
-                "artisan": artisan1_prof,
+                "artisan": artisan5_prof,
                 "category": categories_map["ceramics-terracotta"],
                 "title": "Jaipur Hand-Painted Blue Pottery Floral Serving Bowl",
                 "slug": "jaipur-blue-pottery-floral-serving-bowl",
@@ -366,7 +446,7 @@ class Command(BaseCommand):
             },
             # 10. Saharanpur Carved Keepsake Box
             {
-                "artisan": artisan1_prof,
+                "artisan": artisan4_prof,
                 "category": categories_map["woodwork-carving"],
                 "title": "Saharanpur Hand-Chiseled Sheesham Carved Keepsake Box",
                 "slug": "saharanpur-sheesham-carved-keepsake-box",
@@ -384,7 +464,7 @@ class Command(BaseCommand):
             },
             # 11. Kashmir Walnut Wood Book Stand
             {
-                "artisan": artisan1_prof,
+                "artisan": artisan4_prof,
                 "category": categories_map["woodwork-carving"],
                 "title": "Kashmir Walnut Wood Lattice Carved Book Stand (Rehal)",
                 "slug": "kashmir-walnut-wood-carved-rehal-bookstand",
@@ -402,7 +482,7 @@ class Command(BaseCommand):
             },
             # 12. Cuttack Silver Filigree Pendant
             {
-                "artisan": artisan2_prof,
+                "artisan": artisan5_prof,
                 "category": categories_map["heritage-keepsakes"],
                 "title": "Cuttack Tarakasi Silver Filigree Floral Pendant with Pearl",
                 "slug": "cuttack-tarakasi-silver-filigree-floral-pendant",
@@ -448,14 +528,18 @@ class Command(BaseCommand):
         # ----------------------------------------------------------------------
         self.stdout.write("\n[4/5] Seeding Patron Interactions & Studio Inquiries...")
 
-        # Save products for priya_buyer
-        if len(created_products) >= 3:
+        # Save products for mindful patrons
+        if len(created_products) >= 12:
             SavedProduct.objects.get_or_create(buyer=buyer_user, product=created_products[0])
             SavedProduct.objects.get_or_create(buyer=buyer_user, product=created_products[3])
-            self.stdout.write(self.style.SUCCESS("  [OK] Saved 2 bookmarked pieces for priya_buyer"))
+            SavedProduct.objects.get_or_create(buyer=buyer2_user, product=created_products[4])
+            SavedProduct.objects.get_or_create(buyer=buyer2_user, product=created_products[11])
+            SavedProduct.objects.get_or_create(buyer=buyer3_user, product=created_products[6])
+            SavedProduct.objects.get_or_create(buyer=buyer3_user, product=created_products[9])
+            self.stdout.write(self.style.SUCCESS("  [OK] Saved bookmarked pieces for Priya, Ananya, and Vikram"))
 
         # Seed realistic inquiries
-        if len(created_products) >= 2:
+        if len(created_products) >= 12:
             Enquiry.objects.get_or_create(
                 buyer=buyer_user,
                 product=created_products[0],
@@ -474,7 +558,25 @@ class Command(BaseCommand):
                     "is_resolved": True,
                 }
             )
-            self.stdout.write(self.style.SUCCESS("  [OK] Dispatched 2 authentic artisan inquiries"))
+            Enquiry.objects.get_or_create(
+                buyer=buyer2_user,
+                product=created_products[6],
+                defaults={
+                    "subject": "Question about Bastar lost-wax foundry casting technique",
+                    "message": "Respected Somnath ji. Is the drummer sculpture hollow or solid bell-metal? We would love to feature it in our architectural showcase.",
+                    "is_resolved": False,
+                }
+            )
+            Enquiry.objects.get_or_create(
+                buyer=buyer3_user,
+                product=created_products[9],
+                defaults={
+                    "subject": "Custom dimensions for seasoned sheesham architectural chest",
+                    "message": "Iqbal ji, can your woodwright guild carve a custom 18x12 inch jali keepsake box with brass hardware for our library?",
+                    "is_resolved": False,
+                }
+            )
+            self.stdout.write(self.style.SUCCESS("  [OK] Dispatched authentic artisan-patron inquiries"))
 
         # ----------------------------------------------------------------------
         # 6. Seed Editorial Stories & Journal Chronicles
@@ -571,8 +673,8 @@ class Command(BaseCommand):
                     "Through direct artisan commerce on CraftConnect, Saharanpur's generational carvers are revitalizing their ateliers and mentoring young apprentices in master woodwright joinery."
                 ),
                 "is_featured": False,
-                "artisan": artisan1_prof,
-                "related_indices": [7, 8],
+                "artisan": artisan4_prof,
+                "related_indices": [9, 10],
             },
             {
                 "title": "Sun, Salt, and Silk: Reviving the Vanishing Ashavali Brocade",
@@ -594,8 +696,8 @@ class Command(BaseCommand):
                     "CraftConnect provides conscious patrons with transparent provenance documentation, certifying the authenticity of real silk filaments and fair-wage artisan compensation for every metre woven."
                 ),
                 "is_featured": False,
-                "artisan": artisan2_prof,
-                "related_indices": [9, 10],
+                "artisan": artisan5_prof,
+                "related_indices": [2, 11],
             },
         ]
 
@@ -632,21 +734,18 @@ class Command(BaseCommand):
             self.stdout.write(self.style.SUCCESS(f"  [OK] Story: {story.title[:45]}... ({status_str})"))
 
         # ----------------------------------------------------------------------
-        # 7. Seed Sample Orders (Direct Acquisitions)
+        # 7. Seed Sample Orders (Direct Acquisitions across All Studios)
         # ----------------------------------------------------------------------
         self.stdout.write(self.style.HTTP_INFO("\n[7/7] Seeding Authentic Craft Orders (Acquisitions)..."))
-        if created_products:
-            p1 = created_products[0]  # Terracotta Elephant
-            p2 = created_products[3] if len(created_products) > 3 else created_products[1]
-
+        if len(created_products) >= 12:
             orders_to_seed = [
                 {
                     "order_number": "ORD-2026-CC101",
                     "buyer": buyer_user,
-                    "product": p1,
-                    "artisan": p1.artisan,
+                    "product": created_products[0],
+                    "artisan": created_products[0].artisan,
                     "quantity": 1,
-                    "unit_price": p1.price,
+                    "unit_price": created_products[0].price,
                     "shipping_address": "Flat 4B, Gulmohar Enclave, 12th Main Indiranagar",
                     "shipping_city": "Bengaluru",
                     "shipping_postal_code": "560038",
@@ -658,17 +757,92 @@ class Command(BaseCommand):
                 {
                     "order_number": "ORD-2026-CC102",
                     "buyer": buyer_user,
-                    "product": p2,
-                    "artisan": p2.artisan,
+                    "product": created_products[3],
+                    "artisan": created_products[3].artisan,
                     "quantity": 1,
-                    "unit_price": p2.price,
-                    "shipping_address": "B-12, Alaknanda Heritage Apartments",
+                    "unit_price": created_products[3].price,
+                    "shipping_address": "Flat 4B, Gulmohar Enclave, 12th Main Indiranagar",
+                    "shipping_city": "Bengaluru",
+                    "shipping_postal_code": "560038",
+                    "contact_phone": "+91 98450 12345",
+                    "payment_method": "cod",
+                    "payment_status": "pending",
+                    "status": "dispatched",
+                },
+                {
+                    "order_number": "ORD-2026-CC103",
+                    "buyer": buyer2_user,
+                    "product": created_products[6],
+                    "artisan": created_products[6].artisan,
+                    "quantity": 1,
+                    "unit_price": created_products[6].price,
+                    "shipping_address": "B-12, Alaknanda Heritage Apartments, Greater Kailash",
                     "shipping_city": "New Delhi",
                     "shipping_postal_code": "110019",
                     "contact_phone": "+91 98110 56789",
-                    "payment_method": "cod",
-                    "payment_status": "pending",
+                    "payment_method": "upi",
+                    "payment_status": "paid",
                     "status": "confirmed",
+                },
+                {
+                    "order_number": "ORD-2026-CC104",
+                    "buyer": buyer3_user,
+                    "product": created_products[9],
+                    "artisan": created_products[9].artisan,
+                    "quantity": 1,
+                    "unit_price": created_products[9].price,
+                    "shipping_address": "Penthouse 14A, Sea Face Towers, Worli",
+                    "shipping_city": "Mumbai",
+                    "shipping_postal_code": "400018",
+                    "contact_phone": "+91 99200 44556",
+                    "payment_method": "card",
+                    "payment_status": "paid",
+                    "status": "delivered",
+                },
+                {
+                    "order_number": "ORD-2026-CC105",
+                    "buyer": buyer2_user,
+                    "product": created_products[11],
+                    "artisan": created_products[11].artisan,
+                    "quantity": 1,
+                    "unit_price": created_products[11].price,
+                    "shipping_address": "B-12, Alaknanda Heritage Apartments, Greater Kailash",
+                    "shipping_city": "New Delhi",
+                    "shipping_postal_code": "110019",
+                    "contact_phone": "+91 98110 56789",
+                    "payment_method": "upi",
+                    "payment_status": "paid",
+                    "status": "confirmed",
+                },
+                {
+                    "order_number": "ORD-2026-CC106",
+                    "buyer": buyer3_user,
+                    "product": created_products[8],
+                    "artisan": created_products[8].artisan,
+                    "quantity": 1,
+                    "unit_price": created_products[8].price,
+                    "shipping_address": "Penthouse 14A, Sea Face Towers, Worli",
+                    "shipping_city": "Mumbai",
+                    "shipping_postal_code": "400018",
+                    "contact_phone": "+91 99200 44556",
+                    "payment_method": "upi",
+                    "payment_status": "paid",
+                    "status": "dispatched",
+                },
+                {
+                    "order_number": "ORD-2026-CC107",
+                    "buyer": buyer_user,
+                    "product": created_products[2],
+                    "artisan": created_products[2].artisan,
+                    "quantity": 1,
+                    "unit_price": created_products[2].price,
+                    "shipping_address": "Flat 4B, Gulmohar Enclave, 12th Main Indiranagar",
+                    "shipping_city": "Bengaluru",
+                    "shipping_postal_code": "560038",
+                    "contact_phone": "+91 98450 12345",
+                    "payment_method": "card",
+                    "payment_status": "paid",
+                    "status": "delivered",
                 },
             ]
 
@@ -689,9 +863,13 @@ class Command(BaseCommand):
         self.stdout.write(self.style.MIGRATE_HEADING("\n=================================================="))
         self.stdout.write(self.style.SUCCESS(" CRAFTCONNECT SEED COMPLETE — ALL SYSTEMS READY"))
         self.stdout.write(self.style.MIGRATE_HEADING("=================================================="))
-        self.stdout.write("Credentials Overview:")
+        self.stdout.write("Credentials Overview (All Stored in Supabase):")
         self.stdout.write("  Admin Curator:     admin / admin123")
+        self.stdout.write("  Conscious Buyer 1: priya_buyer / buyer123 (Bengaluru)")
+        self.stdout.write("  Conscious Buyer 2: ananya_buyer / buyer123 (New Delhi)")
+        self.stdout.write("  Conscious Buyer 3: vikram_buyer / buyer123 (Mumbai)")
         self.stdout.write("  Master Artisan 1:  ramesh_artisan / artisan123 (Gorakhpur Terracotta)")
         self.stdout.write("  Master Artisan 2:  fatima_handloom / artisan123 (Kutch Handloom)")
         self.stdout.write("  Master Artisan 3:  somnath_dhokra / artisan123 (Bastar Bronze)")
-        self.stdout.write("  Conscious Buyer:   priya_buyer / buyer123")
+        self.stdout.write("  Master Artisan 4:  iqbal_woodcraft / artisan123 (Saharanpur Woodcraft)")
+        self.stdout.write("  Master Artisan 5:  leela_crafts / artisan123 (Royal Heritage Filigree)")

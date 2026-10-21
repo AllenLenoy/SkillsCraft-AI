@@ -206,15 +206,19 @@ python manage.py verify_ai
 
 ## 👥 Pre-configured Demo Accounts
 
-All demo accounts are automatically provisioned by `python manage.py seed_data`:
+All demo accounts are stored directly in your **Supabase PostgreSQL** database:
 
-| Role | Username | Password | Notes |
+| Role | Username | Password | Notes & Studio |
 |---|---|---|---|
 | **Admin Curator** | `admin` | `admin123` | Full access to Django admin & moderation |
-| **Master Artisan 1** | `ramesh_artisan` | `artisan123` | Gorakhpur Terracotta studio atelier |
-| **Master Artisan 2** | `fatima_handloom` | `artisan123` | Kutch Ajrakh handloom printing atelier |
-| **Master Artisan 3** | `somnath_dhokra` | `artisan123` | Bastar lost-wax bell metal bronze atelier |
-| **Conscious Buyer** | `priya_buyer` | `buyer123` | Pre-populated with active orders & saved archive |
+| **Master Artisan 1** | `ramesh_artisan` | `artisan123` | Mati & Agni Atelier (Gorakhpur Terracotta) |
+| **Master Artisan 2** | `fatima_handloom` | `artisan123` | Kutch Heritage Handloom Guild (Ajrakh & Chanderi Silk) |
+| **Master Artisan 3** | `somnath_dhokra` | `artisan123` | Bastar Lost-Wax Bronze Guild (Tribal Dhokra) |
+| **Master Artisan 4** | `iqbal_woodcraft` | `artisan123` | Saharanpur Woodwright Guild (Sheesham Jali & Walnut) |
+| **Master Artisan 5** | `leela_crafts` | `artisan123` | Royal Heritage Atelier (Jaipur Blue Pottery & Filigree) |
+| **Conscious Buyer 1** | `priya_buyer` | `buyer123` | Priya Sharma (Bengaluru) - Pre-populated orders |
+| **Conscious Buyer 2** | `ananya_buyer` | `buyer123` | Ananya Sen (New Delhi) - Active orders & bookmarks |
+| **Conscious Buyer 3** | `vikram_buyer` | `buyer123` | Vikram Mehta (Mumbai) - Architectural patron orders |
 
 ---
 
