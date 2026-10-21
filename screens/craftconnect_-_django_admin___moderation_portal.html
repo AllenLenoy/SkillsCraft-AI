@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CraftConnect - Django Admin &amp; Moderation Portal</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f4f0e8",
+            "outline-variant": "#dac1b9",
+            "primary": "#93452a",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#c4ecd3",
+            "tertiary-container": "#837257",
+            "surface-container-low": "#f7f3eb",
+            "on-primary-container": "#fffbff",
+            "on-secondary-fixed": "#002113",
+            "background": "#fdf9f1",
+            "on-tertiary-fixed": "#241a06",
+            "error": "#ba1a1a",
+            "inverse-primary": "#ffb59c",
+            "surface-container-high": "#ece8e0",
+            "surface-variant": "#e6e2da",
+            "surface-dim": "#dddad2",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed-variant": "#2b4e3c",
+            "on-error-container": "#93000a",
+            "outline": "#87726c",
+            "on-tertiary-container": "#fffbff",
+            "on-secondary": "#ffffff",
+            "secondary": "#426652",
+            "primary-fixed-dim": "#ffb59c",
+            "surface-container": "#f1ede6",
+            "secondary-fixed-dim": "#a9cfb8",
+            "on-primary-fixed-variant": "#783117",
+            "on-tertiary-fixed-variant": "#52452c",
+            "surface-tint": "#96482c",
+            "secondary-container": "#c4ecd3",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e6e2da",
+            "on-surface": "#1c1c17",
+            "tertiary": "#695a40",
+            "on-background": "#1c1c17",
+            "primary-container": "#b15d40",
+            "on-primary-fixed": "#390c00",
+            "primary-fixed": "#ffdbd0",
+            "surface": "#fdf9f1",
+            "on-secondary-container": "#486c58",
+            "inverse-surface": "#31302b",
+            "error-container": "#ffdad6",
+            "surface-bright": "#fdf9f1",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#f5e0bf",
+            "tertiary-fixed-dim": "#d8c4a4",
+            "on-surface-variant": "#55433d"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-sm": "1rem",
+            "margin-lg": "4rem",
+            "margin-sm": "1rem",
+            "space-md": "1rem",
+            "margin": "2rem",
+            "gutter-lg": "2rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "display": ["Playfair Display"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "title-lg": ["Playfair Display"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Playfair Display"],
+            "headline-lg": ["Playfair Display"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Playfair Display"],
+            "headline-md": ["Playfair Display"]
+          },
+          "fontSize": {
+            "display": ["3.75rem", { "lineHeight": "4.25rem", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "title-lg": ["1.375rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.625rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "headline-sm": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-lg": ["3rem", { "lineHeight": "3.5rem", "letterSpacing": "-0.015em", "fontWeight": "400" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "0.015em", "fontWeight": "400" }],
+            "title-sm": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "0.005em", "fontWeight": "600" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-md": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    };
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 20;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-screen flex flex-col selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- TOP SHELL / APP BAR (Shared Component: TopNavBar with Django Admin telemetry overrides) -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none docked full-width top-0 z-50 sticky">
+<div class="flex justify-between items-center w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-sm">
+<!-- Brand & Django Release Anchor -->
+<div class="flex items-center gap-space-md">
+<a class="text-headline-sm font-headline-sm text-primary dark:text-inverse-primary tracking-tight flex items-center gap-2" href="#">
+<span>CraftConnect</span>
+<span class="text-label-sm font-label-sm tracking-wider uppercase bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.5 rounded-sm">Django 5.1.x</span>
+</a>
+<div class="hidden xl:flex items-center gap-2 text-outline text-label-sm font-label-sm pl-2 border-l border-outline-variant">
+<span class="w-2 h-2 rounded-full bg-secondary inline-block animate-pulse"></span>
+<span>PostgreSQL 16 · INT253 Demo</span>
+</div>
+</div>
+<!-- Navigation Links (Active mapping: Django Admin / Artisan Portal scope) -->
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors duration-200" href="#">Marketplace</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors duration-200" href="#">Artisans</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors duration-200" href="#">Stories</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors duration-200" href="#">Custom Studio</a>
+<span class="text-outline-variant">|</span>
+<a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary pb-1 font-title-sm text-title-sm flex items-center gap-1" href="#">
+<span class="material-symbols-outlined text-[18px]" data-icon="admin_panel_settings">admin_panel_settings</span>
+<span>Artisan Portal</span>
+</a>
+</nav>
+<!-- Right Trailing Cluster -->
+<div class="flex items-center gap-space-md">
+<a class="hidden sm:inline-flex items-center gap-1 text-label-md font-label-md text-secondary hover:text-primary transition-colors duration-200" href="#">
+<span class="material-symbols-outlined text-[16px]" data-icon="open_in_new">open_in_new</span>
+<span>View Live Marketplace</span>
+</a>
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" title="Favorites">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<button class="p-1.5 text-on-surface-variant hover:text-primary transition-colors" title="Moderation Filters">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+<div class="flex items-center gap-2 ml-1 bg-surface-container px-2 py-1 rounded">
+<span class="material-symbols-outlined text-secondary" data-icon="account_circle">account_circle</span>
+<div class="text-left leading-tight hidden lg:block">
+<span class="block text-label-md font-label-md text-on-surface">Admin (Superuser)</span>
+<span class="block text-label-sm font-label-sm text-secondary font-semibold">Staff: Verified</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- SECONDARY ADMIN CONSOLE SUB-HEADER & BREADCRUMBS -->
+<div class="bg-surface-container-low border-b border-outline-variant py-2.5">
+<div class="w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto flex flex-wrap justify-between items-center gap-2 text-label-sm font-label-sm">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<a class="hover:text-primary" href="#">Django Administration</a>
+<span class="text-outline-variant">›</span>
+<a class="hover:text-primary" href="#">Marketplace Catalog</a>
+<span class="text-outline-variant">›</span>
+<span class="text-on-surface font-semibold">Content Moderation Queue</span>
+</div>
+<div class="flex items-center gap-3">
+<span class="bg-surface-container px-2 py-0.5 rounded border border-outline-variant text-on-surface-variant">
+          Django Model: <code class="text-primary font-mono font-medium">products.ModerationListing</code>
+</span>
+<span class="text-on-surface-variant">Session TTL: <span class="font-semibold text-secondary">07h 42m</span></span>
+</div>
+</div>
+</div>
+<!-- MAIN CANVAS -->
+<main class="flex-grow w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-lg space-y-space-xl">
+<!-- PAGE HERO & EDITORIAL TITLE -->
+<div class="flex flex-col md:flex-row md:items-end justify-between border-b border-outline-variant pb-space-md gap-4">
+<div>
+<div class="inline-flex items-center gap-2 px-2 py-1 bg-surface-container rounded-sm border border-outline-variant text-label-sm font-label-sm text-secondary uppercase tracking-wider mb-2">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+          INT253 Curriculum · Automated Provenance Verification
+        </div>
+<h1 class="text-headline-md font-headline-md text-on-surface tracking-tight">Django Admin &amp; Moderation Portal</h1>
+<p class="text-body-sm font-body-sm text-on-surface-variant max-w-2xl mt-1">
+          Review artisanal submissions, supervise Hugging Face semantic discovery logs, and manage PostgreSQL provenance records with archival precision.
+        </p>
+</div>
+<!-- Quick Action Buttons -->
+<div class="flex items-center gap-2">
+<button class="bg-surface-container-low text-secondary border border-secondary px-3.5 py-2 rounded-lg text-label-md font-label-md hover:bg-secondary hover:text-on-secondary transition-colors duration-150 flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="refresh">refresh</span>
+<span>Sync PostgreSQL</span>
+</button>
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg text-label-md font-label-md hover:bg-primary-container transition-colors duration-150 flex items-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-[16px]" data-icon="add_circle">add_circle</span>
+<span>New Guild Entry</span>
+</button>
+</div>
+</div>
+<!-- 1. SYSTEM TELEMETRY & MARKETPLACE OVERVIEW -->
+<section>
+<div class="flex items-center justify-between mb-space-sm">
+<h2 class="text-title-lg font-title-lg text-on-surface flex items-center gap-2">
+<span>System Telemetry &amp; Guild Metrics</span>
+</h2>
+<span class="text-label-sm font-label-sm text-on-surface-variant">Live Django Signal Stream</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-gutter-sm">
+<!-- Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-lg relative overflow-hidden group hover:border-primary transition-colors">
+<div class="flex items-start justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Registered Artisans</span>
+<span class="p-1.5 bg-surface-container-low rounded text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="groups">groups</span>
+</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-headline-sm font-headline-sm text-on-surface">142</span>
+<span class="text-label-sm font-label-sm text-secondary font-semibold">Verified</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Across 18 regional heritage craft clusters</p>
+<div class="mt-3 pt-2 border-t border-outline-variant/50 text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="check_circle">check_circle</span>
+<span>KYC Compliance: 98.6%</span>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-lg group hover:border-primary transition-colors">
+<div class="flex items-start justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Catalog Inventory</span>
+<span class="p-1.5 bg-surface-container-low rounded text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="inventory_2">inventory_2</span>
+</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-headline-sm font-headline-sm text-on-surface">846</span>
+<span class="text-label-sm font-label-sm text-secondary font-semibold">Active SKU</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Hand-thrown, woven, &amp; forged pieces</p>
+<div class="mt-3 pt-2 border-t border-outline-variant/50 text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="storage">storage</span>
+<span>Django ORM Table: <code class="text-primary font-mono text-[10px]">products</code></span>
+</div>
+</div>
+<!-- Card 3 (Pending Attention) -->
+<div class="bg-surface-container-lowest border-2 border-primary/40 p-4 rounded-lg group hover:border-primary transition-colors bg-primary-fixed/5">
+<div class="flex items-start justify-between">
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-wider font-semibold">AI Moderation Queue</span>
+<span class="p-1.5 bg-primary-fixed rounded text-primary">
+<span class="material-symbols-outlined text-[20px]" data-icon="pending_actions">pending_actions</span>
+</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-headline-sm font-headline-sm text-primary">9</span>
+<span class="text-label-sm font-label-sm bg-primary text-on-primary px-1.5 py-0.5 rounded text-[10px]">Requires Human Signoff</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Generated via Catalogue Assistant</p>
+<div class="mt-3 pt-2 border-t border-outline-variant/50 text-label-sm font-label-sm text-primary flex items-center gap-1 font-medium">
+<span class="material-symbols-outlined text-[14px]" data-icon="bolt">bolt</span>
+<span>Avg AI validation: 1.4s / item</span>
+</div>
+</div>
+<!-- Card 4 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-lg group hover:border-primary transition-colors">
+<div class="flex items-start justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant uppercase tracking-wider">Buyer Inquiries</span>
+<span class="p-1.5 bg-surface-container-low rounded text-secondary">
+<span class="material-symbols-outlined text-[20px]" data-icon="forum">forum</span>
+</span>
+</div>
+<div class="mt-2 flex items-baseline gap-2">
+<span class="text-headline-sm font-headline-sm text-on-surface">1,240</span>
+<span class="text-label-sm font-label-sm text-secondary font-semibold">Direct Routed</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-1">Zero intermediary commission model</p>
+<div class="mt-3 pt-2 border-t border-outline-variant/50 text-label-sm font-label-sm text-outline flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="schedule">schedule</span>
+<span>Response median: 3.2 hrs</span>
+</div>
+</div>
+</div>
+<!-- Infrastructure Latency Banner -->
+<div class="mt-3 bg-surface-container-low border border-outline-variant px-4 py-2.5 rounded-lg flex flex-wrap items-center justify-between gap-3 text-label-sm font-label-sm">
+<div class="flex items-center gap-4">
+<span class="flex items-center gap-1.5 text-secondary font-medium">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+            PostgreSQL DB (AWS ap-south-1): <strong>Connected (24ms latency)</strong>
+</span>
+<span class="hidden md:inline text-outline-variant">|</span>
+<span class="flex items-center gap-1.5 text-secondary font-medium">
+<span class="w-2 h-2 rounded-full bg-secondary"></span>
+            Hugging Face Inference: <strong>Mistral-7B &amp; BGE-Small (Healthy)</strong>
+</span>
+</div>
+<div class="text-on-surface-variant font-mono text-[11px]">
+          Django 5.1.4 · Gunicorn 21.2 · Python 3.11
+        </div>
+</div>
+</section>
+<!-- 2. PENDING ARTISAN PRODUCTS MODERATION QUEUE (Core Feature) -->
+<section class="space-y-space-md">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+<div>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Pending Product Submissions</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Artisans drafted these listings using the Django AI Catalogue Assistant. Verify material provenance and approve for public catalog indexing.
+          </p>
+</div>
+<div class="flex items-center gap-2">
+<span class="text-label-sm font-label-sm text-outline">Filter queue:</span>
+<select class="bg-surface-container-lowest border border-outline-variant text-label-sm font-label-sm py-1 px-2.5 rounded">
+<option>All Pending (9)</option>
+<option>Pottery &amp; Terracotta (3)</option>
+<option>Textiles &amp; Weaves (4)</option>
+<option>Woodcraft &amp; Metal (2)</option>
+</select>
+</div>
+</div>
+<!-- Review List Cards -->
+<div class="space-y-space-md">
+<!-- Moderation Item 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg shadow-sm">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Thumbnail Frame -->
+<div class="lg:col-span-3">
+<div class="border border-outline-variant p-1 bg-surface-container-low rounded">
+<img class="w-full aspect-[4/3] object-cover rounded" data-alt="A studio photograph of an earthen hand-burnished terracotta water carafe resting on an untreated linen tablecloth. Soft natural daylight from a side window illuminates the subtle texture of the alluvial clay and delicate neck carvings. The background consists of warm neutral ivory tones with artisan ceramic bowls subtly blurred. Rich terracotta earthy tones dominate with quiet, calm craftsmanship aesthetic." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCrMsZ0OQczqFlUwjnFWrn0J3we7ZhGLishcvWvCOlY1kT0REop0uSGIgLAM25tYHnIN3sNB6Qz_NypJ2dVp5f94rzsVldD2hqAJRhZcrl77Ki1keWkavUHHkoZVTtAgq-MngWHt5xqiL8zO8-1yYtOKfLKvTL9eH9kSHeeFBDNLGAzzPyeh-AIUlJXgpAuL3wSIFwD1ngoBkd5pphYfo-aI4ftxumJXydQU7jHVIfqE3xL2qcTczal"/>
+</div>
+<div class="mt-2 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>SKU: <code class="font-mono text-primary">KTC-TC-098</code></span>
+<span class="text-secondary font-semibold">Ready for Review</span>
+</div>
+</div>
+<!-- Content & AI Verification Telemetry -->
+<div class="lg:col-span-6 space-y-3">
+<div>
+<div class="flex flex-wrap items-center gap-2 mb-1">
+<span class="bg-secondary text-on-secondary px-2 py-0.5 rounded text-label-sm font-label-sm uppercase tracking-wider">Clay &amp; Pottery</span>
+<span class="bg-surface-container border border-outline-variant px-2 py-0.5 rounded text-label-sm font-label-sm text-on-surface-variant">Kutch Guild, Gujarat</span>
+<span class="text-label-sm font-label-sm text-outline">Submitted 2 hours ago</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface">Hand-burnished Terracotta Water Carafe</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                  By <strong class="text-on-surface">Devraj Kumhar</strong> · 5th Generation Master Potter, Bhuj Craft Cluster
+                </p>
+</div>
+<!-- AI Analysis Callout Box -->
+<div class="bg-surface-container-low border border-outline-variant p-3 rounded space-y-2 text-body-sm font-body-sm">
+<div class="flex items-center justify-between text-label-sm font-label-sm border-b border-outline-variant/60 pb-1.5">
+<span class="text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="smart_toy">smart_toy</span>
+                    Hugging Face Assistant Telemetry
+                  </span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.2 rounded font-semibold text-[11px]">Safety Check: 100% Passed</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-label-sm font-label-sm">
+<div>
+<span class="text-outline block">Extracted Material:</span>
+<span class="font-medium text-on-surface">Alluvial riverbed clay (Kutch), natural slip glaze</span>
+</div>
+<div>
+<span class="text-outline block">Price Sanity Index:</span>
+<span class="font-medium text-on-surface">Fair (Market benchmark ₹400 – ₹600)</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-[12px] italic">
+                  "AI generated craft narrative cross-referenced against historical Bhuj slip-ware techniques. Zero greenwashing claims detected."
+                </p>
+</div>
+<!-- Price & Inventory Specs -->
+<div class="flex items-center gap-4 text-label-md font-label-md">
+<span>Proposed Price: <strong class="text-title-sm font-title-sm text-primary">₹450</strong></span>
+<span class="text-outline-variant">|</span>
+<span>Batch Stock: <strong>14 units</strong></span>
+<span class="text-outline-variant">|</span>
+<span>Dimensions: <strong>9" × 4.5", 1.2L</strong></span>
+</div>
+</div>
+<!-- Action Buttons Column -->
+<div class="lg:col-span-3 flex flex-col gap-2 pt-2 lg:border-l lg:border-outline-variant lg:pl-5">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider mb-1">Moderator Actions</span>
+<button class="w-full bg-primary text-on-primary py-2.5 px-3 rounded-lg text-label-md font-label-md hover:bg-primary-container transition-colors duration-150 flex items-center justify-center gap-1.5 shadow-sm font-semibold">
+<span class="material-symbols-outlined text-[18px]" data-icon="task_alt">task_alt</span>
+<span>Approve &amp; Publish to PostgreSQL</span>
+</button>
+<button class="w-full bg-surface-container-low border border-outline text-on-surface py-2 px-3 rounded-lg text-label-md font-label-md hover:bg-surface-container hover:text-primary transition-colors duration-150 flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit_note">edit_note</span>
+<span>Request Revisions</span>
+</button>
+<button class="w-full border border-error/50 text-error py-2 px-3 rounded-lg text-label-md font-label-md hover:bg-error-container hover:text-on-error-container transition-colors duration-150 flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="cancel">cancel</span>
+<span>Reject Submission</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Moderation Item 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-lg shadow-sm">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter items-start">
+<!-- Thumbnail Frame -->
+<div class="lg:col-span-3">
+<div class="border border-outline-variant p-1 bg-surface-container-low rounded">
+<img class="w-full aspect-[4/3] object-cover rounded" data-alt="An artisanal Chanderi zari handloom dupatta folded neatly over a dark rustic teakwood loom shuttle. The gossamer silk-cotton fabric gleams with gold electroplated zari motifs depicting traditional peacocks and floral booti. Soft studio illumination brings out the fine weave density and translucent sheen. Refined traditional Indian craft editorial photography in olive and ivory tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPbXIOXAo3NJ75Y6bx_xr6IDiuoOTjDF_QVVqhIeIIUKxXdgLweNr9-l7MCfHKj5n5GoncaJ4VtopptAsYCwGUzeihrAWVXLKHxylycyY1nD3YWB0pw7oJJG54TV2A-q-1K6dHa3-8lYBvV5w9BwLy91bGYjl06AY6sjtYqL06TWGVI5NlLQ-wzOcUXaBjzOEyGB7e-ooFJpn8VzP6UBKx1sYRENZW2dPPHPNb50g3qHN7qwuQnob3"/>
+</div>
+<div class="mt-2 flex items-center justify-between text-label-sm font-label-sm text-on-surface-variant">
+<span>SKU: <code class="font-mono text-primary">CHN-TX-412</code></span>
+<span class="text-secondary font-semibold">GI Tag Verified</span>
+</div>
+</div>
+<!-- Content & AI Verification Telemetry -->
+<div class="lg:col-span-6 space-y-3">
+<div>
+<div class="flex flex-wrap items-center gap-2 mb-1">
+<span class="bg-secondary text-on-secondary px-2 py-0.5 rounded text-label-sm font-label-sm uppercase tracking-wider">Handloom Textiles</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold">Chanderi GI Certificate #MP/12/04</span>
+<span class="text-label-sm font-label-sm text-outline">Submitted 5 hours ago</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface">Chanderi Zari Handloom Dupatta</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+                  By <strong class="text-on-surface">Ritu Varma</strong> · Chanderi Weaver's Cooperative Society, Ashoknagar
+                </p>
+</div>
+<!-- AI Analysis Callout Box -->
+<div class="bg-surface-container-low border border-outline-variant p-3 rounded space-y-2 text-body-sm font-body-sm">
+<div class="flex items-center justify-between text-label-sm font-label-sm border-b border-outline-variant/60 pb-1.5">
+<span class="text-primary font-bold flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="verified">verified</span>
+                    Hugging Face GI Match Engine
+                  </span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-1.5 py-0.2 rounded font-semibold text-[11px]">Provenance 99.4% Match</span>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-label-sm font-label-sm">
+<div>
+<span class="text-outline block">Warp / Weft Warp Count:</span>
+<span class="font-medium text-on-surface">120D Silk warp × 100s Cotton weft with tested Zari</span>
+</div>
+<div>
+<span class="text-outline block">Fair Artisan Remuneration:</span>
+<span class="font-medium text-on-surface">₹1,850 direct to weaver ledger</span>
+</div>
+</div>
+<p class="text-on-surface-variant text-[12px] italic">
+                  "Authentic handloom tested. High-resolution weave-density analysis indicates authentic pit loom construction, not powerloom counterfeit."
+                </p>
+</div>
+<!-- Price & Inventory Specs -->
+<div class="flex items-center gap-4 text-label-md font-label-md">
+<span>Proposed Price: <strong class="text-title-sm font-title-sm text-primary">₹2,400</strong></span>
+<span class="text-outline-variant">|</span>
+<span>Batch Stock: <strong>5 piece limit</strong></span>
+<span class="text-outline-variant">|</span>
+<span>Length: <strong>2.5 Metres</strong></span>
+</div>
+</div>
+<!-- Action Buttons Column -->
+<div class="lg:col-span-3 flex flex-col gap-2 pt-2 lg:border-l lg:border-outline-variant lg:pl-5">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider mb-1">Moderator Actions</span>
+<button class="w-full bg-primary text-on-primary py-2.5 px-3 rounded-lg text-label-md font-label-md hover:bg-primary-container transition-colors duration-150 flex items-center justify-center gap-1.5 shadow-sm font-semibold">
+<span class="material-symbols-outlined text-[18px]" data-icon="task_alt">task_alt</span>
+<span>Approve &amp; Publish</span>
+</button>
+<button class="w-full bg-surface-container-low border border-outline text-on-surface py-2 px-3 rounded-lg text-label-md font-label-md hover:bg-surface-container hover:text-primary transition-colors duration-150 flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="edit">edit</span>
+<span>Edit Details (Django Form)</span>
+</button>
+<button class="w-full border border-outline-variant text-on-surface-variant py-2 px-3 rounded-lg text-label-md font-label-md hover:bg-surface-container transition-colors duration-150 flex items-center justify-center gap-1.5">
+<span class="material-symbols-outlined text-[18px]" data-icon="visibility">visibility</span>
+<span>Inspect Raw Payload</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- 3. ARTISAN VERIFICATION & KYC REGISTRY (Django ArtisanProfile Model) -->
+<section class="space-y-space-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant pb-2">
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface">Artisan Onboarding &amp; KYC Registry</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Django model: <code class="font-mono text-primary text-[12px]">accounts.models.ArtisanProfile</code></p>
+</div>
+<div class="flex items-center gap-2">
+<button class="text-label-sm font-label-sm text-secondary hover:text-primary flex items-center gap-1">
+<span class="material-symbols-outlined text-[16px]" data-icon="download">download</span>
+<span>Export CSV</span>
+</button>
+</div>
+</div>
+<div class="overflow-x-auto bg-surface-container-lowest border border-outline-variant rounded-lg">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low border-b border-outline-variant text-label-sm font-label-sm text-on-surface-variant">
+<th class="py-3 px-4 font-semibold uppercase tracking-wider">Artisan &amp; Contact</th>
+<th class="py-3 px-4 font-semibold uppercase tracking-wider">Craft Lineage</th>
+<th class="py-3 px-4 font-semibold uppercase tracking-wider">State / Cluster</th>
+<th class="py-3 px-4 font-semibold uppercase tracking-wider">Certificates / Guild Proof</th>
+<th class="py-3 px-4 font-semibold uppercase tracking-wider">Verification Status</th>
+<th class="py-3 px-4 font-semibold uppercase tracking-wider text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant/50 text-body-sm font-body-sm">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Pema Namdol</div>
+<div class="text-label-sm font-label-sm text-outline">pema.thangka@craftconnect.in · +91 94191-XXXXX</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="font-medium">Thangka Painting (Mineral Pigment)</span>
+<span class="block text-label-sm font-label-sm text-outline">Master Artist (22 yrs experience)</span>
+</td>
+<td class="py-3.5 px-4">
+<span>Leh, Ladakh Cluster</span>
+</td>
+<td class="py-3.5 px-4">
+<a class="inline-flex items-center gap-1 text-label-sm font-label-sm text-secondary hover:underline" href="#">
+<span class="material-symbols-outlined text-[15px]" data-icon="description">description</span>
+<span>Ladakh_Handicraft_Dept_981.pdf</span>
+</a>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Verified
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="text-primary hover:text-primary-container font-label-md font-label-md">Edit Profile</button>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors bg-surface-container/20">
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Gopal Soren</div>
+<div class="text-label-sm font-label-sm text-outline">gopal.dhokra@craftconnect.in · +91 98322-XXXXX</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="font-medium">Dhokra Lost-Wax Bell Metal Casting</span>
+<span class="block text-label-sm font-label-sm text-outline">Bikna Tribal Guild</span>
+</td>
+<td class="py-3.5 px-4">
+<span>Bankura, West Bengal</span>
+</td>
+<td class="py-3.5 px-4">
+<a class="inline-flex items-center gap-1 text-label-sm font-label-sm text-primary hover:underline" href="#">
+<span class="material-symbols-outlined text-[15px]" data-icon="pending">pending</span>
+<span>Artisan_Card_TribalAffairs.jpg</span>
+</a>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-surface-container border border-outline-variant text-on-surface-variant font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-outline"></span>
+                  Needs Verification
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="bg-primary text-on-primary px-3 py-1 rounded text-label-sm font-label-sm hover:bg-primary-container font-semibold">Verify Now</button>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/40 transition-colors">
+<td class="py-3.5 px-4">
+<div class="font-semibold text-on-surface">Farooq Ahmed Mir</div>
+<div class="text-label-sm font-label-sm text-outline">farooq.papier@craftconnect.in · +91 94190-XXXXX</div>
+</td>
+<td class="py-3.5 px-4">
+<span class="font-medium">Kashmir Papier-Mâché &amp; Naqashi</span>
+<span class="block text-label-sm font-label-sm text-outline">Zadibal Artisans Co-op</span>
+</td>
+<td class="py-3.5 px-4">
+<span>Srinagar, Jammu &amp; Kashmir</span>
+</td>
+<td class="py-3.5 px-4">
+<a class="inline-flex items-center gap-1 text-label-sm font-label-sm text-secondary hover:underline" href="#">
+<span class="material-symbols-outlined text-[15px]" data-icon="description">description</span>
+<span>State_Award_Record_2019.pdf</span>
+</a>
+</td>
+<td class="py-3.5 px-4">
+<span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-label-sm bg-secondary-fixed text-on-secondary-fixed font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                  Verified
+                </span>
+</td>
+<td class="py-3.5 px-4 text-right">
+<button class="text-primary hover:text-primary-container font-label-md font-label-md">Edit Profile</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<!-- 4. AI SEMANTIC SEARCH ANALYTICS & INTENT QUERY LOGS -->
+<section class="space-y-space-sm">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant pb-2">
+<div>
+<h2 class="text-title-lg font-title-lg text-on-surface flex items-center gap-2">
+<span>Natural Language Discovery &amp; Hugging Face Search Logs</span>
+</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            Live query parsing pipeline converting conversational buyer search phrases into Django ORM lookups.
+          </p>
+</div>
+<div class="text-label-sm font-label-sm text-secondary font-medium">
+          Endpoint: <code class="font-mono bg-surface-container px-1 py-0.5 rounded">api/v1/search/semantic/</code>
+</div>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-gutter-sm">
+<!-- Log Entry 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-lg space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Query #49281 · 3 mins ago</span>
+<span class="text-label-sm font-label-sm text-secondary font-mono font-medium">Latency: 31ms</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant font-mono text-body-sm">
+<span class="text-primary font-semibold">"housewarming gift under 1000 clay or wood"</span>
+</div>
+<div class="text-label-sm font-label-sm space-y-1">
+<span class="text-outline block">Django ORM Parsed Filter:</span>
+<code class="block bg-surface-container text-on-surface p-2 rounded text-[12px] font-mono overflow-x-auto">
+              Product.objects.filter(price__lte=1000, material__in=['clay', 'wood'], is_published=True)
+            </code>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/60 text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Matches Returned: <strong class="text-on-surface">18 items</strong></span>
+<span class="text-secondary font-semibold">Status: 200 OK (Vector Hit)</span>
+</div>
+</div>
+<!-- Log Entry 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-lg space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-outline uppercase tracking-wider">Query #49280 · 7 mins ago</span>
+<span class="text-label-sm font-label-sm text-secondary font-mono font-medium">Latency: 28ms</span>
+</div>
+<div class="bg-surface-container-low p-2.5 rounded border border-outline-variant font-mono text-body-sm">
+<span class="text-primary font-semibold">"handloom cotton saree yellow festive"</span>
+</div>
+<div class="text-label-sm font-label-sm space-y-1">
+<span class="text-outline block">Django ORM Parsed Filter:</span>
+<code class="block bg-surface-container text-on-surface p-2 rounded text-[12px] font-mono overflow-x-auto">
+              Product.objects.filter(craft_category='handloom', color__iexact='yellow', tags__icontains='festive')
+            </code>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-outline-variant/60 text-label-sm font-label-sm">
+<span class="text-on-surface-variant">Matches Returned: <strong class="text-on-surface">6 items</strong></span>
+<span class="text-secondary font-semibold">Status: 200 OK (Semantic Match)</span>
+</div>
+</div>
+</div>
+</section>
+<!-- 5. QUICK DATABASE MANAGEMENT & DJANGO MODEL ACTIONS -->
+<section class="space-y-space-sm pt-space-xs">
+<div class="border-b border-outline-variant pb-2">
+<h2 class="text-title-lg font-title-lg text-on-surface">Django Model Quick Administration</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Direct CRUD operations mapped to Django registered models</p>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-gutter-sm">
+<a class="bg-surface-container-lowest border border-outline-variant p-3 rounded-lg hover:border-primary transition-all hover:-translate-y-0.5 text-center group" href="#">
+<span class="material-symbols-outlined text-primary text-[28px] mb-1" data-icon="manage_accounts">manage_accounts</span>
+<div class="text-title-sm font-title-sm text-on-surface group-hover:text-primary">User Accounts</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">188 rows</div>
+</a>
+<a class="bg-surface-container-lowest border border-outline-variant p-3 rounded-lg hover:border-primary transition-all hover:-translate-y-0.5 text-center group" href="#">
+<span class="material-symbols-outlined text-primary text-[28px] mb-1" data-icon="badge">badge</span>
+<div class="text-title-sm font-title-sm text-on-surface group-hover:text-primary">ArtisanProfiles</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">142 rows</div>
+</a>
+<a class="bg-surface-container-lowest border border-outline-variant p-3 rounded-lg hover:border-primary transition-all hover:-translate-y-0.5 text-center group" href="#">
+<span class="material-symbols-outlined text-primary text-[28px] mb-1" data-icon="account_tree">account_tree</span>
+<div class="text-title-sm font-title-sm text-on-surface group-hover:text-primary">Guilds &amp; Clusters</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">18 rows</div>
+</a>
+<a class="bg-surface-container-lowest border border-outline-variant p-3 rounded-lg hover:border-primary transition-all hover:-translate-y-0.5 text-center group" href="#">
+<span class="material-symbols-outlined text-primary text-[28px] mb-1" data-icon="shopping_bag">shopping_bag</span>
+<div class="text-title-sm font-title-sm text-on-surface group-hover:text-primary">Products</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">846 rows</div>
+</a>
+<a class="bg-surface-container-lowest border border-outline-variant p-3 rounded-lg hover:border-primary transition-all hover:-translate-y-0.5 text-center group" href="#">
+<span class="material-symbols-outlined text-primary text-[28px] mb-1" data-icon="mail">mail</span>
+<div class="text-title-sm font-title-sm text-on-surface group-hover:text-primary">Buyer Enquiries</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">1,240 rows</div>
+</a>
+<a class="bg-surface-container-lowest border border-outline-variant p-3 rounded-lg hover:border-primary transition-all hover:-translate-y-0.5 text-center group" href="#">
+<span class="material-symbols-outlined text-primary text-[28px] mb-1" data-icon="bookmarks">bookmarks</span>
+<div class="text-title-sm font-title-sm text-on-surface group-hover:text-primary">SavedProducts</div>
+<div class="text-label-sm font-label-sm text-outline mt-0.5">3,890 rows</div>
+</a>
+</div>
+</section>
+</main>
+<!-- SHARED FOOTER (Shared Component: Footer with Academic syllabus tokens) -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline docked full-width bottom-0 mt-space-xl">
+<div class="w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-xl flex flex-col md:flex-row justify-between items-center gap-space-lg">
+<div class="text-left space-y-1">
+<div class="text-title-lg font-title-lg text-primary dark:text-inverse-primary">CraftConnect Artisans Guild</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant max-w-md">
+          © 2025 CraftConnect Artisans Guild. Preserving Heritage Crafts &amp; Slow Living.
+        </p>
+<div class="text-label-sm font-label-sm text-outline font-mono">
+          Django Administration Architecture · INT253 Enterprise Web Syllabus Demonstration
+        </div>
+</div>
+<!-- Links defined verbatim in JSON -->
+<nav class="flex flex-wrap items-center justify-center md:justify-end gap-x-space-md gap-y-2">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Editorial Journal</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Artisan Verification</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Provenance Registry</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Slow Living Directory</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Platform Ethics</a>
+<a class="text-primary dark:text-inverse-primary font-label-md text-label-md underline underline-offset-4 hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200 font-semibold" href="#">Django Admin</a>
+</nav>
+</div>
+</footer>
+<!-- Micro-interaction Vanilla JS -->
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Micro-feedback on moderation buttons
+      const actionButtons = document.querySelectorAll('button');
+      actionButtons.forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          if (this.innerText.includes('Approve') || this.innerText.includes('Publish')) {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<span class="material-symbols-outlined text-[18px]">done</span> <span>Written to PostgreSQL...</span>';
+            this.classList.remove('bg-primary');
+            this.classList.add('bg-secondary');
+            setTimeout(() => {
+              this.innerHTML = originalText;
+              this.classList.remove('bg-secondary');
+              this.classList.add('bg-primary');
+            }, 1800);
+          }
+        });
+      });
+    });
+  </script>
+</body></html>

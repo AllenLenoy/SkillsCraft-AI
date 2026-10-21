@@ -1,0 +1,314 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Authentication & Onboarding Portal — CraftConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-5xl mx-auto py-6 lg:py-12 px-4">
+  
+  <div class="grid grid-cols-1 lg:grid-cols-12 bg-surface-container-lowest craft-archival-frame rounded-xl overflow-hidden shadow-sm">
+    
+    <!-- Atmospheric Visual & Editorial Narrative (Left 5 Cols) -->
+    <div class="lg:col-span-5 relative h-80 lg:h-full min-h-[520px] bg-surface-container flex flex-col justify-end p-8 md:p-10 overflow-hidden">
+      <img alt="Heritage Indian artisan shaping terracotta clay on pottery wheel"
+           class="absolute inset-0 w-full h-full object-cover"
+           src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfSSMFA2Ix_gdF5wNnXLIVPaVo806FP3MV8EwDo_fpvjUgPr89UvWxFX1oWtG08lrmnVMvvQou9Xb28Fe1IztSCxtHa7UT_JCae2QUcdMpWlepEvgZZkGbNFgRZv0HMbk9tfNhyDXm4xjGlU1eB_7FbdBHWWfQ2rKLscjZfttDJntOaRUN47SRNiK1QMUfIK-33xH99jHh5M8E4lgQQPoYXnc3VYLnHXwaeRfVDU7s8uveGwKb0cfM" />
+      <div class="absolute inset-0 bg-gradient-to-t from-[#14120f]/95 via-[#14120f]/50 to-transparent"></div>
+      
+      <div class="relative z-10 text-white space-y-2">
+        <p class="text-xs font-bold tracking-widest uppercase text-amber-300 font-label">Authentic Handmade Heritage</p>
+        <blockquote class="font-display text-2xl sm:text-3xl italic leading-snug font-bold">
+          "Where heritage hands meet conscious patrons."
+        </blockquote>
+        <p class="text-sm text-stone-200 leading-relaxed max-w-sm">
+          Preserving slow craft traditions through fair living wages, master artisan registries, and zero-intermediary direct patronage.
+        </p>
+      </div>
+    </div>
+
+    <!-- Clean Minimalist Authentication Form (Right 7 Cols) -->
+    <div class="lg:col-span-7 p-8 md:p-12 flex flex-col justify-center">
+      <div class="max-w-lg mx-auto w-full">
+        
+        <!-- Header & Subtitle -->
+        <div class="mb-7">
+          <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-bold bg-surface-container text-primary mb-3">
+            <span class="pulse-dot"></span>
+            Role-Aware Sanctuary Access
+          </div>
+          <h1 class="font-display text-3xl sm:text-4xl font-bold text-on-surface">
+            Welcome to CraftConnect
+          </h1>
+          <p class="text-base text-on-surface-variant mt-2 leading-relaxed">
+            Preserving handmade heritage through mindful craft and conscious patronage.
+          </p>
+        </div>
+
+        <!-- Sign In / Create Account Minimal Tabs -->
+        <div class="flex items-center gap-8 border-b border-outline-variant mb-7">
+          <button type="button"
+                  id="tab-btn-login"
+                  onclick="switchTab('login')"
+                  class="pb-3 text-base font-bold border-b-2 {% if active_tab != 'signup' %}border-primary text-primary{% else %}border-transparent text-on-surface-variant hover:text-on-surface{% endif %} transition-colors">
+            Sign In
+          </button>
+          <button type="button"
+                  id="tab-btn-signup"
+                  onclick="switchTab('signup')"
+                  class="pb-3 text-base font-bold border-b-2 {% if active_tab == 'signup' %}border-primary text-primary{% else %}border-transparent text-on-surface-variant hover:text-on-surface{% endif %} transition-colors">
+            Create Account
+          </button>
+        </div>
+
+        <!-- ==================== LOGIN FORM ==================== -->
+        <div id="auth-panel-login" class="{% if active_tab == 'signup' %}hidden{% endif %}">
+          <form action="{% url 'accounts:auth' %}" method="post" class="space-y-5">
+            {% csrf_token %}
+            <input type="hidden" name="auth_action" value="login">
+            
+            {% if login_form.non_field_errors %}
+              <div class="p-4 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">
+                {% for err in login_form.non_field_errors %}{{ err }}<br>{% endfor %}
+              </div>
+            {% endif %}
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label" for="email-input">
+                Username or Email
+              </label>
+              <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
+                {{ login_form.username }}
+              </div>
+              {% if login_form.username.errors %}
+                <p class="text-xs text-red-600 mt-1 font-medium">{{ login_form.username.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface font-label" for="password-input">
+                  Password
+                </label>
+                <a href="javascript:void(0)" onclick="alert('For development testing, you can sign up or use existing credentials.')" class="text-xs font-semibold text-primary hover:underline">
+                  Forgot password?
+                </a>
+              </div>
+              <div class="relative rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
+                {{ login_form.password }}
+                <button type="button" onclick="togglePasswordVisibility('password-input', 'pw-icon-1')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-outline hover:text-on-surface">
+                  <span class="material-symbols-outlined text-[20px]" id="pw-icon-1">visibility</span>
+                </button>
+              </div>
+              {% if login_form.password.errors %}
+                <p class="text-xs text-red-600 mt-1 font-medium">{{ login_form.password.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div class="flex items-center justify-between pt-1">
+              <label class="flex items-center gap-2.5 cursor-pointer">
+                {{ login_form.remember_me }}
+                <span class="text-sm text-on-surface-variant font-medium">Remember this active session</span>
+              </label>
+            </div>
+
+            <div class="pt-3">
+              <button type="submit" class="w-full py-3.5 px-6 bg-primary text-white rounded-lg font-semibold text-base shadow-sm hover:bg-primary-hover active:scale-[0.99] transition-all flex items-center justify-center gap-2 hover-lift">
+                <span>Sign In to Sanctuary</span>
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+              </button>
+            </div>
+          </form>
+
+        </div>
+
+        <!-- ==================== SIGNUP FORM ==================== -->
+        <div id="auth-panel-signup" class="{% if active_tab != 'signup' %}hidden{% endif %}">
+          <form action="{% url 'accounts:auth' %}" method="post" class="space-y-4">
+            {% csrf_token %}
+            <input type="hidden" name="auth_action" value="signup">
+            <input type="hidden" name="role" id="signup-role-input" value="{{ active_role|default:'buyer' }}">
+
+            <!-- Role Selector -->
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface-variant mb-2.5 font-label">
+                I am joining CraftConnect as
+              </label>
+              <div class="grid grid-cols-2 gap-3">
+                <button type="button"
+                        id="role-btn-buyer"
+                        onclick="setSignupRole('buyer')"
+                        class="p-3.5 rounded-lg border text-center transition-all text-sm font-bold {% if active_role != 'artisan' %}border-primary bg-surface-container-low text-primary ring-2 ring-primary/20 shadow-xs{% else %}border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-outline{% endif %}">
+                  <span class="material-symbols-outlined block text-2xl mx-auto mb-1.5">spa</span>
+                  Patron / Collector
+                </button>
+                <button type="button"
+                        id="role-btn-artisan"
+                        onclick="setSignupRole('artisan')"
+                        class="p-3.5 rounded-lg border text-center transition-all text-sm font-bold {% if active_role == 'artisan' %}border-primary bg-surface-container-low text-primary ring-2 ring-primary/20 shadow-xs{% else %}border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-outline{% endif %}">
+                  <span class="material-symbols-outlined block text-2xl mx-auto mb-1.5">handshake</span>
+                  Master Artisan
+                </button>
+              </div>
+            </div>
+
+            {% if register_form.non_field_errors %}
+              <div class="p-4 rounded-lg bg-red-50 border border-red-200 text-sm text-red-700">
+                {% for err in register_form.non_field_errors %}{{ err }}<br>{% endfor %}
+              </div>
+            {% endif %}
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label">
+                Full Name
+              </label>
+              <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
+                {{ register_form.full_name }}
+              </div>
+              {% if register_form.full_name.errors %}
+                <p class="text-xs text-red-600 mt-1 font-medium">{{ register_form.full_name.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label">
+                  Username
+                </label>
+                <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
+                  {{ register_form.username }}
+                </div>
+                {% if register_form.username.errors %}
+                  <p class="text-xs text-red-600 mt-1 font-medium">{{ register_form.username.errors.0 }}</p>
+                {% endif %}
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label">
+                  Email
+                </label>
+                <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
+                  {{ register_form.email }}
+                </div>
+                {% if register_form.email.errors %}
+                  <p class="text-xs text-red-600 mt-1 font-medium">{{ register_form.email.errors.0 }}</p>
+                {% endif %}
+              </div>
+            </div>
+
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label">
+                Password
+              </label>
+              <div class="relative rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
+                {{ register_form.password }}
+                <button type="button" onclick="togglePasswordVisibility('id_password', 'pw-icon-2')" class="absolute inset-y-0 right-0 pr-3.5 flex items-center text-outline hover:text-on-surface">
+                  <span class="material-symbols-outlined text-[20px]" id="pw-icon-2">visibility</span>
+                </button>
+              </div>
+              {% if register_form.password.errors %}
+                <p class="text-xs text-red-600 mt-1 font-medium">{{ register_form.password.errors.0 }}</p>
+              {% endif %}
+            </div>
+
+            <!-- Artisan-specific fields -->
+            <div id="artisan-fields" class="{% if active_role != 'artisan' %}hidden{% endif %} space-y-4 p-4 bg-surface-container rounded-xl border border-outline-variant">
+              <span class="text-xs font-bold uppercase tracking-wider text-secondary flex items-center gap-1.5 font-label">
+                <span class="material-symbols-outlined text-base">palette</span>
+                Artisan Studio Credentials
+              </span>
+              <div>
+                <label class="block text-xs font-bold text-on-surface mb-1.5">Craft Speciality</label>
+                <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary bg-white">
+                  {{ register_form.craft_speciality }}
+                </div>
+                <p class="text-xs text-on-surface-variant mt-1">e.g. Kutch Terracotta, Chanderi Handloom, Dhokra Brass</p>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-on-surface mb-1.5">Workshop Location</label>
+                <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary bg-white">
+                  {{ register_form.location }}
+                </div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold text-on-surface mb-1.5">Studio Story / Bio</label>
+                <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary bg-white">
+                  {{ register_form.bio }}
+                </div>
+              </div>
+            </div>
+
+            <div class="pt-3">
+              <button type="submit" class="w-full py-3.5 px-6 bg-primary text-white rounded-lg font-semibold text-base shadow-sm hover:bg-primary-hover active:scale-[0.99] transition-all flex items-center justify-center gap-2 hover-lift">
+                <span id="signup-cta-label">Create Patron Account</span>
+                <span class="material-symbols-outlined text-[20px]">arrow_forward</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<script>
+  function switchTab(tab) {
+    const loginBtn = document.getElementById('tab-btn-login');
+    const signupBtn = document.getElementById('tab-btn-signup');
+    const loginPanel = document.getElementById('auth-panel-login');
+    const signupPanel = document.getElementById('auth-panel-signup');
+
+    if (tab === 'signup') {
+      loginBtn.classList.remove('border-primary', 'text-primary');
+      loginBtn.classList.add('border-transparent', 'text-on-surface-variant');
+      signupBtn.classList.add('border-primary', 'text-primary');
+      signupBtn.classList.remove('border-transparent', 'text-on-surface-variant');
+      loginPanel.classList.add('hidden');
+      signupPanel.classList.remove('hidden');
+    } else {
+      signupBtn.classList.remove('border-primary', 'text-primary');
+      signupBtn.classList.add('border-transparent', 'text-on-surface-variant');
+      loginBtn.classList.add('border-primary', 'text-primary');
+      loginBtn.classList.remove('border-transparent', 'text-on-surface-variant');
+      signupPanel.classList.add('hidden');
+      loginPanel.classList.remove('hidden');
+    }
+  }
+
+  function setSignupRole(role) {
+    const roleInput = document.getElementById('signup-role-input');
+    const buyerBtn = document.getElementById('role-btn-buyer');
+    const artisanBtn = document.getElementById('role-btn-artisan');
+    const artisanFields = document.getElementById('artisan-fields');
+    const ctaLabel = document.getElementById('signup-cta-label');
+
+    roleInput.value = role;
+
+    if (role === 'artisan') {
+      artisanBtn.className = 'p-3.5 rounded-lg border text-center transition-all text-sm font-bold border-primary bg-surface-container-low text-primary ring-2 ring-primary/20 shadow-xs';
+      buyerBtn.className = 'p-3.5 rounded-lg border text-center transition-all text-sm font-bold border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-outline';
+      artisanFields.classList.remove('hidden');
+      ctaLabel.innerText = 'Register Master Artisan Studio';
+    } else {
+      buyerBtn.className = 'p-3.5 rounded-lg border text-center transition-all text-sm font-bold border-primary bg-surface-container-low text-primary ring-2 ring-primary/20 shadow-xs';
+      artisanBtn.className = 'p-3.5 rounded-lg border text-center transition-all text-sm font-bold border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-outline';
+      artisanFields.classList.add('hidden');
+      ctaLabel.innerText = 'Create Patron Account';
+    }
+  }
+
+  function togglePasswordVisibility(inputId, iconId) {
+    const input = document.getElementById(inputId);
+    const icon = document.getElementById(iconId);
+    if (!input) return;
+    if (input.type === 'password') {
+      input.type = 'text';
+      if (icon) icon.innerText = 'visibility_off';
+    } else {
+      input.type = 'password';
+      if (icon) icon.innerText = 'visibility';
+    }
+  }
+</script>
+{% endblock %}

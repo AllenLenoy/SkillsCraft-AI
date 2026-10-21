@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Temporary Kiln Cooling — CraftConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-2xl mx-auto py-16 sm:py-24 px-4 text-center space-y-6">
+  <div class="inline-flex items-center justify-center w-20 h-20 rounded-full bg-error/10 text-error mb-2 shadow-xs">
+    <span class="material-symbols-outlined text-4xl">sync_problem</span>
+  </div>
+
+  <span class="inline-block px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wider bg-surface-container text-error font-label">
+    Error 500 &bull; Studio Under Maintenance
+  </span>
+
+  <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface">
+    The Kiln Needs a Moment to Settle
+  </h1>
+
+  <p class="text-base sm:text-lg text-on-surface-variant max-w-lg mx-auto leading-relaxed">
+    Our workshop server encountered an unexpected pause while firing your request. Our guild stewards have been alerted and are attending to the studio.
+  </p>
+
+  <div class="pt-6 flex flex-wrap items-center justify-center gap-4">
+    <a href="{% url 'marketplace:home' %}" class="px-6 py-3 bg-surface-container hover:bg-surface-container-high text-on-surface font-semibold rounded-lg transition-colors flex items-center gap-2">
+      <span class="material-symbols-outlined text-base">home</span>
+      <span>Back to Homepage</span>
+    </a>
+    <a href="javascript:location.reload()" class="px-6 py-3 bg-primary hover:bg-primary-hover text-on-primary font-bold rounded-lg shadow-sm transition-all flex items-center gap-2">
+      <span class="material-symbols-outlined text-base">refresh</span>
+      <span>Retry Action</span>
+    </a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ artisan.display_name }} — CraftConnect Master Artisan{% endblock %}
+
+{% block content %}
+<div class="max-w-[1440px] mx-auto px-4 md:px-8 py-10">
+  
+  <!-- Artisan Profile Header -->
+  <div class="archival-card p-6 md:p-10 rounded-xl bg-white mb-12 shadow-sm border border-outline-variant/60">
+    <div class="flex flex-col sm:flex-row items-start gap-8">
+      
+      <div class="w-28 h-28 sm:w-32 sm:h-32 rounded-full bg-surface-container flex items-center justify-center text-primary shrink-0 border-2 border-outline-variant overflow-hidden shadow-xs">
+        {% if artisan.profile_image %}
+          <img src="{{ artisan.profile_image.url }}" alt="{{ artisan.display_name }}" class="w-full h-full object-cover">
+        {% else %}
+          <span class="material-symbols-outlined text-6xl">person</span>
+        {% endif %}
+      </div>
+
+      <div class="space-y-4 flex-1">
+        <div class="flex flex-wrap items-center gap-3">
+          <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface tracking-tight">{{ artisan.display_name }}</h1>
+          {% if artisan.is_verified %}
+            <span class="text-sm bg-secondary-container text-secondary font-bold px-3.5 py-1.5 rounded-full flex items-center gap-1.5 shadow-xs">
+              <span class="material-symbols-outlined text-[16px]">verified</span>
+              Verified Master Atelier
+            </span>
+          {% endif %}
+        </div>
+
+        <div class="flex flex-wrap gap-5 text-sm sm:text-base font-medium text-tertiary">
+          <span class="flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px]">palette</span>
+            {{ artisan.craft_speciality }}
+          </span>
+          {% if artisan.location %}
+            <span class="flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[18px]">location_on</span>
+              {{ artisan.location }}
+            </span>
+          {% endif %}
+        </div>
+
+        {% if artisan.bio %}
+          <p class="text-base sm:text-lg text-on-surface-variant leading-relaxed max-w-4xl">
+            {{ artisan.bio }}
+          </p>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Studio Creations -->
+  <div class="mb-8">
+    <span class="provenance-tag text-secondary text-xs sm:text-sm uppercase tracking-wider font-bold">Studio Archive</span>
+    <h2 class="font-display text-2xl sm:text-3xl font-bold text-on-surface mt-1">Authentic Works by {{ artisan.display_name }}</h2>
+  </div>
+
+  {% if creations %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for product in creations %}
+        <div class="archival-card rounded-xl overflow-hidden flex flex-col justify-between hover-lift">
+          <div>
+            <a href="{% url 'marketplace:product_detail' slug=product.slug %}" class="block aspect-[4/3] bg-surface-container overflow-hidden relative">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center text-on-surface-variant bg-surface-container-high">
+                  <span class="material-symbols-outlined text-5xl">palette</span>
+                </div>
+              {% endif %}
+            </a>
+            <div class="p-6 space-y-2">
+              <span class="text-xs sm:text-sm font-bold text-secondary uppercase tracking-wider">{{ product.category.name }}</span>
+              <h3 class="font-display text-xl sm:text-2xl font-bold text-on-surface hover:text-primary transition-colors">
+                <a href="{% url 'marketplace:product_detail' slug=product.slug %}">{{ product.title }}</a>
+              </h3>
+              <p class="text-sm sm:text-base text-on-surface-variant line-clamp-2 leading-relaxed">{{ product.description }}</p>
+            </div>
+          </div>
+          <div class="px-6 py-4 bg-surface-container/30 border-t border-outline-variant flex items-center justify-between">
+            <span class="font-display text-2xl sm:text-3xl font-bold text-primary">₹{{ product.price }}</span>
+            <a href="{% url 'marketplace:product_detail' slug=product.slug %}" class="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover shadow-xs transition-all hover:scale-102">
+              Inspect Piece
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="archival-card p-12 rounded-xl text-center max-w-lg mx-auto space-y-3">
+      <span class="material-symbols-outlined text-4xl text-outline">inventory_2</span>
+      <h3 class="font-display text-xl font-bold text-on-surface">No published creations currently</h3>
+      <p class="text-sm sm:text-base text-on-surface-variant">Approved pieces from this studio will appear here once verified.</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

@@ -1,0 +1,276 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ story.title }} — CraftConnect Journal{% endblock %}
+
+{% block extra_head %}
+<meta name="description" content="{{ story.lead_paragraph|truncatewords:30 }}">
+{% endblock %}
+
+{% block content %}
+<article class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg py-10 space-y-12">
+
+  <!-- ==================== BREADCRUMBS ==================== -->
+  <nav class="flex items-center gap-2.5 text-xs sm:text-sm font-medium text-on-surface-variant font-label" data-animate>
+    <a href="{% url 'marketplace:home' %}" class="hover:text-primary transition-colors flex items-center gap-1">
+      <span class="material-symbols-outlined text-[16px]">home</span>
+      <span>Home</span>
+    </a>
+    <span class="text-outline-variant">/</span>
+    <a href="{% url 'marketplace:story_list' %}" class="hover:text-primary transition-colors">Editorial Journal</a>
+    <span class="text-outline-variant">/</span>
+    <span class="text-primary font-bold truncate max-w-xs sm:max-w-md">{{ story.title }}</span>
+  </nav>
+
+  <!-- ==================== EDITORIAL STORY HEADER ==================== -->
+  <header class="max-w-4xl mx-auto space-y-6 text-center" data-animate>
+    <!-- Volume & Region Pills -->
+    <div class="inline-flex flex-wrap items-center justify-center gap-2">
+      <span class="px-3.5 py-1 rounded-full bg-secondary/10 text-secondary text-xs font-label uppercase font-bold tracking-widest">
+        {{ story.volume_tag }}
+      </span>
+      {% if story.craft_region %}
+        <span class="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-label font-bold flex items-center gap-1">
+          <span class="material-symbols-outlined text-[14px]">location_on</span>
+          <span>{{ story.craft_region }}</span>
+        </span>
+      {% endif %}
+      <span class="px-3 py-1 rounded-full bg-surface-container text-on-surface-variant text-xs font-label font-semibold">
+        {{ story.category }}
+      </span>
+    </div>
+
+    <!-- Main Editorial Headline -->
+    <h1 class="font-headline text-3xl sm:text-5xl lg:text-6xl font-bold text-on-surface tracking-tight leading-tight">
+      {{ story.title }}
+    </h1>
+
+    <!-- Author & Reading Byline -->
+    <div class="flex flex-wrap items-center justify-center gap-4 sm:gap-6 pt-4 text-xs sm:text-sm font-label text-on-surface-variant border-t border-b border-outline-variant py-4">
+      <div class="flex items-center gap-2.5">
+        <div class="w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold text-xs uppercase shadow-xs">
+          {{ story.author_name|first }}
+        </div>
+        <div class="text-left">
+          <span class="font-bold text-on-surface block">{{ story.author_name }}</span>
+          <span class="text-[11px] text-secondary font-medium block">{{ story.author_role }}</span>
+        </div>
+      </div>
+      <span class="text-outline-variant hidden sm:inline">&bull;</span>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">schedule</span>
+        <span>{{ story.reading_time }}</span>
+      </div>
+      <span class="text-outline-variant hidden sm:inline">&bull;</span>
+      <div class="flex items-center gap-1.5">
+        <span class="material-symbols-outlined text-[16px]">calendar_today</span>
+        <span>{{ story.created_at|date:"F d, Y" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ==================== HERO PHOTOGRAPHY FRAME ==================== -->
+  <div class="max-w-5xl mx-auto rounded-2xl overflow-hidden shadow-xl craft-archival-frame relative bg-surface-container" data-animate>
+    <div class="aspect-[16/9] sm:aspect-[21/10] overflow-hidden">
+      {% if story.hero_image %}
+        <img
+          src="{{ story.hero_image.url }}"
+          alt="{{ story.title }}"
+          class="w-full h-full object-cover img-zoom"
+          loading="eager"
+        >
+      {% else %}
+        <img
+          src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1400&q=85"
+          alt="{{ story.title }}"
+          class="w-full h-full object-cover img-zoom"
+          loading="eager"
+        >
+      {% endif %}
+    </div>
+    {% if story.craft_region %}
+      <div class="p-4 bg-surface-container-low border-t border-outline-variant flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-on-surface-variant font-label">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-[16px] text-primary">camera</span>
+          <span>Field Documentation &bull; Workshop Archive, {{ story.craft_region }}</span>
+        </div>
+        <span class="text-secondary font-semibold">CraftConnect Archival Dispatch</span>
+      </div>
+    {% endif %}
+  </div>
+
+  <!-- ==================== EDITORIAL READING CONTENT ==================== -->
+  <div class="max-w-3xl mx-auto space-y-8" data-animate>
+
+    <!-- Lead Paragraph with Drop Cap -->
+    <div class="editorial-dropcap text-lg sm:text-xl font-body leading-relaxed text-on-surface">
+      {{ story.lead_paragraph }}
+    </div>
+
+    <!-- Pull Quote -->
+    {% if story.pull_quote %}
+      <blockquote class="editorial-pullquote my-10">
+        "{{ story.pull_quote }}"
+        {% if story.author_name %}
+          <footer class="text-xs font-label uppercase tracking-widest text-primary font-bold not-italic mt-3 block">
+            — {{ story.author_name }}, {{ story.author_role }}
+          </footer>
+        {% endif %}
+      </blockquote>
+    {% endif %}
+
+    <!-- Body Content -->
+    <div class="editorial-body text-base sm:text-lg font-body leading-relaxed text-on-surface space-y-6">
+      {{ story.body_content|linebreaks }}
+    </div>
+
+    <!-- ==================== ARTISAN STUDIO GUILD SPOTLIGHT CARD ==================== -->
+    <div class="mt-12 p-8 rounded-2xl bg-surface-container/70 border border-outline-variant space-y-4 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <div class="w-16 h-16 rounded-full bg-deep-green text-white flex items-center justify-center font-display text-2xl font-bold shrink-0 shadow-md">
+            {{ story.author_name|first }}
+          </div>
+          <div>
+            <span class="text-xs font-label uppercase tracking-widest text-secondary font-bold block">Featured Master Maker</span>
+            <h3 class="font-headline text-xl sm:text-2xl font-bold text-on-surface">{{ story.author_name }}</h3>
+            <p class="text-xs text-on-surface-variant font-label">{{ story.author_role }} {% if story.craft_region %}• {{ story.craft_region }}{% endif %}</p>
+          </div>
+        </div>
+
+        {% if story.artisan %}
+          <a href="{% url 'marketplace:product_catalog' %}?q={{ story.author_name|urlencode }}" class="btn-primary shrink-0">
+            <span class="material-symbols-outlined text-[18px]">palette</span>
+            <span>View Creations</span>
+          </a>
+        {% else %}
+          <a href="{% url 'marketplace:product_catalog' %}" class="btn-primary shrink-0">
+            <span class="material-symbols-outlined text-[18px]">storefront</span>
+            <span>Browse Pieces</span>
+          </a>
+        {% endif %}
+      </div>
+      <p class="text-xs sm:text-sm text-on-surface-variant font-body leading-relaxed">
+        By purchasing certified handmade craft through CraftConnect, you support intergenerational guild survival, clean non-synthetic materials, and direct economic resilience for master artisans.
+      </p>
+    </div>
+
+  </div>
+
+  <!-- ==================== FEATURED CRAFT PIECES IN THIS STORY ==================== -->
+  {% if story.related_products.exists %}
+    <section class="max-w-5xl mx-auto pt-10 border-t border-outline-variant space-y-6" data-animate>
+      <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+        <div>
+          <span class="provenance-tag text-primary">Living Atelier</span>
+          <h2 class="font-headline text-2xl sm:text-3xl font-bold text-on-surface mt-1">
+            Handmade Pieces from this Guild Story
+          </h2>
+        </div>
+        <a href="{% url 'marketplace:product_catalog' %}" class="text-xs sm:text-sm font-label font-bold text-primary hover:underline flex items-center gap-1">
+          <span>View All Catalog Pieces</span>
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        {% for prod in story.related_products.all %}
+          <div class="archival-card overflow-hidden flex flex-col justify-between group hover-lift">
+            <div>
+              <a href="{% url 'marketplace:product_detail' slug=prod.slug %}" class="block aspect-[4/3] bg-surface-container overflow-hidden relative">
+                {% if prod.image %}
+                  <img src="{{ prod.image.url }}" alt="{{ prod.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+                {% else %}
+                  <div class="w-full h-full flex items-center justify-center bg-surface-container-high text-on-surface-variant">
+                    <span class="material-symbols-outlined text-4xl">palette</span>
+                  </div>
+                {% endif %}
+                <div class="absolute bottom-3 left-3">
+                  <span class="px-2.5 py-0.5 rounded-full bg-white/90 backdrop-blur-sm text-secondary text-[11px] font-label font-bold shadow-xs">
+                    {{ prod.category.name }}
+                  </span>
+                </div>
+              </a>
+              <div class="p-5 space-y-1.5">
+                <span class="text-xs font-bold font-label text-secondary block uppercase tracking-wider">{{ prod.artisan.display_name }}</span>
+                <h3 class="font-headline text-lg font-bold text-on-surface group-hover:text-primary transition-colors">
+                  <a href="{% url 'marketplace:product_detail' slug=prod.slug %}">{{ prod.title }}</a>
+                </h3>
+                <p class="text-xs text-on-surface-variant line-clamp-2 leading-relaxed">{{ prod.description }}</p>
+              </div>
+            </div>
+            <div class="px-5 py-3.5 bg-surface-container/30 border-t border-outline-variant flex items-center justify-between">
+              <span class="font-display text-xl font-bold text-primary">₹{{ prod.price }}</span>
+              <a href="{% url 'marketplace:product_detail' slug=prod.slug %}#buy-section" class="px-4 py-2 bg-primary text-white text-xs font-bold rounded-lg hover:bg-primary-hover font-label transition-colors flex items-center gap-1">
+                <span class="material-symbols-outlined text-[15px]">shopping_bag</span>
+                <span>Buy Piece</span>
+              </a>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ==================== MORE STORIES FROM THE JOURNAL ==================== -->
+  {% if more_stories %}
+    <section class="max-w-5xl mx-auto pt-10 border-t border-outline-variant space-y-6" data-animate>
+      <div class="flex items-center justify-between">
+        <h2 class="font-headline text-2xl sm:text-3xl font-bold text-on-surface">
+          More Chronicles from the Journal
+        </h2>
+        <a href="{% url 'marketplace:story_list' %}" class="text-xs sm:text-sm font-label font-bold text-primary hover:underline flex items-center gap-1">
+          <span>View All Chronicles</span>
+          <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+        </a>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        {% for ms in more_stories %}
+          <article class="archival-card overflow-hidden flex flex-col justify-between group hover-lift">
+            <div>
+              <a href="{% url 'marketplace:story_detail' slug=ms.slug %}" class="block aspect-[16/10] bg-surface-container overflow-hidden relative">
+                {% if ms.hero_image %}
+                  <img src="{{ ms.hero_image.url }}" alt="{{ ms.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+                {% else %}
+                  <div class="w-full h-full flex items-center justify-center bg-surface-container-high text-on-surface-variant">
+                    <span class="material-symbols-outlined text-3xl">auto_stories</span>
+                  </div>
+                {% endif %}
+                <div class="absolute top-2 left-2">
+                  <span class="px-2 py-0.5 rounded bg-black/70 backdrop-blur-sm text-white text-[10px] font-label font-bold uppercase">
+                    {{ ms.volume_tag }}
+                  </span>
+                </div>
+              </a>
+              <div class="p-5 space-y-2">
+                <span class="text-xs text-secondary font-bold font-label block">{{ ms.category }} &bull; {{ ms.reading_time }}</span>
+                <h4 class="font-headline text-lg font-bold text-on-surface group-hover:text-primary transition-colors line-clamp-2">
+                  <a href="{% url 'marketplace:story_detail' slug=ms.slug %}">{{ ms.title }}</a>
+                </h4>
+                <p class="text-xs text-on-surface-variant line-clamp-2">{{ ms.lead_paragraph }}</p>
+              </div>
+            </div>
+            <div class="px-5 py-3 bg-surface-container/30 border-t border-outline-variant flex items-center justify-between text-xs">
+              <span class="font-bold font-label text-on-surface truncate max-w-[140px]">{{ ms.author_name }}</span>
+              <a href="{% url 'marketplace:story_detail' slug=ms.slug %}" class="font-bold text-primary hover:underline font-label flex items-center gap-1">
+                <span>Read</span>
+                <span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+              </a>
+            </div>
+          </article>
+        {% endfor %}
+      </div>
+    </section>
+  {% endif %}
+
+  <!-- ==================== FOOTER DISPATCH ACTION ==================== -->
+  <div class="max-w-3xl mx-auto pt-6 text-center" data-animate>
+    <a href="{% url 'marketplace:story_list' %}" class="inline-flex items-center gap-2 px-6 py-3 rounded-lg border border-outline text-on-surface hover:bg-surface-container text-sm font-bold font-label transition-colors">
+      <span class="material-symbols-outlined text-[18px]">arrow_back</span>
+      <span>Return to Editorial Journal</span>
+    </a>
+  </div>
+
+</article>
+{% endblock %}

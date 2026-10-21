@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CraftConnect — Authentication &amp; Onboarding Portal | INT253</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "on-primary-fixed-variant": "#783117",
+            "on-secondary": "#ffffff",
+            "inverse-primary": "#ffb59c",
+            "on-tertiary-container": "#fffbff",
+            "on-tertiary-fixed-variant": "#52452c",
+            "primary-fixed-dim": "#ffb59c",
+            "tertiary-container": "#837257",
+            "surface-container": "#f1ede6",
+            "secondary-fixed": "#c4ecd3",
+            "on-surface": "#1c1c17",
+            "surface-variant": "#e6e2da",
+            "on-tertiary": "#ffffff",
+            "surface-bright": "#fdf9f1",
+            "surface-dim": "#dddad2",
+            "surface-container-highest": "#e6e2da",
+            "primary-container": "#b15d40",
+            "outline": "#87726c",
+            "surface-container-lowest": "#ffffff",
+            "on-secondary-fixed": "#002113",
+            "on-surface-variant": "#55433d",
+            "primary-fixed": "#ffdbd0",
+            "outline-variant": "#dac1b9",
+            "secondary": "#426652",
+            "surface-container-high": "#ece8e0",
+            "surface-tint": "#96482c",
+            "tertiary-fixed-dim": "#d8c4a4",
+            "inverse-surface": "#31302b",
+            "error-container": "#ffdad6",
+            "background": "#fdf9f1",
+            "on-tertiary-fixed": "#241a06",
+            "surface": "#fdf9f1",
+            "tertiary-fixed": "#f5e0bf",
+            "secondary-fixed-dim": "#a9cfb8",
+            "primary": "#93452a",
+            "on-error-container": "#93000a",
+            "tertiary": "#695a40",
+            "on-secondary-fixed-variant": "#2b4e3c",
+            "on-secondary-container": "#486c58",
+            "on-background": "#1c1c17",
+            "surface-container-low": "#f7f3eb",
+            "on-primary-fixed": "#390c00",
+            "secondary-container": "#c4ecd3",
+            "on-primary": "#ffffff",
+            "on-primary-container": "#fffbff",
+            "error": "#ba1a1a",
+            "on-error": "#ffffff",
+            "inverse-on-surface": "#f4f0e8"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-sm": "0.5rem",
+            "space-lg": "1.5rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "margin-sm": "1rem",
+            "gutter-lg": "2rem",
+            "margin": "2rem",
+            "space-md": "1rem",
+            "gutter-sm": "1rem",
+            "margin-lg": "4rem",
+            "space-xl": "2.5rem"
+          },
+          "fontFamily": {
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Playfair Display"],
+            "headline-sm": ["Playfair Display"],
+            "headline-md": ["Playfair Display"],
+            "title-lg": ["Playfair Display"],
+            "display": ["Playfair Display"],
+            "headline-lg": ["Playfair Display"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"]
+          },
+          "fontSize": {
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-sm": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-md": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "title-lg": ["1.375rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" }],
+            "display": ["3.75rem", { "lineHeight": "4.25rem", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "headline-lg": ["3rem", { "lineHeight": "3.5rem", "letterSpacing": "-0.015em", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "0.015em", "fontWeight": "400" }],
+            "title-sm": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.625rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "0.005em", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .craft-archival-frame {
+      border: 1px solid #dac1b9;
+      box-shadow: 0 16px 32px rgba(41, 35, 29, 0.06);
+    }
+    .craft-matting {
+      box-shadow: inset 0 0 0 8px #f7f3eb;
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface antialiased min-h-full flex flex-col font-body-md selection:bg-primary selection:text-on-primary">
+<!-- TopNavBar (Shared Component Blueprint) -->
+<header class="w-full bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-sm">
+<!-- Brand Logo & Academic Course Pill -->
+<div class="flex items-center gap-space-md">
+<a class="text-headline-sm font-headline-sm text-primary dark:text-inverse-primary tracking-tight flex items-center gap-space-xs hover:opacity-95 transition-opacity" href="#">
+<span>CraftConnect</span>
+</a>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Marketplace</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Artisans</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Stories</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Custom Studio</a>
+</nav>
+<!-- Trailing Actions & Icons -->
+<div class="flex items-center gap-space-md">
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1" title="Favorites" type="button">
+<span class="material-symbols-outlined" data-icon="favorite">favorite</span>
+</button>
+<button class="text-on-surface-variant hover:text-primary transition-colors p-1" title="Filters &amp; Preferences" type="button">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+<div class="h-4 w-px bg-outline-variant mx-1"></div>
+<a class="inline-flex items-center gap-1 px-3 py-1.5 bg-primary text-on-primary rounded font-label-md text-label-md hover:bg-primary-container transition-colors active:scale-[0.98]" href="#portal">
+<span class="material-symbols-outlined text-[18px]" data-icon="account_circle">account_circle</span>
+<span>Artisan Portal</span>
+</a>
+</div>
+</div>
+</header>
+<!-- Main Canvas: Split-Screen Authentication Journey -->
+<main class="flex-grow max-w-[1440px] w-full mx-auto px-margin-sm md:px-margin lg:px-margin-lg py-space-xl"><div class="max-w-5xl mx-auto py-space-lg lg:py-space-xl">
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center bg-surface-container-lowest craft-archival-frame rounded-xl overflow-hidden shadow-sm">
+<!-- Atmospheric Visual & Editorial Narrative (Left 5 Cols) -->
+<div class="lg:col-span-5 relative h-72 lg:h-full min-h-[480px] bg-surface-container flex flex-col justify-end p-space-lg overflow-hidden">
+<img alt="Heritage Indian artisan shaping terracotta clay on pottery wheel" class="absolute inset-0 w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAfSSMFA2Ix_gdF5wNnXLIVPaVo806FP3MV8EwDo_fpvjUgPr89UvWxFX1oWtG08lrmnVMvvQou9Xb28Fe1IztSCxtHa7UT_JCae2QUcdMpWlepEvgZZkGbNFgRZv0HMbk9tfNhyDXm4xjGlU1eB_7FbdBHWWfQ2rKLscjZfttDJntOaRUN47SRNiK1QMUfIK-33xH99jHh5M8E4lgQQPoYXnc3VYLnHXwaeRfVDU7s8uveGwKb0cfM"/>
+<div class="absolute inset-0 bg-gradient-to-t from-[#1c1c17]/85 via-[#1c1c17]/30 to-transparent"></div>
+<div class="relative z-10 text-on-primary">
+<p class="font-label-sm text-label-sm tracking-widest uppercase text-tertiary-fixed mb-2">Handmade Heritage</p>
+<blockquote class="font-headline-sm text-headline-sm italic leading-snug mb-3">
+          "Where heritage hands meet conscious patrons."
+        </blockquote>
+<p class="font-body-sm text-body-sm text-surface-container-high opacity-90">
+          Preserving slow craft through ethical provenance and direct patronage.
+        </p>
+</div>
+</div>
+<!-- Clean Minimalist Authentication Form (Right 7 Cols) -->
+<div class="lg:col-span-7 p-space-lg lg:p-space-xl flex flex-col justify-center">
+<div class="max-w-md mx-auto w-full">
+<!-- Header & Subtitle -->
+<div class="mb-space-lg">
+<h1 class="font-headline-md text-headline-md text-on-surface mb-2">
+            Welcome to CraftConnect
+          </h1>
+<p class="font-body-md text-body-md text-on-surface-variant">
+            Preserving handmade heritage through mindful craft.
+          </p>
+</div>
+<!-- Sign In / Create Account Minimal Tabs -->
+<div class="flex items-center gap-space-lg border-b border-outline-variant mb-space-lg">
+<button class="font-title-sm text-title-sm text-primary pb-2.5 border-b-2 border-primary font-medium transition-colors" id="tab-login" onclick="switchAuthTab('login')" type="button">
+            Sign In
+          </button>
+<button class="font-title-sm text-title-sm text-on-surface-variant pb-2.5 border-b-2 border-transparent hover:text-on-surface font-medium transition-colors" id="tab-signup" onclick="switchAuthTab('signup')" type="button">
+            Create Account
+          </button>
+</div>
+<!-- Streamlined Role Selector -->
+<div class="mb-space-md">
+<label class="block font-label-sm text-label-sm uppercase tracking-wider text-on-surface-variant mb-2">I am joining as</label>
+<div class="grid grid-cols-2 gap-space-sm">
+<button class="p-3 rounded border text-center transition-all border-primary bg-surface-container-low text-primary font-medium font-title-sm text-title-sm" id="role-btn-buyer" onclick="selectRole('buyer')" type="button">
+              Patron / Collector
+            </button>
+<button class="p-3 rounded border text-center transition-all border-outline-variant bg-surface-container-lowest text-on-surface-variant hover:border-outline font-medium font-title-sm text-title-sm" id="role-btn-artisan" onclick="selectRole('artisan')" type="button">
+              Master Artisan
+            </button>
+</div>
+</div>
+<!-- Clean Credentials Form -->
+<form class="space-y-space-md" onsubmit="event.preventDefault(); triggerAuth();">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1" for="email-input">Email Address</label>
+<input class="w-full px-3 py-2.5 bg-surface-bright border border-outline-variant rounded font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" id="email-input" placeholder="name@domain.com" required="" type="email" value="priyamvada@craftconnect.org"/>
+</div>
+<!-- Hidden contextual field for new registration -->
+<div class="hidden" id="signup-name-field">
+<label class="block font-label-md text-label-md text-on-surface mb-1" for="fullname-input">Full Name</label>
+<input class="w-full px-3 py-2.5 bg-surface-bright border border-outline-variant rounded font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" id="fullname-input" placeholder="e.g. Priyamvada Devi" type="text"/>
+</div>
+<div>
+<div class="flex items-center justify-between mb-1">
+<label class="block font-label-md text-label-md text-on-surface" for="password-input">Password</label>
+<a class="font-label-sm text-label-sm text-primary hover:underline underline-offset-2" href="#">Forgot password?</a>
+</div>
+<div class="relative">
+<input class="w-full px-3 pr-10 py-2.5 bg-surface-bright border border-outline-variant rounded font-body-md text-body-md text-on-surface focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20 transition-all" id="password-input" placeholder="••••••••••••" required="" type="password" value="SlowCraft2025"/>
+<button class="absolute inset-y-0 right-0 pr-3 flex items-center text-outline hover:text-on-surface" onclick="togglePassword()" type="button">
+<span class="material-symbols-outlined text-[20px]" id="pw-icon">visibility</span>
+</button>
+</div>
+</div>
+<div class="flex items-center justify-between pt-1">
+<label class="flex items-center gap-2 cursor-pointer">
+<input checked="" class="rounded-xs border-outline-variant text-secondary focus:ring-secondary focus:ring-offset-background h-4 w-4 bg-surface" type="checkbox"/>
+<span class="font-body-sm text-body-sm text-on-surface-variant">Remember me</span>
+</label>
+</div>
+<!-- Primary CTA Button -->
+<div class="pt-2">
+<button class="w-full py-3 px-6 bg-primary text-on-primary rounded font-label-lg text-label-lg shadow-sm hover:bg-primary-container active:scale-[0.99] transition-all duration-200 flex items-center justify-center gap-2" id="submit-cta" type="submit">
+<span id="cta-text">Sign In</span>
+<span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+</button>
+</div>
+</form>
+<!-- Minimal Divider -->
+<div class="relative my-space-md text-center">
+<div class="absolute inset-0 flex items-center">
+<div class="w-full border-t border-outline-variant"></div>
+</div>
+<span class="relative bg-surface-container-lowest px-3 font-label-sm text-label-sm text-outline uppercase tracking-wider">or continue with</span>
+</div>
+<!-- Google Federated Auth -->
+<button class="w-full py-2.5 px-4 bg-surface rounded border border-outline-variant hover:bg-surface-container-high transition-colors text-on-surface font-label-md text-label-md flex items-center justify-center gap-2" type="button">
+<svg class="w-4 h-4" viewbox="0 0 24 24">
+<path d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.82-2.4 3.68v3.05h3.88c2.27-2.09 3.66-5.17 3.66-9.17z" fill="#4285F4"></path>
+<path d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.05c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.25v3.15C3.26 21.36 7.35 24 12 24z" fill="#34A853"></path>
+<path d="M5.28 14.27c-.25-.72-.38-1.49-.38-2.27s.13-1.55.38-2.27V6.58H1.25C.45 8.17 0 9.99 0 12s.45 3.83 1.25 5.42l4.03-3.15z" fill="#FBBC05"></path>
+<path d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.35 0 3.26 2.64 1.25 6.58l4.03 3.15c.95-2.83 3.6-4.98 6.72-4.98z" fill="#EA4335"></path>
+</svg>
+<span>Continue with Google</span>
+</button>
+<!-- Subtle Footer Note -->
+<p class="mt-space-md text-center font-label-sm text-label-sm text-outline">
+          By continuing, you agree to our <a class="underline hover:text-primary transition-colors" href="#">Terms &amp; Artisan Charter</a>.
+        </p>
+</div>
+</div>
+</div>
+</div></main>
+<!-- Footer (Shared Component Blueprint) -->
+<footer class="w-full bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline flat no shadows mt-space-xl">
+<div class="w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-xl flex flex-col md:flex-row justify-between items-center gap-space-lg">
+<!-- Brand & Copyright -->
+<div class="text-center md:text-left">
+<span class="text-title-lg font-title-lg text-primary dark:text-inverse-primary block mb-1">CraftConnect</span>
+<p class="text-on-surface-variant dark:text-surface-variant text-body-sm font-body-sm">
+          © 2025 CraftConnect Artisans Guild. Preserving Heritage Crafts &amp; Slow Living.
+        </p>
+</div>
+<!-- Footer Links -->
+<div class="flex flex-wrap justify-center md:justify-end gap-x-space-lg gap-y-space-sm items-center">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Editorial Journal</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Artisan Verification</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Provenance Registry</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Slow Living Directory</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Platform Ethics</a>
+<a class="text-primary dark:text-inverse-primary font-label-md text-label-md underline underline-offset-4 hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Django Admin</a>
+</div>
+</div>
+</footer>
+<!-- Micro-interactions & Demo State Handling -->
+<script>
+    let currentTab = 'login';
+    let currentRole = 'buyer';
+
+    function switchAuthTab(tab) {
+      currentTab = tab;
+      const tabLogin = document.getElementById('tab-login');
+      const tabSignup = document.getElementById('tab-signup');
+      const signupFields = document.getElementById('signup-fields');
+      const ctaText = document.getElementById('cta-text');
+
+      if (tab === 'login') {
+        tabLogin.className = 'font-title-lg text-title-lg text-primary pb-2 border-b-2 border-primary transition-all duration-200';
+        tabSignup.className = 'font-title-lg text-title-lg text-on-surface-variant pb-2 border-b-2 border-transparent hover:text-on-surface transition-all duration-200';
+        signupFields.classList.add('hidden');
+        ctaText.textContent = currentRole === 'artisan' ? 'Authenticate & Enter Artisan Studio' : (currentRole === 'admin' ? 'Verify & Access Django Control Panel' : 'Authenticate & Enter Studio');
+      } else {
+        tabSignup.className = 'font-title-lg text-title-lg text-primary pb-2 border-b-2 border-primary transition-all duration-200';
+        tabLogin.className = 'font-title-lg text-title-lg text-on-surface-variant pb-2 border-b-2 border-transparent hover:text-on-surface transition-all duration-200';
+        signupFields.classList.remove('hidden');
+        ctaText.textContent = currentRole === 'artisan' ? 'Create Artisan Atelier Account' : (currentRole === 'admin' ? 'Request Guild Auditor Credentials' : 'Join as Conscious Collector');
+      }
+    }
+
+    function selectRole(role) {
+      currentRole = role;
+      const roles = ['buyer', 'artisan', 'admin'];
+      
+      roles.forEach(r => {
+        const btn = document.getElementById('role-btn-' + r);
+        if (r === role) {
+          btn.classList.remove('border-outline-variant', 'bg-surface-container-lowest');
+          btn.classList.add('border-primary', 'bg-surface-container-low', 'shadow-xs');
+        } else {
+          btn.classList.remove('border-primary', 'bg-surface-container-low', 'shadow-xs');
+          btn.classList.add('border-outline-variant', 'bg-surface-container-lowest');
+        }
+      });
+
+      const roleContextLabel = document.getElementById('role-context-label');
+      const roleContextInput = document.getElementById('role_context');
+      
+      if (role === 'artisan') {
+        roleContextLabel.textContent = 'Craft Guild / Cluster';
+        roleContextInput.placeholder = 'e.g. Kutch Pottery, Bagru Block Printing';
+      } else if (role === 'buyer') {
+        roleContextLabel.textContent = 'Curatorial Interests';
+        roleContextInput.placeholder = 'e.g. Stoneware Ceramics, Loom Woven Silk';
+      } else {
+        roleContextLabel.textContent = 'Guild Clearance ID / Department';
+        roleContextInput.placeholder = 'e.g. Provenance Inspection Unit';
+      }
+
+      // Refresh CTA label
+      switchAuthTab(currentTab);
+    }
+
+    function togglePassword() {
+      const pwInput = document.getElementById('password');
+      const icon = document.getElementById('pw-icon');
+      if (pwInput.type === 'password') {
+        pwInput.type = 'text';
+        icon.textContent = 'visibility_off';
+      } else {
+        pwInput.type = 'password';
+        icon.textContent = 'visibility';
+      }
+    }
+
+    function loadDemoUser(type) {
+      const uField = document.getElementById('username');
+      const pField = document.getElementById('password');
+      
+      if (type === 'buyer') {
+        selectRole('buyer');
+        uField.value = 'priyamvada.craft@guild.org';
+        pField.value = 'SlowCraft2025!';
+      } else if (type === 'artisan') {
+        selectRole('artisan');
+        uField.value = 'devraj.potter@kutchcraft.in';
+        pField.value = 'TerracottaMaster#4';
+      } else if (type === 'admin') {
+        selectRole('admin');
+        uField.value = 'admin.audit@craftconnect.internal';
+        pField.value = 'DjangoSuperuserSecret2025';
+      }
+    }
+
+    function triggerAuth() {
+      const ctaBtn = document.getElementById('submit-cta');
+      const originalText = ctaBtn.innerHTML;
+      
+      ctaBtn.disabled = true;
+      ctaBtn.innerHTML = `
+        <span class="material-symbols-outlined animate-spin text-[20px]" data-icon="progress_activity">progress_activity</span>
+        <span>Validating Django Session & CSRF Token...</span>
+      `;
+      
+      setTimeout(() => {
+        ctaBtn.innerHTML = `
+          <span class="material-symbols-outlined text-secondary-fixed text-[20px]" data-icon="check_circle">check_circle</span>
+          <span>Access Granted! Redirecting to Workspace...</span>
+        `;
+        ctaBtn.classList.remove('bg-primary');
+        ctaBtn.classList.add('bg-secondary');
+        
+        setTimeout(() => {
+          ctaBtn.innerHTML = originalText;
+          ctaBtn.classList.remove('bg-secondary');
+          ctaBtn.classList.add('bg-primary');
+          ctaBtn.disabled = false;
+        }, 2200);
+      }, 1200);
+    }
+  </script>
+</body></html>

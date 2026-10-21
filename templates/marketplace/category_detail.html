@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}{{ category.name }} — CraftConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-[1440px] mx-auto px-4 md:px-8 py-10">
+  
+  <div class="mb-10 space-y-3">
+    <div class="flex items-center gap-2.5 text-sm font-medium text-on-surface-variant">
+      <a href="{% url 'marketplace:home' %}" class="hover:text-primary transition-colors">Marketplace</a>
+      <span class="text-outline">/</span>
+      <a href="{% url 'marketplace:product_catalog' %}" class="hover:text-primary transition-colors">Catalogue</a>
+      <span class="text-outline">/</span>
+      <span class="text-on-surface font-semibold">{{ category.name }}</span>
+    </div>
+    <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface tracking-tight">{{ category.name }}</h1>
+    {% if category.description %}
+      <p class="text-base sm:text-lg text-on-surface-variant max-w-3xl leading-relaxed">{{ category.description }}</p>
+    {% endif %}
+  </div>
+
+  {% if products %}
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for product in products %}
+        <div class="archival-card rounded-xl overflow-hidden flex flex-col justify-between hover-lift">
+          <div>
+            <a href="{% url 'marketplace:product_detail' slug=product.slug %}" class="block aspect-[4/3] bg-surface-container overflow-hidden relative">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center text-on-surface-variant bg-surface-container-high">
+                  <span class="material-symbols-outlined text-5xl">palette</span>
+                </div>
+              {% endif %}
+            </a>
+            <div class="p-6 space-y-2">
+              <span class="text-xs sm:text-sm font-bold text-secondary uppercase tracking-wider">{{ product.artisan.display_name }}</span>
+              <h2 class="font-display text-xl sm:text-2xl font-bold text-on-surface hover:text-primary transition-colors">
+                <a href="{% url 'marketplace:product_detail' slug=product.slug %}">{{ product.title }}</a>
+              </h2>
+              <p class="text-sm sm:text-base text-on-surface-variant line-clamp-2 leading-relaxed">{{ product.description }}</p>
+            </div>
+          </div>
+          <div class="px-6 py-4 bg-surface-container/30 border-t border-outline-variant flex items-center justify-between">
+            <span class="font-display text-2xl sm:text-3xl font-bold text-primary">₹{{ product.price }}</span>
+            <a href="{% url 'marketplace:product_detail' slug=product.slug %}#buy-section" class="px-5 py-2.5 bg-primary text-white text-sm font-semibold rounded-lg hover:bg-primary-hover shadow-xs transition-all hover:scale-102 flex items-center gap-1.5">
+              <span class="material-symbols-outlined text-[17px]">shopping_bag</span>
+              <span>Buy Piece</span>
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="archival-card p-12 rounded-xl text-center max-w-lg mx-auto space-y-3">
+      <span class="material-symbols-outlined text-4xl text-outline">inventory_2</span>
+      <h3 class="font-display text-xl font-bold text-on-surface">No pieces in this genre yet</h3>
+      <p class="text-sm sm:text-base text-on-surface-variant">Approved creations in this category will appear here automatically.</p>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

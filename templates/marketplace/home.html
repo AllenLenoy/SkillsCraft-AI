@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CraftConnect — AI-Assisted Artisan Marketplace{% endblock %}
+
+{% block content %}
+<!-- ==================== HERO & SMART CRAFT DISCOVERY ==================== -->
+<section class="py-space-xl md:py-16 border-b border-outline-variant bg-surface relative overflow-hidden">
+  <!-- Subtle tactile texture backdrop -->
+  <div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#1c1c17_1px,transparent_1px)] [background-size:16px_16px]"></div>
+  <div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg relative">
+    <div class="max-w-3xl mx-auto text-center mb-8" data-animate>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-outline-variant mb-4">
+        <span class="material-symbols-outlined text-primary text-[16px]">auto_awesome</span>
+        <span class="text-label-md font-label text-on-surface-variant">Verified Guild Provenance • Ethical Fair-Trade</span>
+      </div>
+      <h1 class="text-headline-lg font-headline text-on-surface mb-3 tracking-tight">
+        Distinctive Handmade Crafts, <span class="italic font-normal text-primary">Intelligently Connected.</span>
+      </h1>
+      <p class="text-body-lg font-body text-on-surface-variant max-w-2xl mx-auto">
+        Bridging rural heritage guild workshops with mindful patrons through verified provenance and intelligent craft discovery.
+      </p>
+    </div>
+
+    <!-- Prominent Natural Language Discovery Bar -->
+    <div class="max-w-4xl mx-auto" data-animate>
+      <div class="bg-surface-container-lowest p-2.5 md:p-3.5 rounded-xl border border-outline-variant shadow-sm hover:border-primary transition-all">
+        <form action="{% url 'marketplace:product_catalog' %}" method="get" class="flex flex-col md:flex-row gap-2.5 items-center">
+          <div class="flex items-center gap-3 w-full px-3.5 py-2 flex-grow">
+            <span class="material-symbols-outlined text-primary text-[28px]">search</span>
+            <input
+              type="text"
+              name="q"
+              placeholder="Describe your occasion, price, or craft heritage in plain English..."
+              class="w-full bg-transparent border-none p-0 text-on-surface font-body text-base md:text-lg focus:ring-0 placeholder:text-outline"
+            >
+          </div>
+          <div class="flex items-center gap-2.5 w-full md:w-auto shrink-0 justify-end">
+            <button type="submit" class="w-full md:w-auto px-6 py-3.5 rounded-lg bg-primary hover:bg-primary-hover text-on-primary font-label text-base font-semibold flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-md hover:shadow-lg">
+              <span class="material-symbols-outlined text-[20px]">search</span>
+              <span>Find Creations</span>
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Semantic Chips -->
+      <div class="mt-4 flex flex-wrap items-center gap-2.5 justify-center text-label-md font-label">
+        <span class="text-on-surface-variant text-xs font-semibold tracking-wider uppercase">Try queries:</span>
+        <button data-search-chip class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-all text-xs sm:text-sm font-medium shadow-2xs hover:scale-105 active:scale-95">
+          Terracotta serveware under ₹800
+        </button>
+        <button data-search-chip class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-all text-xs sm:text-sm font-medium shadow-2xs hover:scale-105 active:scale-95">
+          Handloom tussar silk for anniversary
+        </button>
+        <button data-search-chip class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-all text-xs sm:text-sm font-medium shadow-2xs hover:scale-105 active:scale-95">
+          Carved teakwood desk accessories under ₹1,500
+        </button>
+        <button data-search-chip class="px-3.5 py-1.5 rounded-full bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-all text-xs sm:text-sm font-medium shadow-2xs hover:scale-105 active:scale-95">
+          Cold-pressed ceramic planter pot
+        </button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== MARKETPLACE CATALOGUE WITH AI RANKING ==================== -->
+<section class="py-space-xl max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg" id="marketplace">
+  <!-- Section Header & Filter Toolbar -->
+  <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg mb-8 pb-4 border-b border-outline-variant" data-animate>
+    <div>
+      <div class="flex items-center gap-2 mb-1.5">
+        <span class="h-2.5 w-2.5 rounded-full bg-primary animate-pulse"></span>
+        <span class="text-xs font-bold font-label text-primary uppercase tracking-wider">Curated Heritage Pieces</span>
+      </div>
+      <h2 class="text-3xl sm:text-4xl font-bold font-headline text-on-surface">Curated Artisan Heritage Catalogue</h2>
+      <p class="text-sm sm:text-base font-body text-on-surface-variant mt-1">Direct fair-trade provenance. Every piece verified by regional master guilds.</p>
+    </div>
+    <!-- Category Quick Pills -->
+    <div class="flex flex-wrap items-center gap-3">
+      <div class="flex items-center bg-surface-container p-1 rounded-lg border border-outline-variant">
+        <a href="{% url 'marketplace:product_catalog' %}" class="px-3.5 py-1.5 bg-surface font-label text-xs sm:text-sm font-semibold text-primary rounded-md shadow-xs">All Guilds</a>
+        {% for cat in categories|slice:":4" %}
+          <a href="{% url 'marketplace:product_catalog' %}?category={{ cat.slug }}" class="px-3.5 py-1.5 font-label text-xs sm:text-sm font-medium text-on-surface-variant hover:text-on-surface transition-colors">{{ cat.name }}</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <!-- Product Cards Grid -->
+  {% if featured_products %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for product in featured_products %}
+        <article class="archival-card p-4 flex flex-col justify-between group" data-animate>
+          <div>
+            <!-- Framed Image Container -->
+            <a href="{% url 'marketplace:product_detail' slug=product.slug %}" class="block relative w-full aspect-[4/5] bg-surface-container mb-4 overflow-hidden rounded-lg border border-card-border">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+              {% else %}
+                <div class="w-full h-full flex flex-col items-center justify-center text-on-surface-variant/50 bg-surface-container-high p-4 text-center">
+                  <span class="material-symbols-outlined text-6xl mb-2 text-outline">palette</span>
+                  <span class="text-sm font-headline italic text-primary">{{ product.category.name }}</span>
+                </div>
+              {% endif %}
+
+              <!-- Badge / AI Match Pill -->
+              {% if forloop.counter == 1 %}
+                <div class="absolute top-3 left-3 ai-match-pill shadow-md">
+                  <span class="material-symbols-outlined text-[15px] filled">auto_awesome</span>
+                  <span>98% AI Intent Match</span>
+                </div>
+              {% elif forloop.counter == 3 %}
+                <div class="absolute top-3 left-3 bg-primary text-white px-2.5 py-1 rounded-full text-xs font-bold font-label shadow-md flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[15px] filled">hotel_class</span>
+                  <span>Featured Heritage</span>
+                </div>
+              {% elif forloop.counter == 4 %}
+                <div class="absolute top-3 left-3 ai-match-pill shadow-md">
+                  <span class="material-symbols-outlined text-[15px] filled">auto_awesome</span>
+                  <span>94% AI Match</span>
+                </div>
+              {% elif forloop.counter == 6 %}
+                <div class="absolute top-3 left-3 bg-deep-green text-white px-2.5 py-1 rounded-full text-xs font-bold font-label shadow-md flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[15px] filled">workspace_premium</span>
+                  <span>GI Tagged Craft</span>
+                </div>
+              {% else %}
+                <div class="absolute top-3 left-3 bg-surface/95 text-on-surface px-2.5 py-1 rounded-full text-xs font-bold font-label border border-outline-variant shadow-md flex items-center gap-1">
+                  <span class="material-symbols-outlined text-[15px] text-secondary">verified</span>
+                  <span>{{ product.category.name }}</span>
+                </div>
+              {% endif %}
+
+              <!-- Wishlist button -->
+              <button data-wishlist-toggle class="absolute top-3 right-3 w-9 h-9 rounded-full bg-surface/90 hover:bg-surface text-outline hover:text-primary flex items-center justify-center transition-all shadow-md active:scale-90">
+                <span class="material-symbols-outlined text-[20px]">favorite</span>
+              </button>
+
+              <!-- Bottom info bar on image -->
+              {% if product.material %}
+                <div class="absolute bottom-2.5 left-2.5 right-2.5 bg-surface/95 backdrop-blur-xs px-3 py-2 rounded-lg border border-outline-variant text-xs text-on-surface-variant flex items-center justify-between">
+                  <span class="truncate mr-2">{{ product.material }}</span>
+                  <span class="text-secondary font-bold shrink-0">₹{{ product.price|floatformat:0 }}</span>
+                </div>
+              {% endif %}
+            </a>
+
+            <!-- Provenance & Title -->
+            <div class="flex items-center justify-between mb-1.5">
+              <span class="text-xs font-label uppercase tracking-wider text-secondary font-bold flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">location_on</span>
+                {% if product.artisan.location %}{{ product.artisan.location }}{% else %}India{% endif %}
+              </span>
+              <span class="text-xs text-primary font-bold bg-primary/10 px-2 py-0.5 rounded">{{ product.stock_quantity }} left</span>
+            </div>
+            <h3 class="text-xl font-bold font-headline text-on-surface mb-1.5 group-hover:text-primary transition-colors leading-snug">
+              <a href="{% url 'marketplace:product_detail' slug=product.slug %}">{{ product.title }}</a>
+            </h3>
+            <p class="text-sm font-body text-on-surface-variant mb-3">By <strong class="text-on-surface">{{ product.artisan.display_name }}</strong> • {{ product.artisan.craft_speciality }}</p>
+
+            <!-- Material Chips -->
+            <div class="flex flex-wrap gap-1.5 mb-4">
+              {% if product.material %}
+                <span class="px-2.5 py-1 rounded bg-surface-container text-secondary text-xs font-medium font-label border border-outline-variant">{{ product.material }}</span>
+              {% endif %}
+              {% if product.colour %}
+                <span class="px-2.5 py-1 rounded bg-surface-container text-secondary text-xs font-medium font-label border border-outline-variant">{{ product.colour }}</span>
+              {% endif %}
+            </div>
+          </div>
+
+          <!-- Price & Actions -->
+          <div class="pt-3.5 border-t border-outline-variant flex items-center justify-between mt-auto">
+            <div>
+              <span class="text-xs text-on-surface-variant block font-medium">Fair Studio Price</span>
+              <span class="text-2xl font-bold text-primary font-headline">₹{{ product.price|floatformat:0 }}</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <a href="{% url 'marketplace:product_detail' slug=product.slug %}#buy-section" class="px-4 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white text-xs sm:text-sm font-semibold transition-all flex items-center gap-1.5 shadow-xs hover:shadow-md active:scale-95">
+                <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+                <span>Buy Piece</span>
+              </a>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <!-- Empty State -->
+    <div class="archival-card p-10 rounded-md text-center max-w-xl mx-auto space-y-4">
+      <div class="w-16 h-16 rounded-full bg-surface-container mx-auto flex items-center justify-center text-primary">
+        <span class="material-symbols-outlined text-3xl">storefront</span>
+      </div>
+      <div class="space-y-1">
+        <h3 class="font-headline text-xl font-bold text-on-surface">Curating New Artisan Pieces</h3>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+          Master artisans are presently preparing upcoming handcrafted pieces. Browse our craft genres below or join as an artisan maker.
+        </p>
+      </div>
+      <div class="pt-2 flex flex-wrap justify-center gap-3">
+        <a href="#categories" class="px-5 py-2.5 bg-primary text-on-primary rounded-lg text-sm font-semibold hover:bg-primary-hover transition-colors shadow-xs">
+          Explore Craft Categories
+        </a>
+        <a href="{% url 'accounts:auth' %}?role=artisan" class="px-5 py-2.5 bg-surface-container border border-outline-variant text-on-surface rounded-lg text-sm font-semibold hover:bg-surface-container-high transition-colors">
+          Join as Master Artisan
+        </a>
+      </div>
+    </div>
+  {% endif %}
+</section>
+
+<!-- ==================== ARTISAN CATALOGUE ASSISTANT SHOWCASE ==================== -->
+<section class="py-space-xl bg-surface-container-high/50 border-t border-b border-outline-variant" id="studio-panel">
+  <div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg">
+    <div class="max-w-3xl mb-8" data-animate>
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-secondary-container text-on-secondary-container font-label text-label-sm uppercase mb-3">
+        <span class="material-symbols-outlined text-[16px]">palette</span>
+        <span>Artisan Workspace</span>
+      </div>
+      <h2 class="text-headline-md font-headline text-on-surface mb-2">
+        Artisan Studio: Storytelling &amp; Listing Creation
+      </h2>
+      <p class="text-body-md font-body text-on-surface-variant">
+        Empowering regional master makers. An artisan uploads simple workshop notes; our Studio Assistant generates culturally rich, beautifully articulated editorial listings.
+      </p>
+    </div>
+
+    <!-- Interactive Workbench Card -->
+    <div class="bg-surface rounded-2xl border border-outline-variant shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-12" data-animate>
+      <!-- LEFT PANEL: Artisan's Raw Form Input -->
+      <div class="lg:col-span-5 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-outline-variant bg-card-bg flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-3.5 mb-5 border-b border-outline-variant">
+            <span class="text-sm font-bold font-label text-on-surface flex items-center gap-2">
+              <span class="material-symbols-outlined text-outline text-xl">edit_note</span>
+              Artisan Notes (Multilingual &amp; Regional)
+            </span>
+            <span class="text-xs text-on-surface-variant bg-surface-container px-2.5 py-1 rounded-md font-label font-bold">Studio Draft</span>
+          </div>
+          <!-- Form Fields -->
+          <div class="space-y-4">
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider font-label text-on-surface mb-1.5">Artisan's Own Notes</label>
+              <textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg p-3.5 text-sm sm:text-base font-body focus:border-primary focus:ring-1 focus:ring-primary shadow-xs leading-relaxed" readonly rows="3">Handmade clay pot for keeping water cool, red mud, no chemical, ₹450</textarea>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider font-label text-on-surface mb-1.5">Base Fair Price</label>
+                <div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2.5 text-base font-bold font-headline text-primary">₹ 450</div>
+              </div>
+              <div>
+                <label class="block text-xs font-bold uppercase tracking-wider font-label text-on-surface mb-1.5">Craft Region</label>
+                <div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded-lg px-3.5 py-2.5 text-sm font-semibold text-on-surface-variant">Alwar, Rajasthan</div>
+              </div>
+            </div>
+            <div>
+              <label class="block text-xs font-bold uppercase tracking-wider font-label text-on-surface mb-1.5">Studio Snap Uploaded</label>
+              <div class="flex items-center gap-3 p-3 bg-surface-container-lowest border border-outline-variant rounded-lg">
+                <div class="w-12 h-12 rounded-lg bg-surface-variant overflow-hidden shrink-0 flex items-center justify-center">
+                  <span class="material-symbols-outlined text-outline text-[26px]">image</span>
+                </div>
+                <div class="text-xs sm:text-sm">
+                  <span class="font-bold block text-on-surface">raw_pot_0921.jpg</span>
+                  <span class="text-outline">1.8 MB • Image tags: Earthen pot, terracotta, clay</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="pt-6 mt-6 border-t border-outline-variant">
+          <button class="w-full py-3 px-5 rounded-lg bg-surface-container border border-outline text-on-surface text-sm font-bold font-label hover:bg-surface-variant transition-all flex items-center justify-center gap-2 hover-lift">
+            <span class="material-symbols-outlined text-[20px]">refresh</span>
+            <span>Generate Enhanced Listing</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT PANEL: AI Generated Editorial Preview -->
+      <div class="lg:col-span-7 p-6 md:p-10 bg-surface flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between pb-3.5 mb-5 border-b border-outline-variant">
+            <div class="flex items-center gap-2.5">
+              <span class="material-symbols-outlined text-secondary text-2xl">auto_awesome</span>
+              <span class="text-base sm:text-lg font-label text-secondary font-bold">AI Generated Editorial Listing (Preview)</span>
+            </div>
+            <span class="px-3 py-1 rounded-full bg-secondary-container text-on-secondary-container text-xs font-label font-bold">Curated Story</span>
+          </div>
+          <!-- AI Output Fields -->
+          <div class="space-y-4">
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider font-label text-outline block mb-1.5">Optimized Marketplace Title</span>
+              <div class="p-3 rounded-lg bg-surface-container border border-outline-variant font-headline text-lg sm:text-xl font-bold text-primary">
+                Hand-burnished Terracotta Water Carafe with Natural Porous Cooling
+              </div>
+            </div>
+            <div>
+              <span class="text-xs font-bold uppercase tracking-wider font-label text-outline block mb-1.5">Curated Provenance Description</span>
+              <div class="p-4 rounded-lg bg-surface-container border border-outline-variant text-sm sm:text-base font-body text-on-surface space-y-2.5 leading-relaxed">
+                <p>Crafted from locally sourced alluvial clay of the Aravalli foothills, this earthen carafe utilizes micro-porous evaporative cooling to naturally chill drinking water by 4°C–6°C without electricity.</p>
+                <p class="text-on-surface-variant italic font-medium">Zero synthetic slips or toxic chemical glazes. Hand-rubbed with river stones for a smooth tactile finish that honors four generations of Alwar pottery tradition.</p>
+              </div>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider font-label text-outline block mb-1.5">Suggested Taxonomy</span>
+                <div class="p-2.5 bg-surface-container rounded-lg border border-outline-variant text-sm font-bold text-secondary">
+                  Earthen Home &amp; Kitchenware → Tabletop
+                </div>
+              </div>
+              <div>
+                <span class="text-xs font-bold uppercase tracking-wider font-label text-outline block mb-1.5">Semantic Hashtags</span>
+                <div class="p-2.5 bg-surface-container rounded-lg border border-outline-variant text-xs font-mono text-primary flex flex-wrap gap-1.5 font-bold">
+                  <span>#TerracottaCooling</span>
+                  <span>#PlasticFree</span>
+                  <span>#SlowLiving</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- Artisan Action Buttons -->
+        <div class="pt-6 mt-6 border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-3">
+          <button class="w-full sm:w-auto px-5 py-2.5 border border-outline-variant text-on-surface-variant hover:text-on-surface text-sm font-bold font-label rounded-lg transition-colors">
+            Customise Manually
+          </button>
+          <button class="w-full sm:w-auto px-6 py-3 rounded-lg bg-secondary hover:bg-deep-green text-on-secondary text-sm font-bold font-label transition-all shadow-sm flex items-center justify-center gap-2 hover-lift">
+            <span class="material-symbols-outlined text-[20px]">cloud_upload</span>
+            <span>Save &amp; Publish Creation</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==================== EDITORIAL STORY SPOTLIGHT MODULE ==================== -->
+<section class="py-16 max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg" id="stories">
+  <div class="bg-deep-green text-surface-container-low rounded-2xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 shadow-lg" data-animate>
+    <div class="lg:col-span-6 p-8 md:p-14 flex flex-col justify-between">
+      <div>
+        <a href="{% url 'marketplace:story_list' %}" class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 hover:bg-white/20 text-white text-xs font-label uppercase mb-5 tracking-widest font-bold transition-colors">
+          <span class="pulse-dot"></span>
+          <span>{{ featured_story.volume_tag|default:"Editorial Journal • Vol. 04" }} &bull; Explore All Stories &rarr;</span>
+        </a>
+        <h2 class="text-3xl sm:text-4xl lg:text-5xl font-headline font-bold mb-5 text-white leading-tight">
+          "{{ featured_story.title|default:"The Earth remembers the hand that turns it." }}"
+        </h2>
+        <blockquote class="italic text-base sm:text-lg font-body text-white/90 border-l-2 border-amber-300 pl-4 mb-6 leading-relaxed">
+          {{ featured_story.pull_quote|default:"In an era dominated by rapid synthetic production, slow craft is an act of cultural preservation. Our marketplace guarantees that 88% of every purchase flows directly into village artisan accounts." }}
+        </blockquote>
+        <p class="text-sm sm:text-base font-body text-white/80 leading-relaxed mb-6">
+          {{ featured_story.lead_paragraph|default:"Devraj Kumhar's family has worked the Kutch salt-clay for two hundred years. With CraftConnect's intelligent discovery, his functional terracotta is now discovered by architects, chefs, and tea connoisseurs worldwide." }}
+        </p>
+      </div>
+      <div class="flex items-center gap-4 pt-6 border-t border-white/20">
+        <div>
+          <span class="font-bold text-base font-label block text-white">{{ featured_story.author_name|default:"Devraj Kumhar" }}</span>
+          <span class="text-xs text-amber-200">{{ featured_story.author_role|default:"Master Potter, Kutch Guild" }}</span>
+        </div>
+        <a href="{% if featured_story %}{% url 'marketplace:story_detail' slug=featured_story.slug %}{% else %}{% url 'marketplace:story_list' %}{% endif %}" class="ml-auto inline-flex items-center gap-2 px-5 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-white font-label text-sm font-bold transition-all hover-lift shadow-sm">
+          <span>Read Studio Story</span>
+          <span class="material-symbols-outlined text-[18px]">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+    <div class="lg:col-span-6 relative min-h-[380px] bg-surface-container">
+      {% if featured_story and featured_story.hero_image %}
+        <img
+          src="{{ featured_story.hero_image.url }}"
+          alt="{{ featured_story.title }}"
+          class="w-full h-full object-cover img-zoom"
+          loading="lazy"
+        >
+      {% else %}
+        <img
+          src="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=1200&q=80"
+          alt="Master potter shaping clay on a spinning wheel in warm workshop light"
+          class="w-full h-full object-cover img-zoom"
+          loading="lazy"
+        >
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<!-- ==================== CRAFT CATEGORIES GENRES ==================== -->
+{% if categories %}
+<section class="py-16 border-t border-outline-variant bg-surface-container/40">
+  <div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg">
+    <div class="flex flex-col sm:flex-row sm:items-end justify-between mb-10 gap-4" data-animate>
+      <div>
+        <span class="provenance-tag text-primary text-sm">Curated Disciplines</span>
+        <h2 class="font-headline text-3xl sm:text-4xl font-bold text-on-surface mt-1.5">Explore Craft Disciplines</h2>
+      </div>
+      <a href="{% url 'marketplace:product_catalog' %}" class="text-sm font-bold text-primary hover:underline flex items-center gap-1.5 font-label">
+        <span>View Full Catalog</span>
+        <span class="material-symbols-outlined text-[16px]">arrow_forward</span>
+      </a>
+    </div>
+
+    <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-5">
+      {% for cat in categories %}
+        <a href="{% url 'marketplace:product_catalog' %}?category={{ cat.slug }}" class="archival-card p-5 group text-center block hover-lift" data-animate>
+          <div class="w-14 h-14 mx-auto rounded-full bg-surface-container flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-white transition-all mb-3.5 shadow-xs">
+            <span class="material-symbols-outlined text-[28px]">
+              {% if "pottery" in cat.name|lower or "ceramic" in cat.name|lower %}
+                egg
+              {% elif "textile" in cat.name|lower or "loom" in cat.name|lower %}
+                texture
+              {% elif "wood" in cat.name|lower %}
+                forest
+              {% elif "metal" in cat.name|lower or "brass" in cat.name|lower or "dhokra" in cat.name|lower %}
+                hardware
+              {% elif "basket" in cat.name|lower or "grass" in cat.name|lower %}
+                eco
+              {% else %}
+                brush
+              {% endif %}
+            </span>
+          </div>
+          <h3 class="font-headline text-base font-bold text-on-surface group-hover:text-primary transition-colors">
+            {{ cat.name }}
+          </h3>
+          <span class="text-xs text-secondary font-semibold font-label block mt-1">Browse Genre →</span>
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+<!-- ==================== ARTISAN CHARTER / ETHICAL PROVENANCE ==================== -->
+<section class="py-16 border-t border-outline-variant bg-background">
+  <div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="p-6 bg-white rounded-xl border border-outline-variant space-y-3 hover-lift shadow-xs" data-animate>
+        <div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-secondary">
+          <span class="material-symbols-outlined text-[24px]">handyman</span>
+        </div>
+        <h4 class="font-headline font-bold text-lg text-on-surface">100% Handmade Heritage</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+          No mass-produced or dropshipped items. Every creation is produced in small batches by master artisans with verified lineage.
+        </p>
+      </div>
+
+      <div class="p-6 bg-white rounded-xl border border-outline-variant space-y-3 hover-lift shadow-xs" data-animate>
+        <div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-secondary">
+          <span class="material-symbols-outlined text-[24px]">payments</span>
+        </div>
+        <h4 class="font-headline font-bold text-lg text-on-surface">Direct Fair Living Wages</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+          Artisans retain full pricing sovereignty. 88% to 100% of remittances are delivered directly into rural cooperative studio banks.
+        </p>
+      </div>
+
+      <div class="p-6 bg-white rounded-xl border border-outline-variant space-y-3 hover-lift shadow-xs" data-animate>
+        <div class="w-10 h-10 rounded-lg bg-secondary-container flex items-center justify-center text-secondary">
+          <span class="material-symbols-outlined text-[24px]">eco</span>
+        </div>
+        <h4 class="font-headline font-bold text-lg text-on-surface">Zero-Plastic Ecological Packaging</h4>
+        <p class="text-sm text-on-surface-variant leading-relaxed">
+          Packaged with recycled cotton khadi paper, reclaimed straw, and water-soluble botanical gum tape for gentle footprint shipping.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

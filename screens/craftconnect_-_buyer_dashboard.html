@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CraftConnect - Buyer Sanctuary Dashboard</title>
+<!-- Fonts: Playfair Display (Serif) & Plus Jakarta Sans (Grotesque) -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS v3 -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Config verbatim matching Design Tokens -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "inverse-on-surface": "#f4f0e8",
+            "outline-variant": "#dac1b9",
+            "primary": "#93452a",
+            "on-tertiary": "#ffffff",
+            "secondary-fixed": "#c4ecd3",
+            "tertiary-container": "#837257",
+            "surface-container-low": "#f7f3eb",
+            "on-primary-container": "#fffbff",
+            "on-secondary-fixed": "#002113",
+            "background": "#fdf9f1",
+            "on-tertiary-fixed": "#241a06",
+            "error": "#ba1a1a",
+            "inverse-primary": "#ffb59c",
+            "surface-container-high": "#ece8e0",
+            "surface-variant": "#e6e2da",
+            "surface-dim": "#dddad2",
+            "on-primary": "#ffffff",
+            "on-secondary-fixed-variant": "#2b4e3c",
+            "on-error-container": "#93000a",
+            "outline": "#87726c",
+            "on-tertiary-container": "#fffbff",
+            "on-secondary": "#ffffff",
+            "secondary": "#426652",
+            "primary-fixed-dim": "#ffb59c",
+            "surface-container": "#f1ede6",
+            "secondary-fixed-dim": "#a9cfb8",
+            "on-primary-fixed-variant": "#783117",
+            "on-tertiary-fixed-variant": "#52452c",
+            "surface-tint": "#96482c",
+            "secondary-container": "#c4ecd3",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#e6e2da",
+            "on-surface": "#1c1c17",
+            "tertiary": "#695a40",
+            "on-background": "#1c1c17",
+            "primary-container": "#b15d40",
+            "on-primary-fixed": "#390c00",
+            "primary-fixed": "#ffdbd0",
+            "surface": "#fdf9f1",
+            "on-secondary-container": "#486c58",
+            "inverse-surface": "#31302b",
+            "error-container": "#ffdad6",
+            "surface-bright": "#fdf9f1",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#f5e0bf",
+            "tertiary-fixed-dim": "#d8c4a4",
+            "on-surface-variant": "#55433d"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.125rem",
+            "lg": "0.25rem",
+            "xl": "0.5rem",
+            "full": "0.75rem"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-lg": "1.5rem",
+            "space-sm": "0.5rem",
+            "gutter-sm": "1rem",
+            "margin-lg": "4rem",
+            "margin-sm": "1rem",
+            "space-md": "1rem",
+            "margin": "2rem",
+            "gutter-lg": "2rem",
+            "space-xs": "0.25rem",
+            "gutter": "1.5rem"
+          },
+          "fontFamily": {
+            "display": ["Playfair Display"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "title-lg": ["Playfair Display"],
+            "body-md": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "headline-sm": ["Playfair Display"],
+            "headline-lg": ["Playfair Display"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "headline-lg-mobile": ["Playfair Display"],
+            "headline-md": ["Playfair Display"]
+          },
+          "fontSize": {
+            "display": ["3.75rem", { "lineHeight": "4.25rem", "letterSpacing": "-0.02em", "fontWeight": "400" }],
+            "body-lg": ["1.125rem", { "lineHeight": "1.75rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "title-lg": ["1.375rem", { "lineHeight": "1.75rem", "letterSpacing": "0em", "fontWeight": "600" }],
+            "body-md": ["1rem", { "lineHeight": "1.625rem", "letterSpacing": "0.01em", "fontWeight": "400" }],
+            "label-sm": ["0.6875rem", { "lineHeight": "0.875rem", "letterSpacing": "0.08em", "fontWeight": "700" }],
+            "label-md": ["0.75rem", { "lineHeight": "1rem", "letterSpacing": "0.06em", "fontWeight": "600" }],
+            "headline-sm": ["1.75rem", { "lineHeight": "2.25rem", "letterSpacing": "0em", "fontWeight": "500" }],
+            "headline-lg": ["3rem", { "lineHeight": "3.5rem", "letterSpacing": "-0.015em", "fontWeight": "400" }],
+            "body-sm": ["0.875rem", { "lineHeight": "1.375rem", "letterSpacing": "0.015em", "fontWeight": "400" }],
+            "title-sm": ["1rem", { "lineHeight": "1.5rem", "letterSpacing": "0.01em", "fontWeight": "600" }],
+            "title-md": ["1.125rem", { "lineHeight": "1.625rem", "letterSpacing": "0.005em", "fontWeight": "600" }],
+            "label-lg": ["0.875rem", { "lineHeight": "1.25rem", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-lg-mobile": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }],
+            "headline-md": ["2.25rem", { "lineHeight": "2.75rem", "letterSpacing": "-0.01em", "fontWeight": "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 350, 'GRAD' 0, 'opsz' 24;
+      line-height: 1;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background: #dac1b9;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface antialiased min-h-screen flex flex-col font-body-md text-body-md selection:bg-primary-fixed selection:text-on-primary-fixed">
+<!-- Top System Authentication Breadcrumb & Session Bar -->
+<div class="bg-surface-container-high border-b border-outline-variant px-margin-sm md:px-margin lg:px-margin-lg py-1 text-on-surface-variant font-label-sm text-label-sm flex justify-between items-center tracking-wider">
+<div class="flex items-center gap-space-xs">
+<span class="inline-block w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Authenticated Session · Django Token ID: CC-PATRON-8842-BLR</span>
+</div>
+<div class="hidden sm:flex items-center gap-space-md">
+<span class="text-tertiary">Logged in as Conscious Buyer · Django Session Auth</span>
+<span class="text-outline-variant">|</span>
+<span class="text-secondary font-label-md">Direct Rural Impact Verified</span>
+</div>
+</div>
+<!-- Shared Component: TopNavBar -->
+<header class="sticky top-0 z-40 bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none transition-colors">
+<div class="flex justify-between items-center w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-sm">
+<!-- Brand Logo Anchor -->
+<div class="flex items-center gap-space-lg">
+<a class="text-headline-sm font-headline-sm text-primary dark:text-inverse-primary tracking-tight flex items-center gap-2 group" href="#">
+<span class="material-symbols-outlined text-primary group-hover:rotate-12 transition-transform">all_inclusive</span>
+          CraftConnect
+        </a>
+<!-- Navigation Links (Desktop) -->
+<nav class="hidden md:flex items-center gap-space-lg ml-space-md">
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors" href="#">Marketplace</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors" href="#">Artisans</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors" href="#">Stories</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary transition-colors" href="#">Custom Studio</a>
+</nav>
+</div>
+<!-- Natural Search Bar & Trailing Actions -->
+<div class="flex items-center gap-space-md">
+<!-- Natural Language Prompt Pill -->
+<div class="hidden lg:flex items-center bg-surface-container-low border border-outline-variant px-space-md py-1.5 rounded-full w-80 text-on-surface-variant hover:border-primary transition-colors group">
+<span class="material-symbols-outlined text-outline mr-2 text-base group-hover:text-primary transition-colors">psychology_alt</span>
+<span class="text-label-md font-label-md text-tertiary truncate">Ask AI: Natural craft discovery...</span>
+<span class="material-symbols-outlined text-outline ml-auto text-sm">tune</span>
+</div>
+<!-- Trailing Action Icons -->
+<div class="flex items-center gap-space-sm">
+<!-- Favorites with count badge -->
+<a class="relative p-2 text-on-surface-variant hover:text-primary active:scale-[0.98] transition-all rounded-lg hover:bg-surface-container" href="#wishlist" title="Favorites">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="absolute 1 top-1 right-1 bg-primary text-on-primary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">7</span>
+</a>
+<!-- Inquiries with count -->
+<a class="relative p-2 text-on-surface-variant hover:text-primary active:scale-[0.98] transition-all rounded-lg hover:bg-surface-container" href="#inquiries" title="Inquiries">
+<span class="material-symbols-outlined">forum</span>
+<span class="absolute top-1 right-1 bg-secondary text-on-secondary text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center">3</span>
+</a>
+<div class="h-5 w-[1px] bg-outline-variant mx-1 hidden sm:block"></div>
+<!-- Artisan Portal Trailing Action -->
+<a class="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 text-secondary border border-secondary rounded-lg font-label-md text-label-md hover:bg-secondary/10 transition-colors" href="#">
+<span class="material-symbols-outlined text-sm">handshake</span>
+            Artisan Portal
+          </a>
+<!-- Patron Profile Avatar Cluster -->
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<div class="relative w-9 h-9 rounded-full overflow-hidden border border-outline-variant ring-2 ring-primary/20">
+<img class="w-full h-full object-cover" data-alt="Close up warm portrait of an elegant Indian woman patron with tasteful silver earrings, natural warm ambient daylight, thoughtful smile, fine art editorial lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaCz0bYMVgArsk4b_P47Lnh9jjpaQYK_E5hvxDi4m1BxAFSjttqeufAOy3wJihFGJHL_jfRa4e7EcfUT_DyoHq72ypVS-D-_TbmqyVYZD_OK5cDlyY3DKt7p9yNGzsrkLVF7p0L3x-mlKftcG9wRtuRb1pe1BOOf4z91VhLwEJ2vpdXVBOnINOXL7gwh3tk5BHyOfNo9lNSrOwEoxQOk6ZQ2D4bECP5vj4R7k9FmBBQ7MnBAVnWUJt"/>
+</div>
+<div class="hidden xl:block text-left">
+<p class="font-title-sm text-title-sm leading-tight text-on-surface">Priyamvada Rao</p>
+<p class="font-label-sm text-label-sm text-tertiary">Bangalore Patron</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- Main Sanctuary Canvas -->
+<main class="flex-grow max-w-[1440px] w-full mx-auto px-margin-sm md:px-margin lg:px-margin-lg py-space-xl">
+<!-- SECTION 1: Welcome Banner & Patron Impact Summary -->
+<section class="mb-space-xl">
+<!-- Outer Framed Matting Container -->
+<div class="bg-surface-container-low border border-outline-variant p-space-md md:p-space-xl rounded-xl shadow-sm relative overflow-hidden">
+<!-- Subtle Linen Texture / Watermark Accent -->
+<div class="absolute -right-12 -bottom-12 opacity-5 pointer-events-none select-none text-primary">
+<span class="material-symbols-outlined" style="font-size: 260px;">spa</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-xl items-center relative z-10">
+<!-- Narrative Welcome Column -->
+<div class="lg:col-span-7 space-y-space-sm">
+<div class="inline-flex items-center gap-2 bg-surface border border-outline-variant px-3 py-1 rounded-full text-secondary font-label-md text-label-md">
+<span class="material-symbols-outlined text-base">verified</span>
+<span>Conscious Living Patron · Tier 2 Supporter</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface">
+              Welcome back, <span class="italic text-primary">Priyamvada</span>
+</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl">
+              Your patron sanctuary reflects the quiet rhythm of handmade tradition. Every craft in your archive directly upholds living lineage, fair wage dignity, and zero-compromise environmental stewardship.
+            </p>
+<div class="pt-2 flex flex-wrap gap-space-md text-label-md font-label-md text-tertiary">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">location_on</span>
+                Bangalore, Karnataka
+              </span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">history_edu</span>
+                Patron since Nov 2023
+              </span>
+<span>•</span>
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-secondary">eco</span>
+                100% Carbon-Offset Packaging
+              </span>
+</div>
+</div>
+<!-- Patron Impact Metrics Bento Cards -->
+<div class="lg:col-span-5 grid grid-cols-2 gap-3 sm:gap-4">
+<!-- Metric 1: Financial Contribution -->
+<div class="bg-surface p-space-md rounded-lg border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-primary">
+<span class="material-symbols-outlined">payments</span>
+<span class="text-label-sm font-label-sm text-secondary uppercase bg-secondary/10 px-1.5 py-0.5 rounded">Direct Pay</span>
+</div>
+<div class="mt-space-md">
+<p class="text-headline-sm font-headline-sm text-primary tracking-tight">₹18,400</p>
+<p class="text-label-md font-label-md text-on-surface-variant mt-1 leading-snug">Contributed to rural artisan households</p>
+</div>
+</div>
+<!-- Metric 2: Guilds Supported -->
+<div class="bg-surface p-space-md rounded-lg border border-outline-variant shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between text-secondary">
+<span class="material-symbols-outlined">diversity_3</span>
+<span class="text-label-sm font-label-sm text-primary uppercase bg-primary/10 px-1.5 py-0.5 rounded">Clusters</span>
+</div>
+<div class="mt-space-md">
+<p class="text-headline-sm font-headline-sm text-secondary tracking-tight">6 Guilds</p>
+<p class="text-label-md font-label-md text-on-surface-variant mt-1 leading-snug">Kutch, Bagru, Bastar, Auroville &amp; more</p>
+</div>
+</div>
+<!-- Metric 3: Provenance Guarantee -->
+<div class="col-span-2 bg-secondary text-on-secondary p-space-md rounded-lg shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-3">
+<div class="p-2 bg-white/10 rounded-lg">
+<span class="material-symbols-outlined text-secondary-fixed">workspace_premium</span>
+</div>
+<div>
+<p class="font-title-sm text-title-sm text-surface">100% Slow-Living Provenance</p>
+<p class="text-label-sm font-label-sm text-secondary-fixed opacity-90">Every craft tagged with ledger-backed master artisan seal</p>
+</div>
+</div>
+<span class="material-symbols-outlined text-secondary-fixed">chevron_right</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2: Natural-Language Discovery History & Saved AI Prompts -->
+<section class="mb-space-xl">
+<div class="flex flex-col sm:flex-row sm:items-baseline justify-between mb-space-md gap-2">
+<div>
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-widest block mb-1">AI Semantic Retrieval Engine</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Your Recent AI Discovery Prompts</h2>
+</div>
+<button class="inline-flex items-center gap-2 text-primary font-label-lg text-label-lg hover:text-primary-container transition-colors group">
+<span class="material-symbols-outlined text-sm group-hover:rotate-180 transition-transform duration-500">sync</span>
+          Re-run Semantic Search with Fresh Inventory
+        </button>
+</div>
+<!-- Natural Search Bar Input Canvas -->
+<div class="bg-surface-container-lowest border border-outline-variant p-2 rounded-xl shadow-sm mb-space-md">
+<div class="flex flex-col md:flex-row items-center gap-2">
+<div class="flex items-center flex-grow px-3 py-2 w-full">
+<span class="material-symbols-outlined text-primary mr-3">auto_awesome</span>
+<input class="bg-transparent border-0 focus:ring-0 p-0 text-on-surface w-full font-body-md text-body-md placeholder:text-tertiary" placeholder="Describe what you seek in sensory words (e.g. 'unbleached organic cotton quilt for monsoon nights')..." type="text" value="Hand-glazed deep forest stoneware dinner plates made with riverbed clay under ₹2,500"/>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto justify-end px-2">
+<span class="text-label-sm font-label-sm text-tertiary hidden xl:inline">AI filters: Natural Earth · Slow Fired</span>
+<button class="w-full md:w-auto bg-primary text-on-primary px-5 py-2.5 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center justify-center gap-1.5 shadow-sm">
+<span class="material-symbols-outlined text-sm">search</span>
+<span>Find Crafts</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Saved Prompt Cards Carousel / Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-md">
+<!-- Prompt 1 -->
+<div class="bg-surface-container-low border border-outline-variant p-space-md rounded-lg flex flex-col justify-between hover:border-primary transition-colors group">
+<div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-tertiary mb-2">
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs">bookmark</span>
+                Saved &amp; Refined
+              </span>
+<span>Updated 2 days ago</span>
+</div>
+<p class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors">
+              “Unique housewarming gift under ₹1,000 made of clay or wood”
+            </p>
+<div class="flex flex-wrap gap-1 mt-3">
+<span class="bg-surface border border-outline-variant text-tertiary text-label-sm font-label-sm px-2 py-0.5 rounded">Budget: &lt;₹1k</span>
+<span class="bg-surface border border-outline-variant text-tertiary text-label-sm font-label-sm px-2 py-0.5 rounded">Terracotta</span>
+<span class="bg-surface border border-outline-variant text-tertiary text-label-sm font-label-sm px-2 py-0.5 rounded">Shisham Wood</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">14 matching crafts active</span>
+<button class="text-primary hover:text-primary-container font-label-md text-label-md flex items-center gap-0.5">
+              Explore Match <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Prompt 2 -->
+<div class="bg-surface-container-low border border-outline-variant p-space-md rounded-lg flex flex-col justify-between hover:border-primary transition-colors group">
+<div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-tertiary mb-2">
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs">bookmark</span>
+                Saved Prompt
+              </span>
+<span>Updated 5 days ago</span>
+</div>
+<p class="font-title-sm text-title-sm text-on-surface group-hover:text-primary transition-colors">
+              “Organic indigo dyed table runners for 6-seater dining table”
+            </p>
+<div class="flex flex-wrap gap-1 mt-3">
+<span class="bg-surface border border-outline-variant text-tertiary text-label-sm font-label-sm px-2 py-0.5 rounded">Bagru Dabu</span>
+<span class="bg-surface border border-outline-variant text-tertiary text-label-sm font-label-sm px-2 py-0.5 rounded">Natural Ferment</span>
+<span class="bg-surface border border-outline-variant text-tertiary text-label-sm font-label-sm px-2 py-0.5 rounded">Handloom Khadi</span>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-on-surface-variant">8 matching crafts active</span>
+<button class="text-primary hover:text-primary-container font-label-md text-label-md flex items-center gap-0.5">
+              Explore Match <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Prompt 3: AI Proactive Suggestion -->
+<div class="bg-surface-container border border-dashed border-outline-variant p-space-md rounded-lg flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-primary mb-2">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">tips_and_updates</span>
+                AI Curatorial Suggestion
+              </span>
+<span>Based on your purchases</span>
+</div>
+<p class="font-title-sm text-title-sm text-on-surface">
+              “Auroville handmade botanical wax diffuser with wild vetiver oils”
+            </p>
+<p class="text-body-sm font-body-sm text-on-surface-variant mt-2">
+              Pairs seamlessly with the Bastar Bell Metal incense vessel you acquired last spring.
+            </p>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant/60 flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-secondary">3 Master Batches Ready</span>
+<button class="text-primary hover:text-primary-container font-label-md text-label-md flex items-center gap-0.5">
+              Review Suggestion <span class="material-symbols-outlined text-xs">arrow_forward</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 3: Active Inquiries & Direct Artisan Conversations (Priority Patron Tasks) -->
+<section class="mb-space-xl" id="inquiries">
+<div class="flex items-baseline justify-between mb-space-md">
+<div>
+<span class="text-label-sm font-label-sm text-secondary uppercase tracking-widest block mb-1">Direct Dialogue with Makers</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Active Inquiries &amp; Custom Commissions</h2>
+</div>
+<span class="text-label-md font-label-md text-tertiary">3 Conversations in Progress</span>
+</div>
+<div class="space-y-space-md">
+<!-- Conversation Card 1 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md md:p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left Info -->
+<div class="flex items-start gap-space-md">
+<div class="w-16 h-16 rounded-lg overflow-hidden border border-outline-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Handcrafted ceramic dinner set glazed in natural earthen green and matte ivory, artisanal studio setting with natural sunlight pouring in." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAwjgGynNNLKlQTNtXHWiKKxUlpPA3XKDEVATnSHRYNQxIZqqHH4I65fZHzLOmoonLlKPBeNhTHNpKJDKTqHqQQdvu6hSW588kU23As0HhjRAYQXrDFjMbnC8ihvB5WLtZDYZNmB4Xc8nvntrVYxWnQwqAMNhKeZWz0zix_zIuSCkP1Wp6R9tpbHQ3qG_2089aOIUJAHPaJOyjkDMXE8FE7hOjs3C1CZLuF82u-Nw70K8otHMy21NEi"/>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-label-sm text-label-sm bg-surface-container border border-outline-variant px-2 py-0.5 rounded text-on-surface">Inquiry #CC-842</span>
+<span class="text-label-sm font-label-sm text-tertiary">Initiated Nov 24, 2024</span>
+<span class="bg-secondary/15 text-secondary border border-secondary/30 px-2 py-0.5 rounded-full text-label-sm font-label-sm flex items-center gap-1 font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    Artisan Replied with Custom Quote (₹3,200)
+                  </span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface">Custom Glazed Ceramic Dinner Set (Set of 6)</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-primary">person</span>
+                  With <strong class="text-on-surface">Master Devraj Kumhar</strong> · Kutch Traditional Pottery Guild
+                </p>
+<div class="bg-surface-container-low border-l-2 border-primary p-2.5 rounded-r mt-2 max-w-2xl text-body-sm font-body-sm text-on-surface-variant italic">
+                  “Pranams Priyamvada ji. I can formulate the sage green ash glaze using local tamarind ash. Needs 2 days kiln curing after throwing. Ready to begin upon your approval.”
+                </div>
+</div>
+</div>
+<!-- Right Actions -->
+<div class="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-space-sm border-t lg:border-t-0 pt-3 lg:pt-0 border-outline-variant">
+<div class="text-left lg:text-right">
+<span class="text-label-sm font-label-sm text-tertiary block">Agreed Fair Wage Quote</span>
+<span class="text-title-lg font-title-lg text-primary font-bold">₹3,200</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="bg-primary text-on-primary px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">chat</span>
+                  View Conversation &amp; Approve
+                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Conversation Card 2 -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-space-md md:p-space-lg shadow-sm hover:shadow-md transition-shadow">
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md">
+<!-- Left Info -->
+<div class="flex items-start gap-space-md">
+<div class="w-16 h-16 rounded-lg overflow-hidden border border-outline-variant flex-shrink-0">
+<img class="w-full h-full object-cover" data-alt="Intricately handwoven Sabai grass storage baskets with earthen natural dyes and subtle textured geometric patterns, warm Indian artisanal workshop background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBx-4KsA2srpfEqGkTQJcRRDSLmP43h5CyHzm_23DUBA2V9_ITHh_SbPT3e_cb5g3UFlZkROA4kLJahIUg8T9oqXsXznur7Y7dEQx2bpm8Q4TSjPu8iOnXjV8TTH9buVWBkU9bcXVsWjqspl1hkPJxKx81p5D304tk4ki6QPkVcDhz038agYvCzLIYXYpQk2Pn4Pii2UdyszffXzhuGrU7B76EidT3-Quzg3s-WHdu-Jzz426TZCjSZ"/>
+</div>
+<div class="space-y-1">
+<div class="flex flex-wrap items-center gap-2">
+<span class="font-label-sm text-label-sm bg-surface-container border border-outline-variant px-2 py-0.5 rounded text-on-surface">Inquiry #CC-791</span>
+<span class="text-label-sm font-label-sm text-tertiary">Initiated Nov 19, 2024</span>
+<span class="bg-surface-variant text-on-surface-variant border border-outline-variant px-2 py-0.5 rounded-full text-label-sm font-label-sm flex items-center gap-1">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    Order in Weaving Phase · Estimated Dispatch 4 days
+                  </span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface">Sabai Grass Storage Baskets with Natural Dyes</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant flex items-center gap-1.5">
+<span class="material-symbols-outlined text-sm text-secondary">groups</span>
+                  With <strong class="text-on-surface">Mayurbhanj Women's Cooperative</strong> · Odisha Grass Artisans
+                </p>
+<div class="flex items-center gap-3 pt-1 text-label-sm font-label-sm text-tertiary">
+<span class="flex items-center gap-1 text-secondary">
+<span class="material-symbols-outlined text-xs">check_circle</span>
+                    Weft harvested sustainably
+                  </span>
+<span>•</span>
+<span>Direct payment milestone: 50% paid to weaver collective</span>
+</div>
+</div>
+</div>
+<!-- Right Actions -->
+<div class="flex flex-row lg:flex-col items-center lg:items-end justify-between gap-space-sm border-t lg:border-t-0 pt-3 lg:pt-0 border-outline-variant">
+<div class="text-left lg:text-right">
+<span class="text-label-sm font-label-sm text-tertiary block">Milestone Total</span>
+<span class="text-title-lg font-title-lg text-on-surface">₹1,850</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="border border-outline text-on-surface px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-surface-container transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">visibility</span>
+                  Track Weaving Log
+                </button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 4: Saved Crafts & Curated Wishlist -->
+<section class="mb-space-xl" id="wishlist">
+<div class="flex flex-col sm:flex-row sm:items-baseline justify-between mb-space-md gap-2">
+<div>
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-widest block mb-1">Curated Wishlist · 7 Items</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Saved Crafts of Exceptional Provenance</h2>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="text-label-md font-label-md px-3 py-1.5 border border-outline-variant rounded-lg hover:border-primary transition-colors text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">filter_list</span>
+            All Guilds (3)
+          </button>
+<button class="text-label-md font-label-md px-3 py-1.5 border border-outline-variant rounded-lg hover:border-primary transition-colors text-on-surface-variant flex items-center gap-1">
+<span class="material-symbols-outlined text-sm">sort</span>
+            Fair Price
+          </button>
+</div>
+</div>
+<!-- Product Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-space-lg">
+<!-- Wishlist Item 1: Kutch Terracotta Teapot -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group">
+<!-- Image Framed Matting Area -->
+<div class="p-2 pb-0 relative">
+<div class="aspect-[4/3] w-full rounded-lg overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Traditional Indian hand-thrown terracotta teapot with delicate cane handle and etched geometric motifs, shot in soft morning natural light against a neutral linen background." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzCcfN_Cd23ywRYn_fUbW0ySf0vIt_EUNgM_k81wU8pZhcrl0CoCxvC3k4eo9cScb442Evr7CpbjX3lZedO1m_Ke3-YJlIO3w8jVKzGvUsdZr-itMjdN_2Mmg4_znYrFVQ173eDENMWhC8dl_pu33MhHnEWo4CXOhARZZBPA6_c74f8m_ZxKbco6D-6sjh_n2z3axD6jhbstAYoYa8BrTyUZAep2TjQLTUJywUlRKq0AgwtpEdUuVQ"/>
+<button class="absolute top-3 right-3 bg-surface/90 hover:bg-surface text-primary p-1.5 rounded-full shadow-sm transition-colors" title="Remove from favorites">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 bg-secondary text-on-secondary px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold tracking-wider uppercase">
+                Kutch Heritage
+              </div>
+</div>
+</div>
+<!-- Product Details Flow -->
+<div class="p-space-md flex-grow flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-tertiary mb-1">
+<span>Hand-Thrown Clayware</span>
+<span class="text-secondary font-semibold">2 Units In Studio</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors">
+                Hand-thrown Terracotta Teapot with Cane Handle
+              </h3>
+<!-- Artisan Attribution Badge -->
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant/50">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Elderly artisan potter with silver hair and warm eyes wearing traditional cotton attire, captured in his Gujarat studio workshop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBM8gCmbcMNE2nxeH6EfFIvePUbX7ZOCUfT_44XtIFuphJit3gUUYXR99nSoz-hsbxfhiao1og0pj6-TlMCyFlvr4vBpUgY3jc785fX_JDW5hpWSztjBuv7tzbpV9TqJnbaNmYsSJtLRKgW4iO3u3r6OiWOIsBw5syIQtCAiwcp4Z3TjdNzmfsk2Y--aKf0loaAza5Zy6XOoVKytGg5FH68lUJWhOoalOiG5H1PteMp0fms2gb976cJ"/>
+</div>
+<div class="text-label-md font-label-md text-on-surface">
+                  Master Devraj Kumhar <span class="text-tertiary font-normal">· Bhujodi</span>
+</div>
+</div>
+</div>
+<!-- Price & Direct Enquire Button -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-tertiary block">Fair Artisan Price</span>
+<span class="text-title-lg font-title-lg text-primary font-bold">₹1,450</span>
+</div>
+<button class="bg-primary text-on-primary px-3.5 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+                Enquire / Order
+              </button>
+</div>
+</div>
+</article>
+<!-- Wishlist Item 2: Bagru Indigo Dabu Throw -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group">
+<!-- Image Framed Matting Area -->
+<div class="p-2 pb-0 relative">
+<div class="aspect-[4/3] w-full rounded-lg overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Rich deep indigo hand-block printed cotton throw blanket with intricate mud-resist Dabu geometric mandala patterns draped over an antique teak wood bench." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBi73xEc5xKu9dowUb8KM-Y5D05MS75Q9UZAXfY-PPg8wDgrf9j4ud8Np1UcOuyWjyxUy_ybepyyol25kVCQnJo2C55dKXtDW7HAPZhy4pU5u8X0v0jp9o8S30_R9yYmL4pOB1vnqTzkb0fBZQ7CUshIRMgBPOmLE3XO8IUn0VwM2IRaHMwInb09FBMrrg8S0lvOsfl723e6NYKzEGR9zbpqbFSdY6j0lucsa97bYeZC91CcQSfDbgM"/>
+<button class="absolute top-3 right-3 bg-surface/90 hover:bg-surface text-primary p-1.5 rounded-full shadow-sm transition-colors" title="Remove from favorites">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 bg-secondary text-on-secondary px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold tracking-wider uppercase">
+                Bagru Mud-Resist
+              </div>
+</div>
+</div>
+<!-- Product Details Flow -->
+<div class="p-space-md flex-grow flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-tertiary mb-1">
+<span>100% Organic Desi Cotton</span>
+<span class="text-secondary font-semibold">Fresh Batch Made</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors">
+                Indigo Dabu Hand-block Print Throw
+              </h3>
+<!-- Artisan Attribution Badge -->
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant/50">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Portrait of woman artisan block printer smiling softly with blue natural indigo dye traces on her hands in a sunlit Rajasthan courtyard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDQQTaGgdKkzVF78tL0tqC6lpLVVGacwbIowPE_h9h3aBu5lF5EelwLN2Kjemp5qEnI1v0s9dxVe2ADAk85bS64BzbPUmgt-0f8y9iN7aGZmu_tz0q7k8Y3hr3BvkUrFQBIGjCXED80WkX93jD3E4sGo5yAm6vrfAxCk2rWefZdwWPLBFNQFGn1ZqacxswUr0xuhv8_QXEOFFc9HXgrZG4tP6bkg2x36YI3dSv0o5HKgkQeHaFvQMp9"/>
+</div>
+<div class="text-label-md font-label-md text-on-surface">
+                  Meera Devi Chippa <span class="text-tertiary font-normal">· Bagru</span>
+</div>
+</div>
+</div>
+<!-- Price & Direct Enquire Button -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-tertiary block">Fair Artisan Price</span>
+<span class="text-title-lg font-title-lg text-primary font-bold">₹2,800</span>
+</div>
+<button class="bg-primary text-on-primary px-3.5 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+                Enquire / Order
+              </button>
+</div>
+</div>
+</article>
+<!-- Wishlist Item 3: Dhokra Lost-Wax Bell Metal Lamp -->
+<article class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group">
+<!-- Image Framed Matting Area -->
+<div class="p-2 pb-0 relative">
+<div class="aspect-[4/3] w-full rounded-lg overflow-hidden bg-surface-container relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" data-alt="Exquisite antique bronze Bastar Dhokra lost-wax cast brass oil lamp shaped like a primordial peacock, rustic texture with warm golden reflections in an editorial studio setting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDt6fElxNbfo_OBZC6iYn5RIg510yp9_4JQ037UZplk_FmrIzJHtWKMwJBT2kd4pX2harWm_rxBTWFvu0aiL0PkKzqxM5rB0SsG8lsO3H4ej9QTxT9SiziMVGvAiiC1b65zTUL7XeoG8DmOtq1qU4yLwvajrA9Y8TdMeA61Ve1F33ym-xeVpldMlHrJgMj9yBj3PQjuEB4QrNBICsJhkwaHNKR41gnYm4K2SxHOI5k8Q6IEYiv-K4MY"/>
+<button class="absolute top-3 right-3 bg-surface/90 hover:bg-surface text-primary p-1.5 rounded-full shadow-sm transition-colors" title="Remove from favorites">
+<span class="material-symbols-outlined text-lg" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-3 left-3 bg-secondary text-on-secondary px-2 py-0.5 rounded text-label-sm font-label-sm font-semibold tracking-wider uppercase">
+                Bastar Tribal Bronze
+              </div>
+</div>
+</div>
+<!-- Product Details Flow -->
+<div class="p-space-md flex-grow flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between text-label-sm font-label-sm text-tertiary mb-1">
+<span>Lost-Wax Non-Ferrous Casting</span>
+<span class="text-primary font-semibold">1-of-1 Original</span>
+</div>
+<h3 class="font-title-lg text-title-lg text-on-surface group-hover:text-primary transition-colors">
+                Dhokra Lost-Wax Bell Metal Oil Lamp
+              </h3>
+<!-- Artisan Attribution Badge -->
+<div class="flex items-center gap-2 mt-2 pt-2 border-t border-outline-variant/50">
+<div class="w-6 h-6 rounded-full overflow-hidden bg-surface-variant">
+<img class="w-full h-full object-cover" data-alt="Master tribal metalsmith artisan working with beeswax coils and earthen kiln in Chhattisgarh village workshop, warm ambient fire glow." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfpeV-3XJHZA9Ffzugd7PuoMoJicyBmvxCjE08jI4igi9zdsTuLbmrg-OwBBeOwnPuylQRfYcZde9Ey2txa9fjmOCBss1ddMGUJAh9E1rQWFizevIRH384SSK37r0GWRnT8nlPzDSyQwb8bioPuk4CvlxK3Cm_EzFyYvo-Ih00hcATqNRou9ayVqdBMp3CoJyRGsCyUnCCzLQAXrbi9tdwQfrXafTkeyWxnoCriGvm88LOHSu7IW8i"/>
+</div>
+<div class="text-label-md font-label-md text-on-surface">
+                  Birbal Ghadwa <span class="text-tertiary font-normal">· Kondagaon</span>
+</div>
+</div>
+</div>
+<!-- Price & Direct Enquire Button -->
+<div class="mt-space-md pt-space-sm border-t border-outline-variant flex items-center justify-between">
+<div>
+<span class="text-label-sm font-label-sm text-tertiary block">Fair Artisan Price</span>
+<span class="text-title-lg font-title-lg text-primary font-bold">₹3,400</span>
+</div>
+<button class="bg-primary text-on-primary px-3.5 py-2 rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors flex items-center gap-1 shadow-sm">
+<span class="material-symbols-outlined text-sm">chat_bubble</span>
+                Enquire / Order
+              </button>
+</div>
+</div>
+</article>
+</div>
+</section>
+<!-- SECTION 5: Artisans You Follow & Living Story Feed -->
+<section class="mb-space-xl">
+<div class="flex items-baseline justify-between mb-space-md">
+<div>
+<span class="text-label-sm font-label-sm text-primary uppercase tracking-widest block mb-1">Living Guild Network</span>
+<h2 class="text-headline-sm font-headline-sm text-on-surface">Artisans You Follow &amp; Studio Dispatches</h2>
+</div>
+<a class="font-label-md text-label-md text-secondary hover:underline flex items-center gap-1" href="#">
+          Explore All Artisans <span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-space-lg">
+<!-- Artisan Story Card 1: Meera Devi -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md md:p-space-lg flex flex-col sm:flex-row gap-space-md items-start">
+<div class="w-full sm:w-40 h-48 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant relative">
+<img class="w-full h-full object-cover" data-alt="Portrait of master artisan woman Meera Devi in her Bagru workshop showing sun-drying block printed indigo textiles on the riverbank sand." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCOr9fijtuy6wjLzxXtUpW9xFfywqXTG5tRkolyr3Fts90BqdHis8mteZjSIna-KlUNMoHDRlR--7JZtVVh6MoWSdd3Crvsts8xX40wzbXbkI555Ji3AXvrCyZtHFtfrKgsrltatsQRew_D95_kikm9oXalCasyn697Qb7K9pc_i96G0WNGb339CptlerlFkOzey5LHPquDi4eXkojz-S-hjq3tCKCTIusgAFy8dcFPwmuL2FbePQXl"/>
+<div class="absolute bottom-2 left-2 bg-secondary text-on-secondary px-2 py-0.5 rounded text-label-sm font-label-sm">
+              5th Gen Dabu
+            </div>
+</div>
+<div class="flex-grow space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-tertiary">Bagru, Rajasthan</span>
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+<span class="w-1.5 h-1.5 rounded-full bg-primary animate-pulse"></span>
+                Fresh Batch Ready
+              </span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface">Meera Devi Chippa</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              “The winter sunlight has settled just right over the riverbed. Our latest vat of harda and fermented pomegranate rind is yielding an earthy golden-khaki we haven't seen in three seasons.”
+            </p>
+<div class="pt-2 flex flex-wrap gap-2 items-center">
+<button class="bg-surface border border-outline-variant text-on-surface px-3 py-1.5 rounded-lg font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">feed</span>
+                View Studio Updates (4)
+              </button>
+<button class="text-primary hover:text-primary-container font-label-md text-label-md px-2 py-1 flex items-center gap-1">
+                View 12 Crafts →
+              </button>
+</div>
+</div>
+</div>
+<!-- Artisan Story Card 2: Birbal Ghadwa -->
+<div class="bg-surface-container-low border border-outline-variant rounded-xl p-space-md md:p-space-lg flex flex-col sm:flex-row gap-space-md items-start">
+<div class="w-full sm:w-40 h-48 rounded-lg overflow-hidden flex-shrink-0 border border-outline-variant relative">
+<img class="w-full h-full object-cover" data-alt="Tribal metalsmith Birbal Ghadwa holding a hand-crafted wax prototype for a Dhokra bell metal horse figurine in his Bastar workshop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsrLAqLTta1ozm719qfH9YLW8FEbI0XCKrkmZeB9Xp1F5ItqI2FvyKjVrNG79brWV9QVWrxq_ybnm0g6RZ1C2ma-VcYeYAcAX7NBmiR3iZTXj35Svm7uXrddhjP6fuk_EPDKrju2mQ0-d7X5t2xCcqUfNbMMcvBNHNhpB75-nEUnRQNRQZTaAoa0qiKAjBBGdVtGlEfvH2E3TMQdJgWaIjjZkzSxz8RjjvcLzzkJKZzP-2NhWE96aE"/>
+<div class="absolute bottom-2 left-2 bg-secondary text-on-secondary px-2 py-0.5 rounded text-label-sm font-label-sm">
+              Dhokra Caster
+            </div>
+</div>
+<div class="flex-grow space-y-2">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm text-tertiary">Bastar, Chhattisgarh</span>
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-secondary bg-secondary/10 px-2 py-0.5 rounded-full">
+                Guild Master
+              </span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface">Birbal Ghadwa</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              “We completed the beeswax winding for five forest deity oil lamps this full moon. Clay encasement takes three dry days before our woodfired furnace melts the lost wax.”
+            </p>
+<div class="pt-2 flex flex-wrap gap-2 items-center">
+<button class="bg-surface border border-outline-variant text-on-surface px-3 py-1.5 rounded-lg font-label-md text-label-md hover:border-primary transition-colors flex items-center gap-1">
+<span class="material-symbols-outlined text-sm text-primary">feed</span>
+                View Studio Updates (2)
+              </button>
+<button class="text-primary hover:text-primary-container font-label-md text-label-md px-2 py-1 flex items-center gap-1">
+                View 7 Crafts →
+              </button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 6: Slow Living Provenance Journal & Platform Ethics Strip -->
+<section class="mb-space-xl bg-surface-container p-space-lg rounded-xl border border-outline-variant flex flex-col md:flex-row items-center justify-between gap-space-lg">
+<div class="flex items-center gap-space-md">
+<div class="w-12 h-12 rounded-full bg-secondary/10 text-secondary flex items-center justify-center flex-shrink-0">
+<span class="material-symbols-outlined text-2xl">shield_with_heart</span>
+</div>
+<div>
+<h4 class="font-title-sm text-title-sm text-on-surface">The CraftConnect Provenance Pledge</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant max-w-xl">
+            88% of purchase values reach artisan banking accounts without intermediary skimming. Every order generates an immutable digital craft passport certifying rural master authenticity.
+          </p>
+</div>
+</div>
+<div class="flex items-center gap-3 w-full md:w-auto justify-end">
+<a class="px-4 py-2 border border-outline rounded-lg text-on-surface font-label-md text-label-md hover:bg-surface transition-colors whitespace-nowrap" href="#">
+          Audit Platform Ethics
+        </a>
+<a class="px-4 py-2 bg-secondary text-on-secondary rounded-lg font-label-md text-label-md hover:bg-secondary/90 transition-colors whitespace-nowrap" href="#">
+          View Provenance Registry
+        </a>
+</div>
+</section>
+</main>
+<!-- Shared Component: Footer -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline mt-auto transition-colors">
+<div class="w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-xl flex flex-col md:flex-row justify-between items-center gap-space-lg">
+<!-- Brand & Copyright -->
+<div class="space-y-1 text-center md:text-left">
+<span class="text-title-lg font-title-lg text-primary dark:text-inverse-primary tracking-tight block">
+          CraftConnect
+        </span>
+<p class="text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant max-w-md">
+          © 2025 CraftConnect Artisans Guild. Preserving Heritage Crafts &amp; Slow Living.
+        </p>
+</div>
+<!-- Footer Navigation Links verbatim from JSON -->
+<nav class="flex flex-wrap justify-center md:justify-end gap-x-space-lg gap-y-space-sm items-center">
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+          Editorial Journal
+        </a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+          Artisan Verification
+        </a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+          Provenance Registry
+        </a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+          Slow Living Directory
+        </a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+          Platform Ethics
+        </a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors" href="#">
+          Django Admin
+        </a>
+</nav>
+</div>
+</footer>
+<!-- Micro-Interactions Script -->
+<script>
+    // Simple notification dismissal & micro feedback
+    document.addEventListener('DOMContentLoaded', () => {
+      const heartButtons = document.querySelectorAll('[title="Remove from favorites"]');
+      heartButtons.forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const card = btn.closest('article');
+          if (card) {
+            card.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+            card.style.opacity = '0.4';
+            setTimeout(() => {
+              card.style.opacity = '1';
+            }, 1000);
+          }
+        });
+      });
+    });
+  </script>
+</body></html>

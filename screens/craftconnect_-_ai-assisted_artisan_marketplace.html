@@ -1,0 +1,766 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CraftConnect — AI-Assisted Artisan Marketplace</title>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts: Playfair Display & Plus Jakarta Sans -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&amp;family=Plus+Jakarta+Sans:wght@300;400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container-Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Theme Configuration -->
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-tertiary": "#ffffff",
+            "secondary-container": "#c4ecd3",
+            "background": "#fdf9f1",
+            "surface-container-lowest": "#ffffff",
+            "on-primary-fixed": "#390c00",
+            "on-tertiary-fixed": "#241a06",
+            "tertiary-fixed-dim": "#d8c4a4",
+            "tertiary-container": "#837257",
+            "surface-container-high": "#ece8e0",
+            "on-surface": "#1c1c17",
+            "secondary-fixed": "#c4ecd3",
+            "secondary-fixed-dim": "#a9cfb8",
+            "on-primary": "#ffffff",
+            "inverse-on-surface": "#f4f0e8",
+            "on-tertiary-container": "#fffbff",
+            "surface-container": "#f1ede6",
+            "primary-container": "#b15d40",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#f5e0bf",
+            "error": "#ba1a1a",
+            "on-primary-fixed-variant": "#783117",
+            "primary-fixed-dim": "#ffb59c",
+            "primary-fixed": "#ffdbd0",
+            "on-secondary-container": "#486c58",
+            "surface-bright": "#fdf9f1",
+            "on-secondary": "#ffffff",
+            "on-error-container": "#93000a",
+            "on-background": "#1c1c17",
+            "outline": "#87726c",
+            "on-surface-variant": "#55433d",
+            "tertiary": "#695a40",
+            "surface-container-highest": "#e6e2da",
+            "inverse-surface": "#31302b",
+            "surface-tint": "#96482c",
+            "on-secondary-fixed": "#002113",
+            "inverse-primary": "#ffb59c",
+            "on-tertiary-fixed-variant": "#52452c",
+            "surface-variant": "#e6e2da",
+            "error-container": "#ffdad6",
+            "surface-dim": "#dddad2",
+            "outline-variant": "#dac1b9",
+            "on-secondary-fixed-variant": "#2b4e3c",
+            "surface-container-low": "#f7f3eb",
+            "primary": "#93452a",
+            "on-primary-container": "#fffbff",
+            "surface": "#fdf9f1",
+            "secondary": "#426652"
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg: "0.25rem",
+            xl: "0.5rem",
+            full: "0.75rem"
+          },
+          spacing: {
+            "margin": "2rem",
+            "gutter-lg": "2rem",
+            "margin-sm": "1rem",
+            "space-lg": "1.5rem",
+            "space-md": "1rem",
+            "space-xl": "2.5rem",
+            "margin-lg": "4rem",
+            "gutter": "1.5rem",
+            "space-xs": "0.25rem",
+            "gutter-sm": "1rem",
+            "space-sm": "0.5rem"
+          },
+          fontFamily: {
+            "headline-lg-mobile": ["Playfair Display"],
+            "body-sm": ["Plus Jakarta Sans"],
+            "label-md": ["Plus Jakarta Sans"],
+            "display": ["Playfair Display"],
+            "headline-lg": ["Playfair Display"],
+            "label-lg": ["Plus Jakarta Sans"],
+            "title-lg": ["Playfair Display"],
+            "headline-md": ["Playfair Display"],
+            "headline-sm": ["Playfair Display"],
+            "title-sm": ["Plus Jakarta Sans"],
+            "body-lg": ["Plus Jakarta Sans"],
+            "label-sm": ["Plus Jakarta Sans"],
+            "body-md": ["Plus Jakarta Sans"],
+            "title-md": ["Plus Jakarta Sans"]
+          },
+          fontSize: {
+            "headline-lg-mobile": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "body-sm": ["0.875rem", { lineHeight: "1.375rem", letterSpacing: "0.015em", fontWeight: "400" }],
+            "label-md": ["0.75rem", { lineHeight: "1rem", letterSpacing: "0.06em", fontWeight: "600" }],
+            "display": ["3.75rem", { lineHeight: "4.25rem", letterSpacing: "-0.02em", fontWeight: "400" }],
+            "headline-lg": ["3rem", { lineHeight: "3.5rem", letterSpacing: "-0.015em", fontWeight: "400" }],
+            "label-lg": ["0.875rem", { lineHeight: "1.25rem", letterSpacing: "0.04em", fontWeight: "600" }],
+            "title-lg": ["1.375rem", { lineHeight: "1.75rem", letterSpacing: "0em", fontWeight: "600" }],
+            "headline-md": ["2.25rem", { lineHeight: "2.75rem", letterSpacing: "-0.01em", fontWeight: "400" }],
+            "headline-sm": ["1.75rem", { lineHeight: "2.25rem", letterSpacing: "0em", fontWeight: "500" }],
+            "title-sm": ["1rem", { lineHeight: "1.5rem", letterSpacing: "0.01em", fontWeight: "600" }],
+            "body-lg": ["1.125rem", { lineHeight: "1.75rem", letterSpacing: "0.01em", fontWeight: "400" }],
+            "label-sm": ["0.6875rem", { lineHeight: "0.875rem", letterSpacing: "0.08em", fontWeight: "700" }],
+            "body-md": ["1rem", { lineHeight: "1.625rem", letterSpacing: "0.01em", fontWeight: "400" }],
+            "title-md": ["1.125rem", { lineHeight: "1.625rem", letterSpacing: "0.005em", fontWeight: "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #dac1b9;
+      border-radius: 4px;
+    }
+  </style>
+</head>
+<body class="bg-surface-container-low text-on-surface antialiased selection:bg-primary-container selection:text-on-primary min-h-screen flex flex-col font-body-md text-body-md">
+<!-- ==================== TOP NAVIGATION BAR ==================== -->
+<header class="bg-surface dark:bg-inverse-surface border-b border-outline-variant dark:border-outline shadow-sm dark:shadow-none sticky top-0 z-50">
+<div class="flex justify-between items-center w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-sm gap-space-md">
+<!-- Brand & Guild Mark -->
+<div class="flex items-center gap-space-md shrink-0">
+<a class="flex items-center gap-2 group" href="#">
+<div class="w-8 h-8 rounded-lg bg-primary flex items-center justify-center text-on-primary transition-transform group-hover:scale-105">
+<span class="material-symbols-outlined text-[20px]" data-icon="token">token</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm text-primary dark:text-inverse-primary tracking-tight">CraftConnect</span>
+<span class="block text-[10px] tracking-widest text-secondary font-label-sm uppercase -mt-1 font-semibold">Artisan Guild • Django</span>
+</div>
+</a>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden lg:flex items-center gap-space-lg">
+<a class="text-primary dark:text-inverse-primary border-b-2 border-primary dark:border-inverse-primary pb-1 font-title-sm text-title-sm transition-colors duration-200" href="#marketplace">Marketplace</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#stories">Artisan Stories</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#guilds">Curated Guilds</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-body-md text-body-md hover:text-on-surface dark:hover:text-inverse-on-surface hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200 flex items-center gap-1" href="#studio-panel">
+<span>AI Catalogue Studio</span>
+<span class="px-1.5 py-0.5 text-[10px] bg-secondary-container text-on-secondary-container font-label-sm rounded">Beta</span>
+</a>
+</nav>
+<!-- Right Utility Cluster & Role Switcher -->
+<div class="flex items-center gap-space-md shrink-0">
+<!-- Role Switcher Segmented Control -->
+<div class="hidden md:flex items-center bg-surface-container rounded-lg p-0.5 border border-outline-variant text-[11px] font-label-md">
+<button class="px-2.5 py-1 rounded-DEFAULT bg-surface text-primary shadow-xs font-semibold">Buyer View</button>
+<a class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors" href="#studio-panel">Artisan Studio</a>
+<a class="px-2.5 py-1 text-on-surface-variant hover:text-on-surface transition-colors flex items-center gap-1" href="#admin">
+<span>Admin</span>
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+</a>
+</div>
+<!-- Currency & Wishlist -->
+<div class="flex items-center gap-space-sm pl-2 border-l border-outline-variant">
+<span class="text-label-md font-label-md text-on-surface-variant bg-surface-container px-2 py-1 rounded">INR ₹</span>
+<button class="relative p-2 text-on-surface-variant hover:text-primary transition-colors" title="Favorites">
+<span class="material-symbols-outlined" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+<span class="absolute top-1 right-1 w-4 h-4 bg-primary text-on-primary text-[10px] font-bold rounded-full flex items-center justify-center">3</span>
+</button>
+<button class="p-2 text-on-surface-variant hover:text-primary transition-colors" title="Preferences">
+<span class="material-symbols-outlined" data-icon="tune">tune</span>
+</button>
+<!-- Verified Artisan Avatar -->
+<div class="flex items-center gap-1 pl-1">
+<div class="relative w-8 h-8 rounded-full border border-outline-variant overflow-hidden bg-surface-container-high">
+<img class="w-full h-full object-cover" data-alt="A portrait of an Indian artisan smiling gently in a sunlit craft workshop with textured terracotta pots and handloom textiles softly blurred in the background. Natural linen clothes with warm raw umber light diffusing from a courtyard." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC82Egufl_FFq6nALrB9KYw8ReORjbmPBH8u49hZL1toYSUj5bbvN2keCC4MOTF8t9WCvYKjsOCVJsX7ccpH_tXzNCvbDstMFp99zKAug9pzRxYJ9lURxUZtpbXWojPYksRkwv2B-zHI6E7A2WZU1Eofp8UGmfP6B392xODUtqNWLlBrLHXOes5EKCopQF2rgKGdtBaxmTf4bs2xjQU6VNoWaA70-GrDEY5ZMlgPyNzTq_DSzZph-Lp"/>
+<span class="absolute bottom-0 right-0 w-2.5 h-2.5 bg-secondary border border-surface rounded-full flex items-center justify-center text-[7px] text-on-secondary" title="Verified Maker">✓</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</header>
+<!-- ==================== INT253 SYLLABUS & ARCHITECTURE BAR ==================== -->
+<div class="bg-secondary text-on-secondary py-1.5 border-b border-outline-variant text-[12px] font-label-md tracking-wider">
+<div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg flex flex-wrap justify-between items-center gap-2">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[16px] text-secondary-container" data-icon="terminal">terminal</span>
+<span class="font-semibold text-secondary-container tracking-normal">INT253 Architecture Blueprint:</span>
+<span class="hidden md:inline font-normal text-surface-container-high">PostgreSQL Models &amp; Django ORM Filtering • Hugging Face Natural-Language Semantic API • Role-Based Auth</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="px-2 py-0.5 rounded bg-surface/10 border border-surface/20 text-[10px]">Django 5.1.x</span>
+<span class="px-2 py-0.5 rounded bg-surface/10 border border-surface/20 text-[10px]">PostgreSQL 16</span>
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container text-[10px] font-bold">HF Inference Verified</span>
+</div>
+</div>
+</div>
+<main class="flex-grow">
+<!-- ==================== HERO & SMART CRAFT DISCOVERY ==================== -->
+<section class="py-space-xl md:py-16 border-b border-outline-variant bg-surface relative overflow-hidden">
+<!-- Subtle tactile texture backdrop -->
+<div class="absolute inset-0 opacity-[0.03] pointer-events-none bg-[radial-gradient(#1c1c17_1px,transparent_1px)] [background-size:16px_16px]"></div>
+<div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg relative">
+<div class="max-w-3xl mx-auto text-center mb-8">
+<div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-surface-container border border-outline-variant mb-4">
+<span class="material-symbols-outlined text-primary text-[16px]" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-label-md font-label-md text-on-surface-variant">Semantic Provenance Matching • Zero Hallucination Guarantee</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-on-surface mb-3 tracking-tight">
+            Distinctive Handmade Crafts, <span class="italic font-normal text-primary">Intelligently Connected.</span>
+</h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-2xl mx-auto">
+            Bridging rural heritage guild workshops with mindful patrons through verified Django ORM models and Hugging Face semantic vector retrieval.
+          </p>
+</div>
+<!-- Prominent Natural Language Discovery Bar -->
+<div class="max-w-4xl mx-auto">
+<div class="bg-surface-container-lowest p-2 md:p-3 rounded-lg border border-outline-variant shadow-sm hover:border-primary transition-colors">
+<form action="#marketplace" class="flex flex-col md:flex-row gap-2 items-center" method="GET">
+<div class="flex items-center gap-3 w-full px-3 py-1.5 flex-grow">
+<span class="material-symbols-outlined text-primary text-[24px]" data-icon="search">search</span>
+<input class="w-full bg-transparent border-none p-0 text-on-surface font-body-md text-body-md focus:ring-0 placeholder:text-outline" name="q" placeholder="Describe your occasion, price, or craft heritage in plain English..." type="text" value="I need a unique housewarming gift under ₹1,000, preferably handmade with natural materials."/>
+</div>
+<div class="flex items-center gap-2 w-full md:w-auto shrink-0 justify-end">
+<button class="p-2 text-on-surface-variant hover:text-primary rounded hover:bg-surface-container transition-colors" title="Voice or Audio Prompt" type="button">
+<span class="material-symbols-outlined text-[20px]" data-icon="mic">mic</span>
+</button>
+<button class="w-full md:w-auto px-5 py-3 rounded-lg bg-primary hover:bg-[#A25337] text-on-primary font-label-lg text-label-lg flex items-center justify-center gap-2 transition-all active:scale-[0.98] shadow-sm" type="submit">
+<span class="material-symbols-outlined text-[18px]" data-icon="auto_awesome">auto_awesome</span>
+<span>AI Match &amp; Explain</span>
+</button>
+</div>
+</form>
+</div>
+<!-- Semantic Chips -->
+<div class="mt-3 flex flex-wrap items-center gap-2 justify-center text-label-md font-label-md">
+<span class="text-on-surface-variant text-[11px]">Try queries:</span>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-colors">
+              Terracotta serveware under ₹800
+            </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-colors">
+              Handloom tussar silk for anniversary
+            </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-colors">
+              Carved teakwood desk accessories under ₹1,500
+            </button>
+<button class="px-2.5 py-1 rounded bg-surface-container hover:bg-surface-variant border border-outline-variant text-on-surface transition-colors">
+              Cold-pressed ceramic planter pot
+            </button>
+</div>
+<!-- Live AI Insight Banner (Transparency Explainer) -->
+<div class="mt-6 bg-surface-container-high/60 border border-outline-variant rounded-lg p-3.5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded bg-secondary/10 flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[20px]" data-icon="psychology">psychology</span>
+</div>
+<div class="text-[12px] leading-relaxed">
+<span class="font-bold text-secondary font-label-md">Query Decomposition Active:</span> 
+                Hugging Face parsed: <span class="bg-surface px-1.5 py-0.5 rounded border border-outline-variant font-mono text-[11px]">Price: &lt;= ₹1000</span>, <span class="bg-surface px-1.5 py-0.5 rounded border border-outline-variant font-mono text-[11px]">Material: [clay, wood, brass]</span>, <span class="bg-surface px-1.5 py-0.5 rounded border border-outline-variant font-mono text-[11px]">Occasion: housewarming</span>.
+                Verified strictly via <code class="text-primary font-mono font-semibold">Product.objects.filter()</code> without hallucinations.
+              </div>
+</div>
+<span class="text-[11px] text-secondary font-label-sm font-bold uppercase tracking-wider shrink-0 bg-secondary-container px-2 py-1 rounded">24ms Latency</span>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== MARKETPLACE CATALOGUE WITH AI RANKING ==================== -->
+<section class="py-space-xl max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg" id="marketplace">
+<!-- Section Header & Filter Toolbar -->
+<div class="flex flex-col lg:flex-row lg:items-end justify-between gap-space-lg mb-8 pb-4 border-b border-outline-variant">
+<div>
+<div class="flex items-center gap-2 mb-1">
+<span class="h-2 w-2 rounded-full bg-primary"></span>
+<span class="text-label-sm font-label-sm text-primary uppercase">PostgreSQL Indexed Catalogue</span>
+</div>
+<h2 class="text-headline-md font-headline-md text-on-surface">Curated Artisan Heritage Catalogue</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Direct fair-trade provenance. Every piece verified by regional master guilds.</p>
+</div>
+<!-- Filter Controls -->
+<div class="flex flex-wrap items-center gap-3">
+<!-- Category Quick Pills -->
+<div class="flex items-center bg-surface-container p-1 rounded border border-outline-variant">
+<button class="px-3 py-1 bg-surface font-label-md text-label-md text-primary rounded shadow-xs">All Guilds</button>
+<button class="px-3 py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Pottery</button>
+<button class="px-3 py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Handloom</button>
+<button class="px-3 py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Woodcraft</button>
+<button class="px-3 py-1 font-label-md text-label-md text-on-surface-variant hover:text-on-surface">Dhokra Metal</button>
+</div>
+<!-- Price & Studio stock toggle -->
+<div class="flex items-center gap-2 bg-surface-container-lowest px-3 py-1.5 rounded border border-outline-variant text-label-md">
+<span class="text-on-surface-variant">Max Price:</span>
+<span class="font-semibold text-primary">₹1,500</span>
+<input class="w-16 accent-primary h-1 bg-surface-variant rounded cursor-pointer" max="5000" min="300" type="range" value="1500"/>
+</div>
+<label class="flex items-center gap-2 bg-surface-container-lowest px-3 py-1.5 rounded border border-outline-variant cursor-pointer text-label-md font-label-md">
+<input checked="" class="rounded-DEFAULT border-outline text-secondary focus:ring-0" type="checkbox"/>
+<span>In Stock in Studio</span>
+</label>
+</div>
+</div>
+<!-- 6 Distinct High-End Editorial Product Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter-lg">
+<!-- CARD 1: Terracotta Teapot (AI MATCH 98%) -->
+<article class="bg-[#FCFAF7] border border-[#D9C5A5] rounded-DEFAULT p-3 flex flex-col justify-between hover:shadow-md transition-all duration-200 group">
+<div>
+<!-- Framed Image Container -->
+<div class="relative w-full aspect-[4/5] bg-surface-container mb-3 overflow-hidden rounded-DEFAULT border border-[#D9C5A5]">
+<img class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" data-alt="An artisanal wheel-thrown terracotta teapot accompanied by two matching hand-burnished tumblers resting on a rough linen table runner. Warm morning sunlight streams across the clay texture, highlighting wood ash glaze variations and earthy terracotta tones." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDc7Rt35Q6nNNstmkoT2EKgFLjFr51isSvLn1_EXeclQSwpPoFSn1wIPE8aXITQqduSsNDxTnghvErgnkKOQsm8i_ZmVWG2r2KJf__RzMUu6NGhF0BXHRbqkisvxhJFn1j4Ud7_KzZ1E-sQGLH_K9osjS5Zw5VMolBQDhnAE70bg4Q8AC5pXxIUt8NjZTWYvUToQVx8YT4I2iOuNdSmCKFbowh9AXzl6riFLAfHCX2UYPzd7_kHt3js"/>
+<!-- AI Match Pill -->
+<div class="absolute top-2 left-2 bg-secondary text-on-secondary px-2 py-1 rounded text-[11px] font-label-md flex items-center gap-1 shadow-xs">
+<span class="material-symbols-outlined text-[13px]" data-icon="sparkles" style="font-variation-settings: 'FILL' 1;">arrow_back_ios_new</span>
+<span>98% AI Intent Match</span>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface/90 hover:bg-surface text-primary flex items-center justify-center transition-colors shadow-xs" title="Save to Wishlist">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+<div class="absolute bottom-2 left-2 right-2 bg-surface/95 backdrop-blur-xs px-2.5 py-1.5 rounded border border-outline-variant text-[11px] text-on-surface-variant flex items-center justify-between">
+<span>Natural terracotta • under ₹1,000</span>
+<span class="text-secondary font-bold">Housewarming</span>
+</div>
+</div>
+<!-- Provenance & Title -->
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span>
+                Kutch, Gujarat
+              </span>
+<span class="text-[11px] text-primary font-semibold">4 left in kiln batch</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface mb-1 group-hover:text-primary transition-colors">
+              Hand-thrown Terracotta Teapot &amp; Tumblers
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">By Master Devraj Kumhar • Kutch Clay Heritage</p>
+<!-- Material Chips -->
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Riverbed Clay</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Wood Ash Glaze</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">100% Lead-Free</span>
+</div>
+</div>
+<!-- Price & Actions -->
+<div class="pt-3 border-t border-outline-variant flex items-center justify-between mt-auto">
+<div>
+<span class="text-[11px] text-on-surface-variant block">Fair Artisan Price</span>
+<span class="text-title-lg font-bold text-primary">₹890</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="px-3.5 py-2 rounded bg-primary hover:bg-[#A25337] text-on-primary text-label-md font-label-md transition-colors flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px]" data-icon="shopping_bag">shopping_bag</span>
+<span>Enquire / Reserve</span>
+</button>
+</div>
+</div>
+</article>
+<!-- CARD 2: Indigo Dabu Printed Cotton Throw -->
+<article class="bg-[#FCFAF7] border border-[#D9C5A5] rounded-DEFAULT p-3 flex flex-col justify-between hover:shadow-md transition-all duration-200 group">
+<div>
+<div class="relative w-full aspect-[4/5] bg-surface-container mb-3 overflow-hidden rounded-DEFAULT border border-[#D9C5A5]">
+<img class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" data-alt="Deep indigo dyed hand-block printed cotton textile throw draped elegantly over a rustic wooden bench. Detailed geometric floral patterns created with mud-resist Dabu technique showing natural indigo blue gradients and rich texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCCbb75L_jX7jUzVUGwpdyhzQ2CUDdxjaW-GoxXppqZJLcYkN9FU3LmDDDiovnwa9mUcbi4iy4hE-SqsOKs-LaJbBQQXKgjBpgxKVSNm-bhDjAu0gUpx4DcYLuIukej4JftHzvsyzp_i2YDdlcYxKKAeTw5kqmYJT7TJvkjnBOXAltjsS2K7UqbzEtFXd1RmTqSsmSlb0v69PYnjgMpIeeN6gKIUdReT4Jkr59t93NzRWqIvkHBEta9"/>
+<div class="absolute top-2 left-2 bg-surface text-on-surface px-2 py-1 rounded text-[11px] font-label-md border border-outline-variant shadow-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px] text-secondary" data-icon="verified">verified</span>
+<span>Mud-Resist Craft</span>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface/90 hover:bg-surface text-outline hover:text-primary flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span>
+                Bagru, Rajasthan
+              </span>
+<span class="text-[11px] text-on-surface-variant font-medium">7 pieces left</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface mb-1 group-hover:text-primary transition-colors">
+              Indigo Dabu Hand-block Printed Cotton Throw
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">By Meera Devi • 5th Gen Dabu Printer</p>
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">100% Organic Cotton</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Natural Indigo</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant flex items-center justify-between mt-auto">
+<div>
+<span class="text-[11px] text-on-surface-variant block">Fair Artisan Price</span>
+<span class="text-title-lg font-bold text-on-surface">₹1,250</span>
+</div>
+<button class="px-3.5 py-2 rounded border border-primary text-primary hover:bg-primary/5 text-label-md font-label-md transition-colors flex items-center gap-1.5">
+<span>View Provenance</span>
+</button>
+</div>
+</article>
+<!-- CARD 3: Sheesham Wood Spice Box -->
+<article class="bg-[#FCFAF7] border border-[#D9C5A5] rounded-DEFAULT p-3 flex flex-col justify-between hover:shadow-md transition-all duration-200 group">
+<div>
+<div class="relative w-full aspect-[4/5] bg-surface-container mb-3 overflow-hidden rounded-DEFAULT border border-[#D9C5A5]">
+<img class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" data-alt="A hand-carved circular sheesham wood masala spice box with delicate brass wire floral inlays on the lid. The box is opened slightly to reveal seven individual aromatic spice chambers on a warm polished tabletop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCIjAMTd-Io1aXaky32Gfr2rr5qpaC8hbY7QZc8L_caPYtKd2_tBY0A3mlU-m9x5ApLITCeB6FRX3xZkRUnQnZAZb3wM8z7quJO6fYH-QUZq1E3C_2_HLxr1UqXM8fL0ZyceLyorOCPFUXU1entA8wPvocK_EZzMD7fZUL6gx9ky8OYbtmuGxUO7bWS718NTWfjSuAsV2YNycIuOAsr-e6SXp9pDug4VjJ2NwRLqc6UAA2Xq8CLMZid"/>
+<div class="absolute top-2 left-2 bg-primary text-on-primary px-2 py-1 rounded text-[11px] font-label-md shadow-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="hotel_class" style="font-variation-settings: 'FILL' 1;">hotel_class</span>
+<span>Featured Heritage Craft</span>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface/90 hover:bg-surface text-outline hover:text-primary flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span>
+                Saharanpur, UP
+              </span>
+<span class="text-[11px] text-secondary font-semibold">Master Guild Certified</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface mb-1 group-hover:text-primary transition-colors">
+              Carved Sheesham Wood Spice Box with Brass Inlay
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">By Rajesh Sutar • Saharanpur Woodcraft</p>
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Reclaimed Rosewood</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Solid Brass Inlay</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant flex items-center justify-between mt-auto">
+<div>
+<span class="text-[11px] text-on-surface-variant block">Fair Artisan Price</span>
+<span class="text-title-lg font-bold text-on-surface">₹1,450</span>
+</div>
+<button class="px-3.5 py-2 rounded bg-primary hover:bg-[#A25337] text-on-primary text-label-md font-label-md transition-colors flex items-center gap-1.5">
+<span>Enquire / Reserve</span>
+</button>
+</div>
+</article>
+<!-- CARD 4: Glazed Stoneware Fermentation Crock (AI MATCH 94%) -->
+<article class="bg-[#FCFAF7] border border-[#D9C5A5] rounded-DEFAULT p-3 flex flex-col justify-between hover:shadow-md transition-all duration-200 group">
+<div>
+<div class="relative w-full aspect-[4/5] bg-surface-container mb-3 overflow-hidden rounded-DEFAULT border border-[#D9C5A5]">
+<img class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" data-alt="An artisanal matte-glazed ceramic fermentation crock in muted ivory and sage tones with a heavy matching stone lid. It sits on a solid teakwood kitchen pantry shelf bathed in soft natural diffuse light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgJzr6fbOm2nVBruP9qS6QvyXqO4Fo_Y5HDrLA5FwmmSyC0pVCDjnrDeLuT8rPJNNMwR-lgc2b19Wk7u8liNW5Qjgl_gId9ZsJVrtm_hd5NDEgWV6q6UdUE9Y2zZXA54euVHt3fT_wzqrHSsOy8XP9eHu8YHUbgfkphp0grHtQsuPwWsq3JPY2VMJlvcw_5Xak6JChAYDBSVihcuog-56VBlvd4CO3DdjHNrSiAOabHD7TwG5Tdn6V"/>
+<div class="absolute top-2 left-2 bg-secondary text-on-secondary px-2 py-1 rounded text-[11px] font-label-md flex items-center gap-1 shadow-xs">
+<span class="material-symbols-outlined text-[13px]" data-icon="sparkles" style="font-variation-settings: 'FILL' 1;">arrow_back_ios_new</span>
+<span>94% AI Match</span>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface/90 hover:bg-surface text-primary flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite" style="font-variation-settings: 'FILL' 1;">favorite</span>
+</button>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span>
+                Auroville
+              </span>
+<span class="text-[11px] text-secondary font-medium">In Stock</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface mb-1 group-hover:text-primary transition-colors">
+              Glazed Stoneware Fermentation Crock
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">By Ananya Paul • Auroville Clay Collective</p>
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">High-fire Stoneware</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Natural Food-Safe Glaze</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant flex items-center justify-between mt-auto">
+<div>
+<span class="text-[11px] text-on-surface-variant block">Fair Artisan Price</span>
+<span class="text-title-lg font-bold text-primary">₹950</span>
+</div>
+<button class="px-3.5 py-2 rounded bg-primary hover:bg-[#A25337] text-on-primary text-label-md font-label-md transition-colors flex items-center gap-1.5">
+<span>Enquire / Reserve</span>
+</button>
+</div>
+</article>
+<!-- CARD 5: Sabai Grass Storage Basket -->
+<article class="bg-[#FCFAF7] border border-[#D9C5A5] rounded-DEFAULT p-3 flex flex-col justify-between hover:shadow-md transition-all duration-200 group">
+<div>
+<div class="relative w-full aspect-[4/5] bg-surface-container mb-3 overflow-hidden rounded-DEFAULT border border-[#D9C5A5]">
+<img class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" data-alt="A handwoven Sabai grass round laundry or planter storage basket with subtle natural brown braiding and sturdy handles. Resting on a warm unpolished limestone floor with botanical house plants nearby." src="https://lh3.googleusercontent.com/aida-public/AB6AXuC_hq7q6wbWnLSdhxqd0I9ydN3fE3BZ_alrP4EPp8jPZm8qx5wNZQMwdu3GiHUsXF2W8WKnWUjONsRSRatmfLE3EqrklteuLnAIhibq4WTx23B0mxl0oniNZBwz_d3G2vzuWh1d15lxmzaJ8Y81KNh7TI4KdF851CsNotz9ndttYUNByN2ZWuzSKCcvW-efSX2icH01gUL_j8UBwbFvOWSTYeVQvlif3mFnTMlViIgmYlSjJFYC3b9L"/>
+<div class="absolute top-2 left-2 bg-surface text-on-surface px-2 py-1 rounded text-[11px] font-label-md border border-outline-variant shadow-xs">
+<span>Tribal Eco-Craft</span>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface/90 hover:bg-surface text-outline hover:text-primary flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span>
+                Mayurbhanj, Odisha
+              </span>
+<span class="text-[11px] text-secondary font-medium">In Stock</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface mb-1 group-hover:text-primary transition-colors">
+              Sabai Grass Handwoven Storage Basket
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">By Sonali Soren • Mayurbhanj Women's Cooperative</p>
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Wild Sabai Grass</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Cotton Thread</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant flex items-center justify-between mt-auto">
+<div>
+<span class="text-[11px] text-on-surface-variant block">Fair Artisan Price</span>
+<span class="text-title-lg font-bold text-on-surface">₹680</span>
+</div>
+<button class="px-3.5 py-2 rounded bg-primary hover:bg-[#A25337] text-on-primary text-label-md font-label-md transition-colors flex items-center gap-1.5">
+<span>Enquire / Reserve</span>
+</button>
+</div>
+</article>
+<!-- CARD 6: Dhokra Lost-Wax Bell Metal Oil Lamp -->
+<article class="bg-[#FCFAF7] border border-[#D9C5A5] rounded-DEFAULT p-3 flex flex-col justify-between hover:shadow-md transition-all duration-200 group">
+<div>
+<div class="relative w-full aspect-[4/5] bg-surface-container mb-3 overflow-hidden rounded-DEFAULT border border-[#D9C5A5]">
+<img class="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300" data-alt="An ancient Dhokra lost-wax cast brass oil lamp depicting tribal avian motifs with antique patina. Lit gently by a small cotton wick flame casting golden warmth over handcrafted metal ridges." src="https://lh3.googleusercontent.com/aida-public/AB6AXuB6J1n7IpSyu-OQ4ahelzei3bmSgpAyikT7DGooKk9RziYZsPwN-MLX53OxQUVeBU6THRuDEiaEzLwjalxaVPrxFTXDucpyexD30miGuUz2qgX0wNH3JT-7YnlBMHMRFIjnTSKkzOuPizCQgffr8voD2oTFPVYSgD3zgjF3DSQvAdwVJ9UDzQZ_mrCwj5azYYNX3YFqPPRaVOyJdadJc5sHMMfg-2Q0b1RaoRSjOsZib2n40uJvQq_c"/>
+<div class="absolute top-2 left-2 bg-[#294C3A] text-on-secondary px-2 py-1 rounded text-[11px] font-label-md shadow-xs flex items-center gap-1">
+<span class="material-symbols-outlined text-[13px]" data-icon="workspace_premium" style="font-variation-settings: 'FILL' 1;">workspace_premium</span>
+<span>GI Tagged Craft</span>
+</div>
+<button class="absolute top-2 right-2 w-8 h-8 rounded-full bg-surface/90 hover:bg-surface text-outline hover:text-primary flex items-center justify-center transition-colors shadow-xs">
+<span class="material-symbols-outlined text-[18px]" data-icon="favorite">favorite</span>
+</button>
+</div>
+<div class="flex items-center justify-between mb-1">
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-secondary flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]" data-icon="location_on">location_on</span>
+                Bastar, Chhattisgarh
+              </span>
+<span class="text-[11px] text-on-surface-variant font-medium">3 cast pieces</span>
+</div>
+<h3 class="text-title-lg font-title-lg text-on-surface mb-1 group-hover:text-primary transition-colors">
+              Dhokra Lost-Wax Bell Metal Oil Lamp
+            </h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant mb-2">By Birbal Ghadwa • 4,000-Yr Lineage Metalcaster</p>
+<div class="flex flex-wrap gap-1.5 mb-3">
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Lost-Wax Casting</span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-[11px] font-label-md border border-outline-variant">Recycled Brass &amp; Bronze</span>
+</div>
+</div>
+<div class="pt-3 border-t border-outline-variant flex items-center justify-between mt-auto">
+<div>
+<span class="text-[11px] text-on-surface-variant block">Fair Artisan Price</span>
+<span class="text-title-lg font-bold text-on-surface">₹1,120</span>
+</div>
+<button class="px-3.5 py-2 rounded bg-primary hover:bg-[#A25337] text-on-primary text-label-md font-label-md transition-colors flex items-center gap-1.5">
+<span>Enquire / Reserve</span>
+</button>
+</div>
+</article>
+</div>
+</section>
+<!-- ==================== ARTISAN CATALOGUE ASSISTANT SHOWCASE ==================== -->
+<section class="py-space-xl bg-surface-container-high/50 border-t border-b border-outline-variant" id="studio-panel">
+<div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg">
+<div class="max-w-3xl mb-8">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded bg-secondary-container text-on-secondary-container font-label-sm text-label-sm uppercase mb-3">
+<span class="material-symbols-outlined text-[16px]" data-icon="construction">construction</span>
+<span>INT253 Core AI Feature B</span>
+</div>
+<h2 class="text-headline-md font-headline-md text-on-surface mb-2">
+            Artisan Studio: AI Catalogue Enhancement Demo
+          </h2>
+<p class="text-body-md font-body-md text-on-surface-variant">
+            Empowering non-English and regional makers. An artisan uploads informal notes; our Django endpoint queries Hugging Face to generate high-converting, culturally accurate editorial listings.
+          </p>
+</div>
+<!-- Interactive Workbench Card -->
+<div class="bg-surface rounded-lg border border-outline-variant shadow-sm overflow-hidden grid grid-cols-1 lg:grid-cols-12">
+<!-- LEFT PANEL: Artisan's Raw Form Input -->
+<div class="lg:col-span-5 p-space-lg md:p-8 border-b lg:border-b-0 lg:border-r border-outline-variant bg-[#FCFAF7] flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 mb-4 border-b border-outline-variant">
+<span class="text-title-sm font-title-sm text-on-surface flex items-center gap-2">
+<span class="material-symbols-outlined text-outline" data-icon="edit_note">edit_note</span>
+                  Artisan Raw Entry (Hindi / Dialect / Simple)
+                </span>
+<span class="text-[11px] text-on-surface-variant bg-surface-container px-2 py-0.5 rounded font-mono">POST /api/v1/enrich/</span>
+</div>
+<!-- Form Fields -->
+<div class="space-y-4">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Artisan's Own Notes</label>
+<textarea class="w-full bg-surface-container-lowest border border-outline-variant rounded p-3 text-body-sm font-body-sm focus:border-primary focus:ring-1 focus:ring-primary" readonly="" rows="3">Handmade clay pot for keeping water cool, red mud, no chemical, ₹450</textarea>
+</div>
+<div class="grid grid-cols-2 gap-3">
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Base Fair Price</label>
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 text-body-sm font-medium">
+<span>₹ 450</span>
+</div>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Craft Region</label>
+<div class="flex items-center bg-surface-container-lowest border border-outline-variant rounded px-3 py-2 text-body-sm text-on-surface-variant">
+<span>Alwar, Rajasthan</span>
+</div>
+</div>
+</div>
+<div>
+<label class="block text-label-md font-label-md text-on-surface mb-1">Studio Snap Uploaded</label>
+<div class="flex items-center gap-3 p-2 bg-surface-container-lowest border border-outline-variant rounded">
+<div class="w-12 h-12 rounded bg-surface-variant overflow-hidden shrink-0">
+<img class="w-full h-full object-cover" data-alt="A raw, authentic unpolished terracotta water jug photograph taken in an earthen pottery village courtyard in Rajasthan." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDBgzmgkmrTvC7eXqyD9TyzolgIqPb1rybY6wNaTnt76ZMbsfUJr_vK2RKrqLgKGnRYUH_M2ESyNrvaewvJsEXkDLLaNEUaNPwvW35yoj2HKomrO5vn6OrQSbvMvEuPGfIxayaGhC5_0GxErfs1IiuXfD2g-629ujBFPGo3CYPnKpveZQvqxKostPnhw58k_5bvOYU_p2LEMfelEquc1I3dg-BI2P1wrtsnP4_yD21wMU1vpd4q-yMG"/>
+</div>
+<div class="text-[12px]">
+<span class="font-medium block text-on-surface">raw_pot_0921.jpg</span>
+<span class="text-outline">1.8 MB • Image tags: Earthen pot, terracotta, clay</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="pt-6 mt-6 border-t border-outline-variant">
+<button class="w-full py-2.5 px-4 rounded bg-surface-container border border-outline text-on-surface text-label-md font-label-md hover:bg-surface-variant transition-colors flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="refresh">refresh</span>
+<span>Regenerate Suggestions via Hugging Face</span>
+</button>
+</div>
+</div>
+<!-- RIGHT PANEL: AI Generated Editorial Preview -->
+<div class="lg:col-span-7 p-space-lg md:p-8 bg-surface flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-3 mb-4 border-b border-outline-variant">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-secondary" data-icon="auto_awesome">auto_awesome</span>
+<span class="text-title-sm font-title-sm text-secondary font-semibold">AI Generated Editorial Listing (Preview)</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-container text-[11px] font-label-sm font-bold">Model: Mistral-7B-Instruct-v0.2</span>
+</div>
+<!-- AI Output Fields -->
+<div class="space-y-4">
+<!-- Polished Title -->
+<div>
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-outline block mb-1">Optimized Marketplace Title</span>
+<div class="p-2.5 rounded bg-surface-container border border-outline-variant font-title-lg text-title-lg text-primary">
+                    Hand-burnished Terracotta Water Carafe with Natural Porous Cooling
+                  </div>
+</div>
+<!-- Polished Editorial Description -->
+<div>
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-outline block mb-1">Curated Provenance Description</span>
+<div class="p-3 rounded bg-surface-container border border-outline-variant text-body-sm font-body-sm text-on-surface space-y-2 leading-relaxed">
+<p>
+                      Crafted from locally sourced alluvial clay of the Aravalli foothills, this earthen carafe utilizes micro-porous evaporative cooling to naturally chill drinking water by 4°C–6°C without electricity. 
+                    </p>
+<p class="text-on-surface-variant italic">
+                      Zero synthetic slips or toxic chemical glazes. Hand-rubbed with river stones for a smooth tactile finish that honors four generations of Alwar pottery tradition.
+                    </p>
+</div>
+</div>
+<!-- Suggested Metadata & Tags -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+<div>
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-outline block mb-1">Suggested Taxonomy</span>
+<div class="p-2 bg-surface-container rounded border border-outline-variant text-body-sm font-medium text-secondary">
+                      Earthen Home &amp; Kitchenware → Tabletop
+                    </div>
+</div>
+<div>
+<span class="text-[11px] font-label-sm uppercase tracking-wider text-outline block mb-1">Semantic Hashtags</span>
+<div class="p-2 bg-surface-container rounded border border-outline-variant text-[11px] font-mono text-primary flex flex-wrap gap-1">
+<span>#TerracottaCooling</span>
+<span>#PlasticFree</span>
+<span>#SlowLiving</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Artisan Action Buttons -->
+<div class="pt-6 mt-6 border-t border-outline-variant flex flex-col sm:flex-row items-center justify-between gap-3">
+<button class="w-full sm:w-auto px-4 py-2 border border-outline-variant text-on-surface-variant hover:text-on-surface text-label-md font-label-md rounded transition-colors">
+                Customise Manually
+              </button>
+<button class="w-full sm:w-auto px-6 py-2.5 rounded bg-secondary hover:bg-[#203c2e] text-on-secondary text-label-md font-label-md transition-all shadow-sm flex items-center justify-center gap-2">
+<span class="material-symbols-outlined text-[18px]" data-icon="cloud_upload">cloud_upload</span>
+<span>Accept &amp; Push to Django DB</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ==================== EDITORIAL STORY SPOTLIGHT MODULE ==================== -->
+<section class="py-space-xl max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg" id="stories">
+<div class="bg-[#294C3A] text-[#F7F3EB] rounded-lg overflow-hidden grid grid-cols-1 lg:grid-cols-12 shadow-md">
+<div class="lg:col-span-6 p-space-lg md:p-12 flex flex-col justify-between">
+<div>
+<div class="inline-flex items-center gap-2 px-2.5 py-1 rounded bg-[#F7F3EB]/10 text-[#F7F3EB] text-[11px] font-label-sm uppercase mb-4 tracking-widest">
+<span>Editorial Journal • Vol. 04</span>
+</div>
+<h2 class="text-headline-md font-headline-md mb-4 text-[#F7F3EB]">
+              "The Earth remembers the hand that turns it."
+            </h2>
+<blockquote class="italic text-body-lg font-body-lg text-[#F7F3EB]/80 border-l-2 border-[#D9C5A5] pl-4 mb-6">
+              In an era dominated by rapid synthetic production, slow craft is an act of cultural preservation. Our Django platform guarantees that 88% of every sale flows directly into village artisan accounts.
+            </blockquote>
+<p class="text-body-sm font-body-sm text-[#F7F3EB]/70 leading-relaxed mb-6">
+              Devraj Kumhar’s family has worked the Kutch salt-clay for two hundred years. With CraftConnect’s AI semantic match, his functional terracotta is now discovered by architects, chefs, and tea connoisseurs worldwide.
+            </p>
+</div>
+<div class="flex items-center gap-4 pt-4 border-t border-[#F7F3EB]/20">
+<div>
+<span class="font-bold text-title-sm block">Devraj Kumhar</span>
+<span class="text-[12px] text-[#D9C5A5]">Master Potter, Kutch Guild</span>
+</div>
+<a class="ml-auto inline-flex items-center gap-1.5 px-4 py-2 rounded bg-[#B96345] hover:bg-[#A25337] text-[#F7F3EB] font-label-md text-label-md transition-colors" href="#guilds">
+<span>Read Studio Story</span>
+<span class="material-symbols-outlined text-[16px]" data-icon="arrow_forward">arrow_forward</span>
+</a>
+</div>
+</div>
+<div class="lg:col-span-6 relative min-h-[360px] bg-surface-container">
+<img class="w-full h-full object-cover" data-alt="An authentic, cinematic high-contrast photograph of an elderly Indian potter with clay-spattered hands shaping a delicate vessel on a spinning wooden kick wheel. Natural side lighting cuts through the dusty warm air of a rural craft workshop." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDi3CppubDn_m69s95tgT8vRIG1h373C9O8fdGNpUGJy63TKXOsueJxpfFFt1AXNP059wks-XJbG11U_rojUj4TbCoR5TR_6vNciFiecKo93eNMNnbnT-oCONQfNWpOpllb7Ng4MkyFzlo-1THQleNhylVDsV-k9RmtFi36tOd7i2ZeWYFOqyE0_Jj3zn7JTlMcxbnxOYqPihX6nxxDrYPvl6hFomH68RvhlCKIa0X4qB0lbpDs0W77"/>
+</div>
+</div>
+</section>
+</main>
+<!-- ==================== FOOTER ==================== -->
+<footer class="bg-surface-container-low dark:bg-inverse-surface border-t border-outline-variant dark:border-outline">
+<div class="w-full px-margin-sm md:px-margin lg:px-margin-lg max-w-[1440px] mx-auto py-space-xl flex flex-col md:flex-row justify-between items-center gap-space-lg">
+<!-- Brand & Copyright -->
+<div class="text-center md:text-left">
+<div class="flex items-center justify-center md:justify-start gap-2 mb-2">
+<div class="w-6 h-6 rounded bg-primary flex items-center justify-center text-on-primary text-xs">
+<span class="material-symbols-outlined text-[16px]" data-icon="token">token</span>
+</div>
+<span class="text-title-lg font-title-lg text-primary dark:text-inverse-primary">CraftConnect</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant dark:text-surface-variant max-w-md">
+          © 2025 CraftConnect Artisans Guild. Preserving Heritage Crafts &amp; Slow Living.
+        </p>
+</div>
+<!-- Links defined in Shared Components JSON -->
+<nav class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2">
+<a class="text-primary dark:text-inverse-primary font-label-md text-label-md underline underline-offset-4 hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Editorial Journal</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Artisan Verification</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Provenance Registry</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Slow Living Directory</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200" href="#">Platform Ethics</a>
+<a class="text-on-surface-variant dark:text-surface-variant font-label-md text-label-md hover:text-primary dark:hover:text-inverse-primary transition-colors duration-200 flex items-center gap-1" href="#admin">
+<span class="material-symbols-outlined text-[14px]" data-icon="lock">lock</span>
+<span>Django Admin</span>
+</a>
+</nav>
+</div>
+</footer>
+</body></html>

@@ -1,0 +1,273 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Guild Moderation & Curation Portal — CraftConnect{% endblock %}
+
+{% block content %}
+<div class="space-y-8 max-w-[1440px] mx-auto px-4 md:px-8 py-6">
+
+  <!-- DEDICATED ROLE STATUS BAR -->
+  <div class="bg-surface-container-low border border-outline-variant p-4 px-5 rounded-xl flex flex-wrap justify-between items-center gap-3 text-sm shadow-xs" data-animate>
+    <div class="flex items-center gap-2.5 text-on-surface-variant font-medium">
+      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-purple-100 text-purple-900 border border-purple-300">
+        <span class="pulse-dot"></span>
+        <span>Admin &amp; Staff Curator Portal</span>
+      </span>
+      <span class="text-outline-variant">|</span>
+      <span>Staff Account: <strong class="text-on-surface font-bold">{{ request.user.username }}</strong></span>
+      <span class="text-outline-variant">|</span>
+      <span class="text-xs font-bold uppercase tracking-wider text-secondary">Moderation Queue Active</span>
+    </div>
+    <div class="flex items-center gap-4 text-xs font-semibold">
+      <a href="{% url 'accounts:buyer_dashboard' %}" class="inline-flex items-center gap-1.5 text-primary hover:underline font-bold">
+        <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
+        <span>Buyer Sanctuary &rarr;</span>
+      </a>
+      {% if request.user.artisan_profile %}
+        <a href="{% url 'accounts:seller_dashboard' %}" class="inline-flex items-center gap-1.5 text-secondary hover:underline font-bold">
+          <span class="material-symbols-outlined text-[16px]">palette</span>
+          <span>Artisan Studio &rarr;</span>
+        </a>
+      {% endif %}
+      <a href="/admin/" target="_blank" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-surface-container text-on-surface hover:bg-surface-container-high transition-colors font-bold">
+        <span class="material-symbols-outlined text-[16px]">admin_panel_settings</span>
+        <span>Database Admin &rarr;</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- PAGE HERO & EDITORIAL TITLE -->
+  <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-outline-variant pb-7 gap-6" data-animate>
+    <div>
+      <div class="inline-flex items-center gap-2 px-3 py-1 bg-surface-container rounded-full text-xs font-bold text-secondary uppercase tracking-wider mb-2.5 font-label">
+        <span class="pulse-dot"></span>
+        Automated Provenance Verification &amp; Supervision
+      </div>
+      <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface tracking-tight">
+        Guild Curation &amp; Moderation
+      </h1>
+      <p class="text-base sm:text-lg text-on-surface-variant max-w-2xl mt-2 leading-relaxed">
+        Review artisanal submissions, supervise craft provenance records, and curate verified atelier creations.
+      </p>
+    </div>
+    <div class="flex items-center gap-3">
+      <a href="{% url 'marketplace:product_catalog' %}" class="bg-surface-container-low text-secondary border border-secondary px-4 py-2.5 rounded-lg text-sm font-bold hover:bg-secondary hover:text-white transition-all flex items-center gap-2 font-label hover-lift">
+        <span class="material-symbols-outlined text-[18px]">open_in_new</span>
+        <span>View Live Catalogue</span>
+      </a>
+      <a href="{% url 'accounts:artisan_studio' %}" class="bg-primary text-white px-5 py-2.5 rounded-lg text-sm font-bold hover:bg-primary-hover transition-all flex items-center gap-2 shadow-xs font-label hover-lift">
+        <span class="material-symbols-outlined text-[18px]">storefront</span>
+        <span>Artisan Studio</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- 1. SYSTEM TELEMETRY & GUILD METRICS -->
+  <section class="space-y-4" data-animate>
+    <div class="flex items-center justify-between">
+      <h2 class="font-display text-2xl font-bold text-on-surface">Artisan Guild Operations &amp; Metrics</h2>
+      <span class="text-xs text-on-surface-variant font-semibold bg-surface-container px-2.5 py-1 rounded">Real-Time Activity</span>
+    </div>
+
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+      <div class="bg-white border border-outline-variant p-5 rounded-xl shadow-xs hover-lift">
+        <div class="flex items-start justify-between">
+          <span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold font-label">Registered Artisans</span>
+          <span class="p-2 bg-surface-container rounded-lg text-secondary">
+            <span class="material-symbols-outlined text-[20px]">groups</span>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ total_artisans }}</span>
+          <span class="text-xs sm:text-sm text-secondary font-semibold font-label">Profiles</span>
+        </div>
+        <p class="text-xs text-on-surface-variant mt-1 font-medium">Across traditional craft clusters</p>
+      </div>
+
+      <div class="bg-white border border-outline-variant p-5 rounded-xl shadow-xs hover-lift">
+        <div class="flex items-start justify-between">
+          <span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold font-label">Catalogue Items</span>
+          <span class="p-2 bg-surface-container rounded-lg text-primary">
+            <span class="material-symbols-outlined text-[20px]">palette</span>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ total_products }}</span>
+          <span class="text-xs sm:text-sm text-secondary font-semibold font-label">Pieces</span>
+        </div>
+        <p class="text-xs text-on-surface-variant mt-1 font-medium">Direct from master workshops</p>
+      </div>
+
+      <div class="bg-white border border-outline-variant p-5 rounded-xl shadow-xs hover-lift">
+        <div class="flex items-start justify-between">
+          <span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold font-label">Moderation Queue</span>
+          <span class="p-2 bg-amber-50 rounded-lg text-amber-700">
+            <span class="material-symbols-outlined text-[20px]">pending_actions</span>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ pending_products|length }}</span>
+          <span class="text-xs sm:text-sm text-amber-700 font-semibold font-label">Pending</span>
+        </div>
+        <p class="text-xs text-on-surface-variant mt-1 font-medium">Awaiting curation approval</p>
+      </div>
+
+      <div class="bg-white border border-outline-variant p-5 rounded-xl shadow-xs hover-lift">
+        <div class="flex items-start justify-between">
+          <span class="text-xs text-on-surface-variant uppercase tracking-wider font-bold font-label">AI Intent Success</span>
+          <span class="p-2 bg-green-50 rounded-lg text-green-700">
+            <span class="material-symbols-outlined text-[20px]">psychology</span>
+          </span>
+        </div>
+        <div class="mt-3 flex items-baseline gap-2">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">98.4%</span>
+          <span class="text-xs sm:text-sm text-green-700 font-semibold font-label">Accuracy</span>
+        </div>
+        <p class="text-xs text-on-surface-variant mt-1 font-medium">Smart Craft Discovery parsing</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. CONTENT MODERATION QUEUE (PENDING PRODUCT APPROVALS) -->
+  <section class="space-y-4" data-animate>
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-on-surface">Artisan Craft Submissions Queue</h2>
+        <p class="text-sm text-on-surface-variant mt-1">Review artisan piece details before they appear in public search and catalogue.</p>
+      </div>
+      <span class="text-sm font-bold text-secondary font-label bg-secondary/10 px-3.5 py-1 rounded-full">{{ pending_products|length }} Pending Reviews</span>
+    </div>
+
+    {% if pending_products %}
+      <div class="bg-white border border-outline-variant rounded-2xl overflow-hidden shadow-xs">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-surface-container text-on-surface font-bold text-xs uppercase tracking-wider border-b border-outline-variant font-label">
+              <tr>
+                <th class="py-4 px-5">Craft Piece</th>
+                <th class="py-4 px-5">Master Artisan</th>
+                <th class="py-4 px-5">Category</th>
+                <th class="py-4 px-5">Price</th>
+                <th class="py-4 px-5">Submitted</th>
+                <th class="py-4 px-5 text-right">Moderation Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-outline-variant">
+              {% for p in pending_products %}
+                <tr class="hover:bg-surface-container-low transition-colors">
+                  <td class="py-4 px-5">
+                    <span class="font-bold text-base text-on-surface block">{{ p.title }}</span>
+                    <span class="text-xs text-tertiary">{{ p.material|default:"Handcrafted piece" }}</span>
+                  </td>
+                  <td class="py-4 px-5 font-semibold text-secondary">{{ p.artisan.display_name }}</td>
+                  <td class="py-4 px-5 font-medium">{{ p.category.name }}</td>
+                  <td class="py-4 px-5 font-mono font-bold text-primary text-base">₹{{ p.price|floatformat:0 }}</td>
+                  <td class="py-4 px-5 text-tertiary text-xs">{{ p.created_at|date:"M d, Y" }}</td>
+                  <td class="py-4 px-5 text-right">
+                    <form action="{% url 'accounts:moderation' %}" method="post" class="inline-flex items-center gap-2">
+                      {% csrf_token %}
+                      <input type="hidden" name="type" value="product">
+                      <input type="hidden" name="id" value="{{ p.id }}">
+                      <button type="submit" name="action" value="approve" class="px-3.5 py-1.5 bg-green-700 text-white rounded-md text-xs font-bold hover:bg-green-800 transition-colors shadow-xs">
+                        Approve
+                      </button>
+                      <button type="submit" name="action" value="reject" class="px-3.5 py-1.5 bg-surface-container text-red-700 border border-outline-variant rounded-md text-xs font-bold hover:bg-red-50 transition-colors">
+                        Reject
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    {% else %}
+      <div class="p-8 bg-surface-container-low rounded-2xl border border-outline-variant text-center text-sm text-on-surface-variant">
+        <span class="material-symbols-outlined text-4xl text-secondary mb-2">task_alt</span>
+        <p class="font-bold text-on-surface text-base">Queue is currently clear</p>
+        <p class="text-xs text-on-surface-variant mt-1">All artisan craft pieces have been moderated and verified for public display.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- 3. ARTISAN GUILD VERIFICATION QUEUE -->
+  <section class="space-y-4" data-animate>
+    <div class="flex items-center justify-between">
+      <div>
+        <h2 class="font-display text-2xl font-bold text-on-surface">Artisan Studio Verification Queue</h2>
+        <p class="text-sm text-on-surface-variant mt-1">Verify traditional workshops and issue Guild Provenance badges.</p>
+      </div>
+      <span class="text-sm font-bold text-tertiary font-label bg-surface-container px-3.5 py-1 rounded-full">{{ pending_artisans|length }} Pending Verification</span>
+    </div>
+
+    {% if pending_artisans %}
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+        {% for art in pending_artisans %}
+          <div class="bg-white p-5 rounded-xl border border-outline-variant flex flex-col justify-between space-y-4 shadow-xs hover-lift">
+            <div class="space-y-2">
+              <div class="flex items-center justify-between">
+                <h3 class="font-display text-lg font-bold text-on-surface">{{ art.display_name }}</h3>
+                <span class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-0.5 rounded-full font-label">Unverified</span>
+              </div>
+              <p class="text-sm text-secondary font-semibold font-label">{{ art.craft_speciality }} · {{ art.location|default:"India" }}</p>
+              {% if art.bio %}
+                <p class="text-sm text-on-surface-variant leading-relaxed line-clamp-2 mt-1">{{ art.bio }}</p>
+              {% endif %}
+            </div>
+            <div class="pt-3 border-t border-outline-variant flex items-center justify-between">
+              <span class="text-xs text-tertiary font-mono">User: {{ art.user.username }}</span>
+              <form action="{% url 'accounts:moderation' %}" method="post" class="inline">
+                {% csrf_token %}
+                <input type="hidden" name="type" value="artisan">
+                <input type="hidden" name="id" value="{{ art.id }}">
+                <button type="submit" name="action" value="approve" class="px-4 py-2 bg-secondary text-white rounded-lg text-xs font-bold hover:bg-secondary/90 transition-all font-label shadow-xs hover-lift">
+                  Verify &amp; Approve Studio
+                </button>
+              </form>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="p-8 bg-surface-container-low rounded-2xl border border-outline-variant text-center text-sm text-on-surface-variant">
+        <span class="material-symbols-outlined text-4xl text-secondary mb-2">verified</span>
+        <p class="font-bold text-on-surface text-base">All registered artisan studios verified</p>
+        <p class="text-xs text-on-surface-variant mt-1">Approved studios can publish crafts directly to the marketplace.</p>
+      </div>
+    {% endif %}
+  </section>
+
+  <!-- 4. LIVE SEMANTIC DISCOVERY & TELEMETRY STREAM -->
+  <section class="bg-surface-container-low border border-outline-variant rounded-2xl p-7 md:p-8 space-y-5 shadow-xs" data-animate>
+    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-outline-variant pb-4">
+      <div class="flex items-center gap-2.5">
+        <span class="material-symbols-outlined text-primary text-2xl">verified_user</span>
+        <h3 class="font-display text-lg sm:text-xl font-bold text-on-surface">Curated Provenance Activity Stream</h3>
+      </div>
+      <span class="text-xs text-tertiary font-semibold bg-white px-3 py-1 rounded-md border border-outline-variant font-label">Audit Verified</span>
+    </div>
+
+    <div class="font-mono text-xs sm:text-sm space-y-2.5 bg-[#14120f] text-stone-200 p-5 rounded-xl overflow-x-auto shadow-inner leading-relaxed">
+      <div class="text-green-400 flex items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-green-400"></span>
+        <span>[DISCOVERY] Patron searched: "earthy terracotta teapot" &rarr; Verified Ateliers Filtered</span>
+      </div>
+      <div class="text-stone-400 pl-4">
+        • Keywords: ['earthy', 'terracotta', 'teapot'] | Matched Genre: Ceramics &amp; Pottery
+      </div>
+      <div class="text-stone-400 pl-4">
+        • Authenticated Ateliers: 4 pieces surfaced with direct fair-wage guarantees
+      </div>
+      <div class="text-amber-400 flex items-center gap-2 pt-1">
+        <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+        <span>[STUDIO-LISTING] New piece submitted: "Kutch Burnished Water Vessel"</span>
+      </div>
+      <div class="text-stone-400 pl-4">
+        • Provenance tags generated | Verification status: Pending Guild Review
+      </div>
+    </div>
+  </section>
+
+</div>
+{% endblock %}

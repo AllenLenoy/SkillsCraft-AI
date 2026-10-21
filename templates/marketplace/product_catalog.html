@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Craft Catalogue — CraftConnect{% endblock %}
+
+{% block content %}
+<div class="max-w-[1440px] mx-auto px-margin-sm md:px-margin lg:px-margin-lg py-8">
+
+  <!-- Breadcrumb & Header -->
+  <div class="mb-8 space-y-3" data-animate>
+    <div class="flex items-center gap-2 text-sm text-on-surface-variant font-body">
+      <a href="{% url 'marketplace:home' %}" class="hover:text-primary transition-colors flex items-center gap-1 font-medium">
+        <span class="material-symbols-outlined text-[16px]">home</span>
+        Marketplace
+      </a>
+      <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+      <span class="text-on-surface font-semibold">Craft Catalogue</span>
+      {% if current_category %}
+        <span class="material-symbols-outlined text-[16px]">chevron_right</span>
+        <span class="text-primary font-bold tracking-wide uppercase">{{ current_category }}</span>
+      {% endif %}
+    </div>
+    <div class="flex items-center gap-2.5">
+      <span class="pulse-dot"></span>
+      <span class="text-xs font-bold tracking-wider text-secondary uppercase font-label">Verified Artisan Collections</span>
+    </div>
+    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-headline font-bold text-on-surface">Curated Artisan Heritage Catalogue</h1>
+    <p class="text-base sm:text-lg font-body text-on-surface-variant max-w-3xl leading-relaxed">Direct fair-trade provenance. Every masterwork verified by regional craft guilds with direct artisan remuneration.</p>
+  </div>
+
+  <!-- Search & Filter Controls -->
+  <div class="bg-surface-container-lowest p-4 md:p-5 rounded-xl border border-outline-variant shadow-xs mb-8" data-animate>
+    <form method="get" action="{% url 'marketplace:product_catalog' %}" class="flex flex-col lg:flex-row gap-4 items-center">
+
+      <!-- Keyword Search -->
+      <div class="flex items-center gap-3 w-full px-4 py-3 flex-grow bg-white rounded-lg border border-outline-variant shadow-inner transition-colors focus-within:border-primary">
+        <span class="material-symbols-outlined text-primary text-[22px]">search</span>
+        <input
+          type="text"
+          name="q"
+          value="{{ current_q }}"
+          placeholder="Describe your desired craft, material, occasion, or artisan heritage in plain English..."
+          class="w-full bg-transparent border-none p-0 text-on-surface font-body text-base focus:ring-0 placeholder:text-outline"
+        >
+      </div>
+
+      <!-- Filter Row -->
+      <div class="flex flex-wrap items-center gap-3 w-full lg:w-auto shrink-0">
+        <!-- Category Filter Pills -->
+        <div class="flex items-center bg-surface-container p-1.5 rounded-lg border border-outline-variant">
+          <button type="submit" name="category" value="" class="px-3.5 py-1.5 {% if not current_category %}bg-surface text-primary shadow-xs font-bold{% else %}text-on-surface-variant hover:text-on-surface font-medium{% endif %} font-label text-sm rounded-md transition-all">All</button>
+          {% for cat in categories|slice:":4" %}
+            <button type="submit" name="category" value="{{ cat.slug }}" class="px-3.5 py-1.5 {% if current_category == cat.slug %}bg-surface text-primary shadow-xs font-bold{% else %}text-on-surface-variant hover:text-on-surface font-medium{% endif %} font-label text-sm rounded-md transition-all">{{ cat.name }}</button>
+          {% endfor %}
+        </div>
+
+        <!-- Sorting -->
+        <select name="ordering" class="px-4 py-2.5 bg-surface-container-lowest rounded-lg border border-outline-variant text-sm font-label focus:outline-none focus:border-primary">
+          <option value="-created_at" {% if current_ordering == "-created_at" %}selected{% endif %}>Newest Creations</option>
+          <option value="price_asc" {% if current_ordering == "price_asc" %}selected{% endif %}>Price: Low → High</option>
+          <option value="price_desc" {% if current_ordering == "price_desc" %}selected{% endif %}>Price: High → Low</option>
+          <option value="title_asc" {% if current_ordering == "title_asc" %}selected{% endif %}>Name: A → Z</option>
+        </select>
+
+        <button type="submit" class="px-6 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-on-primary font-label text-base font-semibold flex items-center gap-2 transition-all active:scale-[0.98] shadow-sm">
+          <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
+          <span>Filter</span>
+        </button>
+
+        {% if current_q or current_category or current_material %}
+          <a href="{% url 'marketplace:product_catalog' %}" class="p-2.5 bg-surface-container border border-outline-variant rounded-lg hover:bg-surface-container-high transition-colors" title="Reset Filters">
+            <span class="material-symbols-outlined text-[18px] text-on-surface-variant">close</span>
+          </a>
+        {% endif %}
+      </div>
+    </form>
+  </div>
+
+  <!-- AI Smart Craft Discovery Insights Banner -->
+  {% if discovery_result and current_q %}
+    <div class="mb-8 p-5 rounded-xl bg-surface-container border border-outline-variant shadow-xs space-y-3" data-animate>
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+          <span class="material-symbols-outlined text-secondary text-2xl">psychology_alt</span>
+          <span class="text-sm font-bold uppercase tracking-wider text-secondary">
+            Smart Craft Discovery — AI Intent &amp; Provenance Match
+          </span>
+        </div>
+        <span class="text-xs font-semibold bg-secondary-container text-secondary px-3 py-1 rounded-full shadow-xs">
+          Smart Match
+        </span>
+      </div>
+      <p class="text-sm sm:text-base text-on-surface leading-relaxed">
+        {{ discovery_result.ai_explanation }}
+      </p>
+      {% if discovery_result.extracted_keywords %}
+        <div class="flex flex-wrap items-center gap-2 pt-1 text-xs">
+          <span class="text-tertiary font-medium">Extracted Craft Signals:</span>
+          {% for kw in discovery_result.extracted_keywords %}
+            <span class="px-2.5 py-1 bg-white rounded-md border border-outline-variant text-primary font-mono font-medium">{{ kw }}</span>
+          {% endfor %}
+          {% if discovery_result.suggested_category %}
+            <span class="px-3 py-1 bg-secondary text-white rounded-md font-semibold text-xs">{{ discovery_result.suggested_category }}</span>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- Active Filter Badges -->
+  {% if current_q or current_category %}
+    <div class="flex items-center gap-2.5 mb-8 flex-wrap text-sm" data-animate>
+      <span class="text-tertiary font-semibold font-label">Active Filters:</span>
+      {% if current_q %}
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-surface-container rounded-full border border-outline-variant font-medium text-sm">
+          <span>Query: "<strong>{{ current_q }}</strong>"</span>
+          <a href="?{% if current_category %}category={{ current_category }}&{% endif %}ordering={{ current_ordering }}" class="text-primary hover:font-bold ml-1">✕</a>
+        </span>
+      {% endif %}
+      {% if current_category %}
+        <span class="inline-flex items-center gap-2 px-3.5 py-1.5 bg-secondary-container text-secondary rounded-full font-label font-semibold text-sm">
+          <span>Category: <strong>{{ current_category }}</strong></span>
+          <a href="?{% if current_q %}q={{ current_q }}&{% endif %}ordering={{ current_ordering }}" class="hover:font-bold ml-1">✕</a>
+        </span>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  <!-- Product Grid -->
+  {% if products %}
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+      {% for product in products %}
+        <article class="archival-card p-4 md:p-5 flex flex-col justify-between group" data-animate>
+          <div>
+            <!-- Image Frame -->
+            <a href="{% url 'marketplace:product_detail' slug=product.slug %}" class="block relative w-full aspect-[4/5] bg-surface-container mb-4 overflow-hidden rounded-xl border border-card-border">
+              {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+              {% else %}
+                <div class="w-full h-full flex flex-col items-center justify-center text-on-surface-variant/50 bg-surface-container-high">
+                  <span class="material-symbols-outlined text-6xl mb-3 text-outline">palette</span>
+                  <span class="text-base font-headline italic">{{ product.category.name }}</span>
+                </div>
+              {% endif %}
+
+              <div class="absolute top-3 left-3 bg-white/95 backdrop-blur-xs text-on-surface px-3 py-1.5 rounded-md text-xs font-bold uppercase tracking-wider border border-outline-variant shadow-xs flex items-center gap-1.5">
+                <span class="material-symbols-outlined text-[15px] text-secondary">verified</span>
+                <span>{{ product.category.name }}</span>
+              </div>
+
+              <button data-wishlist-toggle class="absolute top-3 right-3 w-9 h-9 rounded-full bg-white/90 hover:bg-white text-outline hover:text-primary flex items-center justify-center transition-all shadow-xs">
+                <span class="material-symbols-outlined text-[20px]">favorite</span>
+              </button>
+            </a>
+
+            <!-- Metadata -->
+            <div class="flex items-center justify-between mb-2">
+              <span class="text-xs font-bold font-label uppercase tracking-wider text-secondary flex items-center gap-1">
+                <span class="material-symbols-outlined text-[16px]">location_on</span>
+                {% if product.artisan.location %}{{ product.artisan.location }}{% else %}India{% endif %}
+              </span>
+              <span class="text-xs text-on-surface-variant font-semibold bg-surface-container px-2 py-0.5 rounded">{{ product.stock_quantity }} in studio</span>
+            </div>
+            <h2 class="text-xl sm:text-2xl font-headline font-bold text-on-surface mb-1.5 group-hover:text-primary transition-colors leading-tight">
+              <a href="{% url 'marketplace:product_detail' slug=product.slug %}">{{ product.title }}</a>
+            </h2>
+            <p class="text-sm font-body text-on-surface-variant mb-3">By <span class="font-semibold text-on-surface">{{ product.artisan.display_name }}</span> • {{ product.artisan.craft_speciality }}</p>
+
+            {% if product.material %}
+              <div class="flex flex-wrap gap-2 mb-4">
+                <span class="px-2.5 py-1 rounded-md bg-surface-container text-secondary text-xs font-semibold font-label border border-outline-variant">{{ product.material }}</span>
+              </div>
+            {% endif %}
+          </div>
+
+          <!-- Price & Action -->
+          <div class="pt-4 border-t border-outline-variant flex items-center justify-between mt-auto">
+            <div>
+              <span class="text-xs text-on-surface-variant block font-medium">Fair Studio Remittance</span>
+              <span class="text-2xl sm:text-3xl font-bold text-primary font-headline">₹{{ product.price|floatformat:0 }}</span>
+            </div>
+            <a href="{% url 'marketplace:product_detail' slug=product.slug %}#buy-section" class="px-4 py-2.5 rounded-lg bg-primary hover:bg-primary-hover text-on-primary text-sm font-semibold font-label transition-all active:scale-[0.98] flex items-center gap-1.5 shadow-xs hover-lift">
+              <span class="material-symbols-outlined text-[17px]">shopping_bag</span>
+              <span>Buy Piece</span>
+            </a>
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+
+    <!-- Pagination -->
+    {% if is_paginated %}
+      <div class="mt-14 flex justify-center items-center gap-3 text-sm font-semibold font-label">
+        {% if page_obj.has_previous %}
+          <a href="?page={{ page_obj.previous_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}&ordering={{ current_ordering }}"
+             class="px-5 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container transition-colors flex items-center gap-1.5">
+            <span class="material-symbols-outlined text-[18px]">chevron_left</span>
+            Previous
+          </a>
+        {% endif %}
+
+        <span class="px-5 py-2.5 font-bold text-primary bg-surface-container rounded-lg border border-outline-variant">
+          Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+        </span>
+
+        {% if page_obj.has_next %}
+          <a href="?page={{ page_obj.next_page_number }}{% if current_q %}&q={{ current_q }}{% endif %}{% if current_category %}&category={{ current_category }}{% endif %}&ordering={{ current_ordering }}"
+             class="px-5 py-2.5 bg-surface-container-lowest border border-outline-variant rounded-lg hover:bg-surface-container transition-colors flex items-center gap-1.5">
+            Next
+            <span class="material-symbols-outlined text-[18px]">chevron_right</span>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+  {% else %}
+    <!-- Empty State -->
+    <div class="archival-card p-10 md:p-14 rounded-2xl text-center max-w-xl mx-auto space-y-5" data-animate>
+      <div class="w-16 h-16 rounded-full bg-surface-container mx-auto flex items-center justify-center text-outline shadow-inner">
+        <span class="material-symbols-outlined text-4xl text-primary">search_off</span>
+      </div>
+      <h3 class="font-headline text-2xl font-bold text-on-surface">No Matching Craft Pieces Found</h3>
+      <p class="text-sm sm:text-base text-on-surface-variant leading-relaxed font-body">
+        {% if current_q or current_category %}
+          No approved pieces matched your filter criteria. Try broader keywords, search by material (e.g., "terracotta", "silk", "brass"), or reset your filters.
+        {% else %}
+          Our master artisans are currently handcrafting and verifying upcoming collections. Explore our craft categories or sign in to commission bespoke pieces.
+        {% endif %}
+      </p>
+      <div class="pt-3 flex flex-wrap justify-center gap-3.5">
+        <a href="{% url 'marketplace:product_catalog' %}" class="px-5 py-3 bg-primary text-on-primary text-sm font-semibold rounded-lg hover:bg-primary-hover shadow-sm transition-all font-label hover-lift">
+          View All Products
+        </a>
+        <a href="{% url 'accounts:auth' %}?role=artisan" class="px-5 py-3 bg-surface-container border border-outline-variant text-on-surface text-sm font-semibold rounded-lg hover:bg-surface-container-high transition-colors font-label hover-lift">
+          Become an Artisan Maker
+        </a>
+      </div>
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}
