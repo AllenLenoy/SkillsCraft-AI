@@ -1,237 +1,268 @@
-# CraftConnect — AI-Assisted Artisan & Handmade Marketplace
-## Comprehensive Project Documentation & Development Chronicle
+# SkillsCraft AI — Artisanal Slow-Craft E-Commerce & Storytelling Platform
+## Comprehensive Technical Documentation, Architecture Specification & Milestone Chronicle
 
 ---
 
 ### Executive Summary
 
-**CraftConnect** is a full-featured, editorial Django web application designed to connect rural master artisans directly with conscious buyers and patrons without intermediaries. It combines slow-craft heritage preservation with state-of-the-art web design, role-based workspaces, AI-assisted cataloguing and discovery, and full compliance with academic requirements (INT253: Web Development in Python using Django).
+**SkillsCraft AI** (formerly CraftConnect) is an enterprise-grade, editorial Django web platform engineered to connect grassroots rural master artisans across India directly with conscious patrons and slow-living collectors worldwide. 
+
+The platform dissolves exploitative intermediary supply chains by establishing **transparent 88% direct artisan remittances**, authentic **GI-tagged slow-craft provenance**, an **Editorial Journal of cultural chronicles**, open-source **AI-assisted cataloguing & storytelling**, and high-performance **PostgreSQL database infrastructure hosted on Supabase**.
 
 ---
 
-## 1. Project Chronology: From Start to Present
+## 1. Complete Chronological Evolution of the Platform
 
-### Phase 1: Initial Repository Audit & Diagnostics
-- **Command & Health Checks**: Executed `python manage.py check` and `python manage.py test`. Identified that tests passed, but PostgreSQL connectivity was blocked due to missing local PostgreSQL services or external network constraints.
-- **Database Fallback Implementation**: Configured a seamless SQLite development fallback (`USE_SQLITE=True` in `craftconnect/settings.py`) allowing instant, zero-friction local execution without altering production-ready PostgreSQL configurations.
-- **Security & Access Audit**: Discovered that initial routes rendered template mockups without strict permission guards. Unauthenticated users and regular buyers were previously able to view admin moderation interfaces.
+### Phase 1: Repository Audit, Diagnostics & Database Modernization
+- **Health Checks & Environment Setup**: Audited the Python 3.11 virtual environment, verified dependencies, and identified database connection constraints.
+- **Dual-Engine Database Strategy**:
+  - Implemented environment-driven database switching in `craftconnect/settings.py` (`USE_SQLITE=True` for offline testing, and full `dj-database-url` with `psycopg3` for PostgreSQL).
+- **Security Audit**: Identified unprotected routes and implemented strict Role-Based Access Control (RBAC) mixins across the platform.
 
-### Phase 2: Design Elevation & Editorial Visual Overhaul
-- **Stitch Design Token Integration**: Translated modern Stitch design specifications into high-contrast, editorial typography using Google Fonts (`Playfair Display` for display headings and `Plus Jakarta Sans` for body text).
-- **Styling Architecture**: Built `static/css/editorial.css` with warm earth tones (ochre `#8B4513`, terracotta `#A0522D`, raw linen `#F4F0EA`, forest green, and deep charcoal) to evoke handmade craft integrity.
-- **Typography & Accessibility Polish**: Increased base font sizes, line heights, and element spacing. Added micro-interactions, subtle hover lift transitions, animated pulse indicators, and responsive grid layouts.
+### Phase 2: High-Aesthetic Editorial Visual Redesign
+- **Stitch Design Token Integration**: Translated contemporary editorial design principles into a warm, natural palette:
+  - Ochre (`#8B4513`), Terracotta (`#A0522D`), Raw Linen (`#F4F0EA`), Forest Green, and Deep Charcoal.
+- **Typography & UI Polish**:
+  - Headings: Google Fonts `Playfair Display` for artisanal, timeless elegance.
+  - Body & Metadata: `Plus Jakarta Sans` for clarity and clean information hierarchy.
+  - Custom CSS (`static/css/editorial.css`) featuring subtle glassmorphism headers, tactile card lifts, archival frames, animated status badges, and responsive grid layouts.
 
-### Phase 3: Consumer-Centric Experience (Jargon Purge)
-- **Purged Developer / Technical Terminology**: Removed all traces of academic and engineering jargon from user-facing screens:
+### Phase 3: Jargon Purge & Consumer Slow-Living Alignment
+- **Eliminated Developer/Academic Terminology**: Completely removed engineering and classroom jargon from user-facing screens:
   - Replaced *"Django / PostgreSQL System Telemetry"* with *"Artisan Guild Provenance & Studio Metrics"*.
-  - Replaced *"Hugging Face / Llama 3 Inference Latency"* with *"Smart Craft Discovery"*.
-  - Replaced *"Query Decomposition Active"* with natural artisan search and filters.
-  - Removed internal assignment metadata (`INT253/CA3`) from the public interface.
+  - Replaced *"LLM Inference Pipeline"* with *"Smart Craft Discovery & Storytelling"*.
+  - Replaced *"Query Decomposition"* with natural artisan search and craft filters.
 
-### Phase 4: Dedicated Dashboards & Role-Based Access Control (RBAC)
-- **Engineered Three Dedicated Workspaces**:
-  1. **Buyer / Patron Sanctuary** (`/dashboard/buyer/`): Personalized saved craft archive, active artisan inquiries, direct rural remittance impact calculator, and an *"Open Artisan Atelier"* upgrade CTA.
-  2. **Seller / Artisan Studio Workspace** (`/dashboard/seller/`): Inventory management, live/pending listing counters, AI-powered storytelling assistant, and direct inquiry correspondence.
-  3. **Admin / Curator Moderation Portal** (`/dashboard/admin/`): Guild curation queue, artisan identity verification, craft approval workflows, and audit oversight.
+### Phase 4: Role-Based Workspaces & Permissions (RBAC)
+- **Engineered Three Dedicated Portals**:
+  1. **Conscious Patron Sanctuary** (`/accounts/buyer/`): Saved provenance bookmarks, acquired order tracking, order receipts, and direct atelier inquiry threads.
+  2. **Artisan Studio Workspace** (`/accounts/seller/`): Real-time stock counters, direct patron order ledger, 88% financial remittance tracking, and the AI Storytelling Assistant.
+  3. **Guild Curator Moderation Portal** (`/accounts/admin-portal/`): Moderation queues for new artisan onboarding, GI-tag identity verification, and craft catalog approval.
 - **Security Mixins**:
-  - `BuyerRequiredMixin`: Enforces login for patron areas.
-  - `SellerRequiredMixin`: Requires authentication and an associated `ArtisanProfile`. If a buyer attempts to access the seller studio, they are redirected to an atelier onboarding form (`/accounts/become-artisan/`) with a contextual explanation.
-  - `AdminRequiredMixin`: Strictly checks `user.is_staff or user.is_superuser`. Non-staff users are denied access and redirected to patron safe areas.
-  - `DashboardRedirectView`: Central router (`/dashboard/`) dynamically dispatching logged-in users to their role-appropriate dashboard.
-- **Progressive Role Upgrade**: Created `BecomeArtisanView` and `BecomeArtisanForm` allowing registered buyers to transition into sellers by creating an atelier profile without re-registering.
+  - `BuyerRequiredMixin`: Guarantees patron authentication before saving or ordering.
+  - `SellerRequiredMixin`: Restricts studio management strictly to users with an active `ArtisanProfile`. If a buyer attempts access, they are gracefully routed to `/accounts/become-artisan/`.
+  - `AdminRequiredMixin`: Enforces `is_staff` or `is_superuser` privileges for platform curation.
+  - `DashboardRedirectView`: Dynamic central dispatcher (`/dashboard/`) routing logged-in users to their role-appropriate space.
 
-### Phase 5: Complete INT253 Course Syllabus Alignment
-Audited and fulfilled every requirement across all 6 Units of the **INT253: Web Development in Python using Django** curriculum:
-- **Unit I**: Modular app organization (`craftconnect`, `marketplace`, `accounts`), settings management, and custom management commands.
-- **Unit II**: Class-based views, GET/POST request handling, parametric URL routing, **Regular expressions in URLs** (`re_path`), and **Custom HTTP Error Handlers** (`handler404` and `handler500` with dedicated templates `404.html` and `500.html`).
-- **Unit III**: Django Template Language (DTL) inheritance (`base.html`), variables, filters, loops, conditions, **Custom DTL Template Filters & Tags** (`craft_extras.py`), and a comprehensive automated test suite.
-- **Unit IV**: Django Forms (`ProductSearchForm`, `LoginForm`, `RegisterForm`, `EnquiryForm`, `ArtisanProductForm`, `BecomeArtisanForm`), CSRF token security, POST-Redirect-GET pattern, and robust data validation with clean error display.
-- **Unit V**: Relational models (`ForeignKey`, `OneToOneField`), custom QuerySet managers (`Product.objects.public()`), Django Admin customization (`list_display`, `list_filter`, `search_fields`, `list_editable`, bulk actions), and **Django Groups & Model Permissions** provisioned via a dedicated management command (`setup_groups_and_permissions`).
-- **Unit VI**: **Django Sessions & Cookies implementation**:
-  - `request.session["recently_viewed_crafts"]`: Tracks browsed pieces and populates "Recently Viewed" sections on the homepage and catalogue.
-  - `response.set_cookie("last_viewed_craft_slug")`: Sets persistent client cookies read via `request.COOKIES` to resume exploration.
-  - View-based authentication: `login(request, user)` and `logout(request)` with secure password hashing.
+### Phase 5: Editorial Journal & Cultural Chronicles
+- **Craft Storytelling System**:
+  - Built the `Story` model featuring volume tags, editorial headlines, reading time estimates, pull quotes, region tags, artisan attribution, and full markdown body content.
+  - **Product-to-Story Linkage**: Direct many-to-many relationship connecting featured craft heirlooms inside stories, allowing readers to acquire authentic pieces directly from the article.
+  - **Dynamic Filtering**: Category-based filtration across Ceramics, Handloom, Bronze Metalcraft, and Woodwork.
 
----
+### Phase 6: Direct Acquisition & 88% Fair-Trade Ordering Engine
+- **Transition from Inquiry-Only to Direct Commerce**:
+  - Replaced the passive "Enquire" modal with an authenticated **"Buy Handmade Piece"** pipeline (`/marketplace/product/<pk>/buy/`).
+- **Financial Remittance Transparency**:
+  - Automatically calculates and enforces an **88% direct artisan allocation** on every order, with the remaining 12% covering secure platform logistics and packaging.
+- **Inventory & Stock Management**:
+  - Real-time stock decrementing upon order confirmation.
+  - Automatic transition of products to *"Archival / Out of Stock"* (`is_available=False`) when stock reaches zero.
+- **Patron & Studio Dashboards**:
+  - Patrons track order stages (`Confirmed`, `In Crafting`, `Dispatched`, `Delivered`).
+  - Artisans review their live incoming order ledger and cumulative earnings.
 
-## 2. System Architecture & File Layout
+### Phase 7: Live Cloud Database Migration to Supabase PostgreSQL
+- **Supabase Cloud Integration**:
+  - Configured PostgreSQL connection to AWS Tokyo pooler (`aws-0-ap-northeast-1.pooler.supabase.com:6543/postgres`).
+  - Utilized transaction pooling port `6543` with `sslmode=require` and URL-encoded password security.
+  - Successfully executed all database migrations (`accounts`, `marketplace`, `auth`, `sessions`, `admin`).
+- **Database Seeding & Asset Pipeline**:
+  - Programmatically downloaded 12 high-resolution, slow-craft product photographs and 5 master artisan studio portraits into `media/`.
+  - Provisioned 9 fully active accounts with clean `@gmail.com` credentials.
+  - Seeded 7 live patron orders, 4 artisan inquiries, and 6 saved wishlist items.
 
-```text
-skillscraft/
-├── craftconnect/                     # Root Django Project Configuration
-│   ├── settings.py                   # Environment-aware database, auth, static & media settings
-│   ├── urls.py                       # Root URLconf, convenience aliases, handler404/handler500
-│   ├── wsgi.py / asgi.py             # Deployment server entrypoints
-│
-├── marketplace/                      # Core E-Commerce & Craft Catalogue App
-│   ├── models.py                     # Category, Product, Enquiry, SavedProduct + Public Manager
-│   ├── views.py                      # HomeView, ProductCatalogView, ProductDetailView, Regex views
-│   ├── forms.py                      # ProductSearchForm, EnquiryForm
-│   ├── urls.py                       # Standard paths and re_path regular expressions
-│   ├── admin.py                      # ModelAdmins with custom bulk approval actions
-│   ├── ai_service.py                 # Smart Craft Discovery & Catalogue Assistant
-│   ├── templatetags/
-│   │   ├── __init__.py
-│   │   └── craft_extras.py           # Custom DTL filters (inr_format, artisan_initials, verified_badge)
-│   ├── management/commands/
-│   │   ├── __init__.py
-│   │   └── setup_groups_and_permissions.py # Django Groups (Artisans, Patrons, Curators)
-│   └── tests.py                      # Unit tests for catalogue, search, sessions, cookies & regex
-│
-├── accounts/                         # User Management & Role-Based Portals App
-│   ├── models.py                     # ArtisanProfile (OneToOne with User, verification flags)
-│   ├── views.py                      # AuthView, RBAC Mixins, Buyer/Seller/Admin Views, BecomeArtisanView
-│   ├── forms.py                      # LoginForm, RegisterForm, ArtisanProductForm, BecomeArtisanForm
-│   ├── urls.py                       # Role dashboards, auth routes, and atelier onboarding
-│   ├── admin.py                      # ArtisanProfileAdmin with verification actions
-│   └── tests.py                      # Unit tests for RBAC, login/logout, and permissions
-│
-├── templates/                        # Master & Sub-App Presentation Templates
-│   ├── base.html                     # Global layout, glass header, role-aware nav & typography
-│   ├── 404.html                      # Archival Page Not Found handler
-│   ├── 500.html                      # Studio Under Maintenance handler
-│   ├── marketplace/
-│   │   ├── home.html                 # Hero, category grid, featured craft pieces, recently viewed
-│   │   ├── product_catalog.html      # Search, filter drawer, active grid, regex archive title
-│   │   ├── product_detail.html       # Archival gallery, inquiry modal, artisan provenance card
-│   │   └── category_detail.html      # Dedicated genre showcase
-│   └── accounts/
-│       ├── auth.html                 # Clean dual-tab login & registration interface
-│       ├── buyer_dashboard.html      # Patron Sanctuary: saved items, impact calculator, role status
-│       ├── artisan_dashboard.html    # Seller Studio: inventory grid, metrics, AI assistant
-│       ├── moderation.html           # Curator Portal: pending artisan verification & product queues
-│       ├── become_artisan.html       # Seamless buyer-to-seller atelier onboarding form
-│       └── artisan_detail.html       # Public workshop showcase for patrons
-│
-├── static/css/editorial.css          # Archival frames, tokens, animations, hover lifts
-├── manage.py                         # Django administrative management CLI
-└── requirements.txt                  # Python dependencies
-```
+### Phase 8: Open-Source AI Cataloguing & Storytelling Pipeline
+- **OpenRouter LLM Integration**:
+  - Powered by open-source models (`nvidia/nemotron-3.5-super-vl:free` / Meta Llama 3 / Mistral) via the OpenAI-compatible OpenRouter API.
+  - Converts raw, colloquial craftsman notes (materials, firing techniques, motifs) into collector-grade editorial product copy, poetic titles, search tags, and fair pricing estimates.
+  - **Resilient Fallback Engine**: Algorithmic rules guarantee zero disruption even during external API downtime.
+
+### Phase 9: Testing, Quality Assurance & Git Synchronization
+- **Comprehensive Automated Test Suite**:
+  - 40+ unit and integration tests verifying order creation, stock decrementing, zero-stock guards, role access redirection, regex URL routing, sessions, cookies, and custom template filters.
+- **Version Control & GitHub Publishing**:
+  - All source code, assets, documentation, and migration files committed and synchronized to [https://github.com/AllenLenoy/SkillsCraft-AI](https://github.com/AllenLenoy/SkillsCraft-AI).
 
 ---
 
-## 3. Dedicated Role Dashboards & Authentication Flow
+## 2. System Architecture & Entity Relationship Model
 
 ```mermaid
-flowchart TD
-    AnonymousUser([Unauthenticated Visitor]) -->|Attempts to visit protected route| AuthPortal["/accounts/auth/ (Login/Register)"]
-    AuthPortal -->|Successful Authentication| CentralDispatcher["/dashboard/ (DashboardRedirectView)"]
+erDiagram
+    User ||--o| ArtisanProfile : "owns studio profile"
+    User ||--o{ Order : "places as buyer"
+    User ||--o{ Enquiry : "submits inquiries"
+    User ||--o{ SavedProduct : "bookmarks"
     
-    CentralDispatcher -->|is_staff or is_superuser| AdminPortal["/dashboard/admin/ (Guild Curator Portal)"]
-    CentralDispatcher -->|hasattr user, artisan_profile| SellerStudio["/dashboard/seller/ (Artisan Atelier Workspace)"]
-    CentralDispatcher -->|Regular User| BuyerSanctuary["/dashboard/buyer/ (Conscious Patron Sanctuary)"]
-
-    BuyerSanctuary -->|Clicks 'Open Artisan Atelier'| BecomeArtisan["/accounts/become-artisan/ (BecomeArtisanView)"]
-    BecomeArtisan -->|Submits atelier profile| SellerStudio
+    ArtisanProfile ||--o{ Product : "crafts and lists"
+    ArtisanProfile ||--o{ Order : "receives remittances"
+    ArtisanProfile ||--o{ Story : "featured in"
+    
+    Category ||--o{ Product : "categorizes"
+    Product ||--o{ Order : "purchased in"
+    Product ||--o{ Enquiry : "subject of"
+    Product ||--o{ SavedProduct : "bookmarked as"
+    Product }o--o{ Story : "featured inside stories"
 ```
 
-### Access Matrix
+### Core Models & Database Schema
 
-| Role | Primary Dashboard Route | Permissions & Capabilities |
-| :--- | :--- | :--- |
-| **Buyer / Patron** | `/dashboard/buyer/`<br>`/accounts/buyer/` | • Browse catalog, filter, and search<br>• Save/bookmark handcrafted pieces<br>• Send inquiries to master artisans<br>• Track direct rural financial contribution |
-| **Seller / Artisan** | `/dashboard/seller/`<br>`/accounts/seller/` | • Add, edit, and manage atelier pieces<br>• Access AI Storytelling & Listing Assistant<br>• Receive and reply to patron inquiries<br>• Track live and pending inventory status |
-| **Admin / Curator** | `/dashboard/admin/`<br>`/accounts/admin-portal/` | • Review and verify new artisan applications<br>• Approve or reject submitted craft listings<br>• Access full Django database admin (`/admin/`)<br>• Supervise platform provenance integrity |
+| Model | Table | Key Fields | Description |
+| :--- | :--- | :--- | :--- |
+| `User` | `auth_user` | `username`, `email`, `password`, `first_name`, `last_name`, `is_staff` | Standard Django user with `@gmail.com` credential support. |
+| `ArtisanProfile` | `accounts_artisanprofile` | `user_id`, `display_name`, `bio`, `location`, `craft_speciality`, `profile_image`, `is_approved`, `is_verified` | Extends user into a verified craftsman studio. |
+| `Category` | `marketplace_category` | `name`, `slug`, `description`, `image` | Craft disciplines (Ceramics, Textiles, Metalcraft, Woodwork, Silver). |
+| `Product` | `marketplace_product` | `artisan_id`, `category_id`, `title`, `slug`, `price`, `stock_quantity`, `description`, `materials`, `region_of_origin`, `image`, `is_approved`, `is_available` | Core craft inventory listing with slow-craft specifications. |
+| `Story` | `marketplace_story` | `title`, `slug`, `volume_tag`, `pull_quote`, `artisan_id`, `craft_region`, `hero_image`, `lead_paragraph`, `body_content`, `is_featured`, `is_published` | Editorial journal articles celebrating craft heritage. |
+| `Order` | `marketplace_order` | `order_number`, `buyer_id`, `product_id`, `artisan_id`, `quantity`, `unit_price`, `total_price`, `artisan_share`, `shipping_address`, `status`, `payment_method` | Fair-trade patron order tracking with 88% direct artisan payout. |
+| `Enquiry` | `marketplace_enquiry` | `product_id`, `buyer_id`, `message`, `contact_email`, `status` | Direct buyer-to-artisan inquiry correspondence. |
+| `SavedProduct` | `marketplace_savedproduct` | `buyer_id`, `product_id`, `created_at` | Patron bookmark archive with unique buyer-product constraints. |
 
 ---
 
-## 4. Course Syllabus Matrix (INT253 Alignment)
+## 3. Live Supabase Database & Accounts Directory
 
-| Unit | Syllabus Requirement | Implemented Feature in CraftConnect |
-| :--- | :--- | :--- |
-| **Unit I** | Django installation, app structure, manage.py | Modular apps (`accounts`, `marketplace`), custom commands. |
-| **Unit II** | Views, HTTP methods, URL params, Regex, Errors | • Class-Based Views for GET/POST<br>• Slug and ID URL parameters<br>• **Regex routing (`re_path`)** for `/archive/(?P<year>[12][0-9]{3})/`<br>• **Custom error handlers (`handler404`, `handler500`)** with `404.html` and `500.html`. |
-| **Unit III** | DTL, template tags, filters, inheritance, Testing | • `base.html` inheritance with blocks and components<br>• **Custom DTL library** (`craft_extras.py`) with `inr_format`, `artisan_initials`, `verified_maker_badge`, `stock_status`<br>• **28 unit tests** in `marketplace/tests.py` and `accounts/tests.py`. |
-| **Unit IV** | Forms, GET/POST, CSRF, POST-Redirect-Get, Validation | • `ProductSearchForm` (GET)<br>• `LoginForm`, `RegisterForm`, `EnquiryForm`, `BecomeArtisanForm`, `ArtisanProductForm` (POST)<br>• `{% csrf_token %}` on all forms<br>• PRG pattern with `messages.success`/`messages.error`. |
-| **Unit V** | Models, Migrations, ORM, ForeignKeys, Admin, Groups & Permissions | • Relational models (`ForeignKey`, `OneToOneField`)<br>• Optimized ORM queries with `select_related` and custom managers<br>• Django Admin with bulk actions (`approve_selected_products`, `verify_selected_artisans`)<br>• Management command `setup_groups_and_permissions` configuring `Artisans`, `Patrons`, and `Guild_Curators`. |
-| **Unit VI** | Cookies & Sessions, User management, Login/Logout in Views | • **Sessions**: `request.session["recently_viewed_crafts"]` tracking viewed items<br>• **Cookies**: `response.set_cookie("last_viewed_craft_slug")` with 7-day expiry<br>• `login(request, user)` and `logout(request)` in `accounts/views.py`<br>• Role-Based Mixins (`BuyerRequiredMixin`, `SellerRequiredMixin`, `AdminRequiredMixin`). |
+### Active Database Connection
+- **Provider**: Supabase Cloud PostgreSQL
+- **Host**: `aws-0-ap-northeast-1.pooler.supabase.com`
+- **Port**: `6543` (Session & Transaction Pooling)
+- **Database**: `postgres`
+- **SSL**: Required (`sslmode=require`)
 
----
+### Seeded Account Directory & Access Matrix
 
-## 5. Verification & Test Suite Summary
+All users are active in the live Supabase database and can log in at `/accounts/login/` with username or `@gmail.com`:
 
-The automated test suite runs via `.venv\Scripts\python.exe manage.py test`:
-
-```text
-Found 28 test(s).
-System check identified no issues (0 silenced).
-..................................................
-Ran 28 tests in 30.779s
-
-OK
-```
-
-### Tested Capabilities:
-1. **Model Integrity**: Foreign keys, one-to-one constraints, unique buyer bookmarks, and default status flags.
-2. **Catalog Security**: Public catalog and detail views strictly exclude unapproved products or unapproved artisans (returning 404).
-3. **Form Validation**: Clean validation, minimum length constraints, and email normalization.
-4. **Role-Based Redirection**:
-   - Anonymous users attempting to access `/dashboard/`, `/buyer/`, `/seller/`, or `/admin-portal/` are redirected to `/accounts/login/` with `next` parameter.
-   - Buyers attempting to access `/seller/` are gracefully routed to `/accounts/become-artisan/`.
-   - Non-staff users attempting to access `/admin-portal/` are blocked and redirected to patron sanctuary.
-   - Central `/dashboard/` accurately dispatches staff to admin portal, artisans to seller studio, and patrons to buyer sanctuary.
-5. **Cookies & Sessions**: Validated session storage for recently viewed items and persistent client cookie generation.
-6. **Regex Routing**: Validated 4-digit archive queries and batch provenance code lookups.
-7. **Custom Template Filters**: Validated currency formatters, artisan monogram initials, and verified badges.
-8. **Groups & Permissions**: Validated permission assignment to `Artisans`, `Patrons`, and `Guild_Curators`.
+| Role | Username | Login Email | Password | Full Name / Studio Name | Assigned Products & Orders |
+| :--- | :--- | :--- | :---: | :--- | :--- |
+| **Admin** | `admin` | `admin.craftconnect@gmail.com` | `admin123` | **Kavita Verma**<br>*Guild Curator* | Full staff moderation & Django admin |
+| **Artisan** | `ramesh_artisan` | `ramesh.artisan@gmail.com` | `artisan123` | **Ramesh Prajapati**<br>*Mati & Agni Atelier* | Products #1, #2 (Gorakhpur Terracotta) |
+| **Artisan** | `fatima_handloom` | `fatima.handloom@gmail.com` | `artisan123` | **Fatima Khatun**<br>*Kutch Heritage Handloom* | Products #4, #5, #6 (Ajrakh & Chanderi) |
+| **Artisan** | `somnath_dhokra` | `somnath.dhokra@gmail.com` | `artisan123` | **Somnath Baghel**<br>*Bastar Bronze Guild* | Products #7, #8, #9 (Lost-Wax Dhokra) |
+| **Artisan** | `iqbal_woodcraft` | `iqbal.woodcraft@gmail.com` | `artisan123` | **Mohammad Iqbal**<br>*Saharanpur Woodwright* | Products #10, #11 (Sheesham & Walnut) |
+| **Artisan** | `leela_crafts` | `leela.crafts@gmail.com` | `artisan123` | **Leela Devi**<br>*Royal Heritage Atelier* | Products #3, #12 (Blue Pottery & Silver) |
+| **Patron** | `priya_buyer` | `priya.buyer@gmail.com` | `buyer123` | **Priya Sharma** *(Bengaluru)* | Orders #CC101, #CC107 |
+| **Patron** | `ananya_buyer` | `ananya.buyer@gmail.com` | `buyer123` | **Ananya Sen** *(New Delhi)* | Orders #CC102, #CC105 |
+| **Patron** | `vikram_buyer` | `vikram.buyer@gmail.com` | `buyer123` | **Vikram Mehta** *(Mumbai)* | Orders #CC103, #CC104, #CC106 |
 
 ---
 
-## 6. How to Run Locally
+## 4. Product Catalog & Provenance Overview
 
-### 1. Activate Virtual Environment & Check Status
-```powershell
-.venv\Scripts\activate
-python manage.py check
+| # | Piece Title | Category | Price (INR) | Artisan / Atelier | Region of Origin | Stock | Image Status |
+|:-:|:---|:---|:---:|:---|:---|:---:|:---:|
+| **1** | Wheel-Thrown Gorakhpur Terracotta Urn | Ceramics & Terracotta | ₹650 | Ramesh Prajapati | Gorakhpur, UP | 12 | Verified on disk |
+| **2** | Unglazed Earthen Terracotta Water Carafe | Ceramics & Terracotta | ₹1,250 | Ramesh Prajapati | Gorakhpur, UP | 8 | Verified on disk |
+| **3** | Jaipur Hand-Painted Blue Pottery Floral Vase | Ceramics & Terracotta | ₹1,850 | Leela Devi | Jaipur, Rajasthan | 5 | Verified on disk |
+| **4** | Natural Indigo Hand-Block Ajrakh Stole | Handloom & Textiles | ₹3,200 | Fatima Khatun | Kutch, Gujarat | 15 | Verified on disk |
+| **5** | Pure Chanderi Zari Handloom Saree | Handloom & Textiles | ₹6,800 | Fatima Khatun | Chanderi, MP | 4 | Verified on disk |
+| **6** | Pochampally Ikat Handwoven Geometric Dupatta | Handloom & Textiles | ₹2,450 | Fatima Khatun | Pochampally, Telangana | 9 | Verified on disk |
+| **7** | Lost-Wax Bastar Dhokra Tribal Musician Figurine | Bronze & Bell Metal | ₹3,800 | Somnath Baghel | Bastar, Chhattisgarh | 6 | Verified on disk |
+| **8** | Hand-Etched Bell Metal Diya with Peacocks | Bronze & Bell Metal | ₹2,150 | Somnath Baghel | Bastar, Chhattisgarh | 14 | Verified on disk |
+| **9** | Hand-Burnished Kansa Pure Bronze Dining Thali | Bronze & Bell Metal | ₹4,600 | Somnath Baghel | Bastar, Chhattisgarh | 7 | Verified on disk |
+| **10** | Saharanpur Hand-Chiseled Sheesham Keepsake Box | Woodwork & Carvings | ₹1,650 | Mohammad Iqbal | Saharanpur, UP | 11 | Verified on disk |
+| **11** | Kashmir Walnut Wood Lattice Carved Tray | Woodwork & Carvings | ₹2,850 | Mohammad Iqbal | Srinagar, J&K | 3 | Verified on disk |
+| **12** | Cuttack Tarakasi Silver Filigree Peacock Brooch | Heritage Keepsakes | ₹3,400 | Leela Devi | Cuttack, Odisha | 8 | Verified on disk |
+
+---
+
+## 5. Editorial Journal Stories & Cultural Chronicles
+
+| Story Title | Edition / Volume | Craft Region | Master Artisan | Featured Heirlooms Linked |
+|:---|:---|:---|:---|:---|
+| **The Ancient Fire: Four Generations of Gorakhpur Terracotta** | Editorial Journal • Vol. 04 | Gorakhpur, Uttar Pradesh | Ramesh Prajapati | • Wheel-Thrown Terracotta Urn<br>• Unglazed Water Carafe |
+| **Indigo, Riverbeds, and Time: The Alchemy of Kutch Ajrakh** | Editorial Journal • Vol. 03 | Dhamadka, Kutch, Gujarat | Fatima Khatun | • Natural Indigo Ajrakh Stole<br>• Pure Chanderi Zari Saree |
+| **Songs in Molten Bronze: The Lost-Wax Legacy of Bastar** | Editorial Journal • Vol. 02 | Kondagaon, Bastar | Somnath Baghel | • Lost-Wax Musician Figurine<br>• Hand-Etched Bell Metal Diya |
+| **The Chisel's Whisper: Generational Sheesham Carving** | Editorial Journal • Vol. 01 | Saharanpur, Uttar Pradesh | Mohammad Iqbal | • Saharanpur Keepsake Box<br>• Kashmir Walnut Tray |
+| **Spun from Moonbeams: The Silver Tarakasi of Cuttack** | Editorial Journal • Special Edition | Cuttack, Odisha | Leela Devi | • Tarakasi Silver Peacock Brooch<br>• Jaipur Blue Pottery Vase |
+
+---
+
+## 6. Open-Source AI Service Architecture
+
+```mermaid
+sequenceDiagram
+    autonumber
+    actor Artisan as Master Artisan
+    participant View as ArtisanProductForm (UI)
+    participant Engine as ai_service.py
+    participant LLM as OpenRouter API (Nemotron/Llama 3)
+    participant DB as Supabase PostgreSQL
+
+    Artisan->>View: Enters raw notes ("Terracotta vase, Gorakhpur clay, pit kiln, ₹650")
+    View->>Engine: generate_catalogue_assistant_suggestions()
+    Engine->>LLM: Formatted prompt with slow-craft editorial persona
+    alt LLM Success
+        LLM-->>Engine: JSON {title, description, tags, suggested_price}
+    else API Timeout / Rate Limit
+        Engine-->>Engine: Algorithmic slow-craft heuristic fallback
+    end
+    Engine-->>View: Returns collector-grade listing copy
+    Artisan->>View: Reviews & publishes piece
+    View->>DB: Stores approved craft in Supabase
 ```
 
-### 2. Run Database Migrations
-```powershell
-python manage.py migrate
-```
+- **OpenRouter Endpoint**: `https://openrouter.ai/api/v1/chat/completions`
+- **Primary Model**: `nvidia/nemotron-3.5-super-vl:free` (or Meta Llama 3 / Mistral)
+- **Heuristic Fallback Engine**: If internet access is unavailable or API credentials expire, the platform seamlessly synthesizes culturally authentic copy locally, ensuring craftsmen never experience blocking errors.
 
-### 3. Provision Role Groups & Permissions
-```powershell
-python manage.py setup_groups_and_permissions
-```
+---
 
-### 4. Seed Realistic Master Crafts & Demo Accounts
-```powershell
-python manage.py seed_data
-```
-Populates:
-- 5 Heritage Craft Categories (Ceramics, Textiles, Metalcraft, Woodwork, Keepsakes).
-- 12 authentic artisan products with exact slow-craft photography, descriptions, GI provenance, and pricing.
-- 5 verified role accounts for seamless testing:
-  - **Guild Curator / Admin**: `admin` / `admin123`
-  - **Master Artisan (Terracotta)**: `ramesh_artisan` / `artisan123`
-  - **Master Artisan (Handloom)**: `fatima_handloom` / `artisan123`
-  - **Master Artisan (Bronze)**: `somnath_dhokra` / `artisan123`
-  - **Conscious Buyer**: `priya_buyer` / `buyer123`
-- Pre-seeded buyer saved bookmarks and live artisan inquiries.
+## 7. Syllabus Compliance Matrix (INT253: Web Development in Python)
 
-### 5. Run Test Suite
-```powershell
-python manage.py test
-```
+| Unit | Syllabus Requirement | Implemented Feature in SkillsCraft AI |
+|:---:|:---|:---|
+| **Unit I** | Django Setup, Modular App Structure, CLI | • Modular architecture (`craftconnect`, `marketplace`, `accounts`).<br>• Custom management commands: `seed_data`, `verify_ai`, `setup_groups_and_permissions`. |
+| **Unit II** | Views, HTTP Methods, Parametric Routing, Regex, Error Handlers | • Class-Based Views (`ListView`, `DetailView`, `CreateView`, `View`).<br>• Parametric slug and integer PK routing.<br>• **Regex routing (`re_path`)** for `/archive/(?P<year>[12][0-9]{3})/`.<br>• **Custom error handlers (`handler404`, `handler500`)** rendering `404.html` and `500.html`. |
+| **Unit III** | DTL, Inheritance, Custom Tags, Unit Testing | • Master template inheritance (`templates/base.html`).<br>• **Custom template tag library** (`craft_extras.py`) with `inr_format`, `artisan_initials`, `verified_maker_badge`, `stock_status`.<br>• 40+ automated unit and integration tests. |
+| **Unit IV** | Forms, GET/POST, CSRF, POST-Redirect-GET, Validation | • `ProductSearchForm` (GET), `BuyOrderForm` (POST), `LoginForm`, `RegisterForm`, `ArtisanProductForm`.<br>• CSRF tokens enforced across all forms.<br>• POST-Redirect-GET workflow with Django notification messages. |
+| **Unit V** | Models, ForeignKeys, Custom QuerySets, Admin, Groups | • Relational models with `ForeignKey`, `OneToOneField`, `ManyToManyField`.<br>• Custom query manager: `Product.objects.public()`.<br>• Rich Django admin interfaces with bulk action triggers.<br>• Django Groups (`Artisans`, `Patrons`, `Guild_Curators`) with granular model permissions. |
+| **Unit VI** | Sessions, Cookies, View-Based Authentication, RBAC | • **Sessions**: `request.session["recently_viewed_crafts"]` tracking viewed pieces.<br>• **Cookies**: `response.set_cookie("last_viewed_craft_slug")` with 7-day retention.<br>• `login()` and `logout()` view handlers supporting username or email login.<br>• Security mixins: `BuyerRequiredMixin`, `SellerRequiredMixin`, `AdminRequiredMixin`. |
 
-### 5. Verify AI Pipelines (OpenRouter & Open-Source LLMs)
-```powershell
-python manage.py verify_ai
-```
-Tests:
-1. Direct OpenRouter connectivity (`https://openrouter.ai/api/v1`) using the official OpenAI Python SDK.
-2. Artisan Catalogue Assistant pipeline (editorial titles, cultural storytelling descriptions, tags, pricing).
-3. Smart Craft Discovery pipeline (natural language intent decomposition & semantic catalog match).
+---
 
-### 6. Launch Development Server
-```powershell
-python manage.py runserver 127.0.0.1:8000
-```
-- **Home**: `http://127.0.0.1:8000/`
-- **Catalogue**: `http://127.0.0.1:8000/catalogue/`
-- **Role Router**: `http://127.0.0.1:8000/dashboard/`
-- **Buyer Sanctuary**: `http://127.0.0.1:8000/buyer/`
-- **Seller Studio**: `http://127.0.0.1:8000/seller/`
-- **Admin Portal**: `http://127.0.0.1:8000/moderation/`
-- **Django Admin**: `http://127.0.0.1:8000/admin/`
+## 8. Verification & Running the Platform
+
+### Running the Platform
+1. **Activate Environment & Check Configuration**:
+   ```powershell
+   .\.venv\Scripts\Activate.ps1
+   python manage.py check
+   ```
+2. **Apply Migrations to Supabase**:
+   ```powershell
+   python manage.py migrate
+   ```
+3. **Seed Database with Sample Data & Demo Accounts**:
+   ```powershell
+   python manage.py seed_data
+   ```
+4. **Run the Automated Test Suite**:
+   ```powershell
+   python manage.py test
+   ```
+5. **Verify AI Pipeline Connectivity**:
+   ```powershell
+   python manage.py verify_ai
+   ```
+6. **Launch Development Server**:
+   ```powershell
+   python manage.py runserver 127.0.0.1:8000
+   ```
+
+### Quick Access URLs:
+- **Homepage**: [http://127.0.0.1:8000/](http://127.0.0.1:8000/)
+- **Editorial Journal**: [http://127.0.0.1:8000/journal/](http://127.0.0.1:8000/journal/)
+- **Craft Catalogue**: [http://127.0.0.1:8000/catalogue/](http://127.0.0.1:8000/catalogue/)
+- **Authentication**: [http://127.0.0.1:8000/accounts/login/](http://127.0.0.1:8000/accounts/login/)
+- **Buyer Sanctuary**: [http://127.0.0.1:8000/accounts/buyer/](http://127.0.0.1:8000/accounts/buyer/)
+- **Artisan Studio**: [http://127.0.0.1:8000/accounts/seller/](http://127.0.0.1:8000/accounts/seller/)
+- **Curator Portal**: [http://127.0.0.1:8000/accounts/admin-portal/](http://127.0.0.1:8000/accounts/admin-portal/)
+- **Django Admin**: [http://127.0.0.1:8000/admin/](http://127.0.0.1:8000/admin/)
+
+---
+
+<div align="center">
+  <sub>Documented with pride for SkillsCraft AI • Empowering Grassroots Indian Artisans through Ethical Slow Commerce and Open-Source Intelligence.</sub>
+</div>
