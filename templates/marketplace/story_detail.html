@@ -192,7 +192,7 @@
             <div>
               <a href="{% url 'marketplace:product_detail' slug=prod.slug %}" class="block aspect-[4/3] bg-surface-container overflow-hidden relative">
                 {% if prod.image %}
-                  <img src="{{ prod.image.url }}" alt="{{ prod.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+                  <img src="{{ prod.image.url }}?v={{ prod.updated_at|date:'U' }}" alt="{{ prod.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
                 {% else %}
                   <div class="w-full h-full flex items-center justify-center bg-surface-container-high text-on-surface-variant">
                     <span class="material-symbols-outlined text-4xl">palette</span>

@@ -181,7 +181,7 @@
               <div class="flex items-start gap-4">
                 <a href="{% url 'marketplace:product_detail' slug=order.product.slug %}" class="w-20 h-20 sm:w-24 sm:h-24 rounded-xl overflow-hidden bg-surface-container flex-shrink-0 border border-outline-variant/60 block">
                   {% if order.product.image %}
-                    <img src="{{ order.product.image.url }}" alt="{{ order.product.title }}" class="w-full h-full object-cover">
+                    <img src="{{ order.product.image.url }}?v={{ order.product.updated_at|date:'U' }}" alt="{{ order.product.title }}" class="w-full h-full object-cover">
                   {% else %}
                     <div class="w-full h-full flex items-center justify-center text-outline">
                       <span class="material-symbols-outlined text-3xl">brush</span>
@@ -267,7 +267,7 @@
             <div>
               <a href="{% url 'marketplace:product_detail' slug=item.product.slug %}" class="block aspect-[4/3] bg-surface-container overflow-hidden rounded-lg relative mb-3">
                 {% if item.product.image %}
-                  <img src="{{ item.product.image.url }}" alt="{{ item.product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+                  <img src="{{ item.product.image.url }}?v={{ item.product.updated_at|date:'U' }}" alt="{{ item.product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
                 {% else %}
                   <div class="w-full h-full flex items-center justify-center text-on-surface-variant bg-surface-container-high">
                     <span class="material-symbols-outlined text-5xl text-outline">palette</span>
@@ -389,7 +389,7 @@
           <div>
             <a href="{% url 'marketplace:product_detail' slug=product.slug %}" class="block aspect-[4/3] bg-surface-container overflow-hidden rounded-lg relative mb-3">
               {% if product.image %}
-                <img src="{{ product.image.url }}" alt="{{ product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
+                <img src="{{ product.image.url }}?v={{ product.updated_at|date:'U' }}" alt="{{ product.title }}" class="w-full h-full object-cover img-zoom" loading="lazy">
               {% else %}
                 <div class="w-full h-full flex items-center justify-center text-on-surface-variant bg-surface-container-high">
                   <span class="material-symbols-outlined text-5xl text-outline">palette</span>

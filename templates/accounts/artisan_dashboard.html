@@ -349,7 +349,7 @@
                     <div class="flex items-center gap-3.5">
                       <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden shrink-0 border border-outline-variant">
                         {% if p.image %}
-                          <img src="{{ p.image.url }}" alt="{{ p.title }}" class="w-full h-full object-cover">
+                          <img src="{{ p.image.url }}?v={{ p.updated_at|date:'U' }}" alt="{{ p.title }}" class="w-full h-full object-cover">
                         {% else %}
                           <span class="w-full h-full flex items-center justify-center text-tertiary material-symbols-outlined text-2xl">palette</span>
                         {% endif %}
@@ -442,7 +442,7 @@
                     <div class="flex items-center gap-3">
                       <div class="w-12 h-12 rounded-lg bg-surface-container overflow-hidden flex-shrink-0 border border-outline-variant/60">
                         {% if ord.product.image %}
-                          <img src="{{ ord.product.image.url }}" alt="{{ ord.product.title }}" class="w-full h-full object-cover">
+                          <img src="{{ ord.product.image.url }}?v={{ ord.product.updated_at|date:'U' }}" alt="{{ ord.product.title }}" class="w-full h-full object-cover">
                         {% else %}
                           <span class="w-full h-full flex items-center justify-center text-tertiary material-symbols-outlined text-xl">palette</span>
                         {% endif %}
