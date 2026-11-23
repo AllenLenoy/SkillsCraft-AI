@@ -186,7 +186,7 @@ def smart_craft_discovery(prompt_text):
             "extracted_keywords": [],
             "suggested_category": None,
             "ai_explanation": "Showing all handpicked heritage crafts across verified master studios.",
-            "products": Product.objects.public().select_related("artisan", "category")[:9]
+            "products": Product.objects.public().select_related("artisan", "category")
         }
 
     # Traditional Indian slow-craft genres
@@ -271,7 +271,7 @@ def smart_craft_discovery(prompt_text):
         matched_products = qs.filter(genre_filter).distinct()
 
     if not matched_products.exists():
-        matched_products = qs.all()[:6]
+        matched_products = qs.all()
         if not ai_explanation:
             ai_explanation = f"We couldn't find exact matches for '{prompt}', but here are exquisite handcrafted pieces from our verified master artisans matching slow-craft principles."
     else:
@@ -283,7 +283,7 @@ def smart_craft_discovery(prompt_text):
         "extracted_keywords": extracted_keywords[:5],
         "suggested_category": suggested_category,
         "ai_explanation": ai_explanation,
-        "products": matched_products[:12]
+        "products": matched_products
     }
 
 

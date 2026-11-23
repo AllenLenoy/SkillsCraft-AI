@@ -376,7 +376,15 @@ class AIAssistantSuggestView(SellerRequiredMixin, View):
     """
     def post(self, request):
         try:
-            data = json.loads(request.body.decode("utf-8")) if request.body else request.POST
+            data = {}
+            if request.body:
+                try:
+                    data = json.loads(request.body.decode("utf-8"))
+                except (json.JSONDecodeError, UnicodeDecodeError):
+                    data = request.POST
+            else:
+                data = request.POST
+
             title = data.get("title", "")
             notes = data.get("notes", "")
             material = data.get("material", "")
