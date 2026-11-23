@@ -264,7 +264,8 @@ class BuyerDashboardView(BuyerRequiredMixin, View):
             "recommended_products": recommended_products,
             "saved_count": saved_count,
             "enquiries_count": enquiries_count,
-            "total_impact_inr": f"{int(total_spent):,}" if total_spent else (f"{(saved_count * 1250):,}" if saved_count else "0"),
+            "total_spent": total_spent,
+            "total_impact_inr": f"{int(total_spent):,}" if total_spent else "0",
             "artisans_supported_count": artisans_supported_count,
         }
         return render(request, self.template_name, context)

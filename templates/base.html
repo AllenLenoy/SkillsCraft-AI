@@ -144,13 +144,19 @@
           <span>Journal</span>
           <span class="px-1.5 py-0.2 bg-secondary/15 text-secondary text-[10px] font-bold rounded-full">Stories</span>
         </a>
-        <a href="{% url 'accounts:buyer_dashboard' %}" class="{% if request.resolver_match.url_name == 'buyer_dashboard' or request.resolver_match.url_name == 'buyer_dashboard_alt' %}text-primary border-b-2 border-primary pb-1 font-label text-title-sm{% else %}text-on-surface-variant font-body text-body-md hover:text-primary{% endif %} transition-colors duration-200">Buyer Sanctuary</a>
-        <a href="{% url 'accounts:seller_dashboard' %}" class="{% if request.resolver_match.url_name == 'seller_dashboard' or request.resolver_match.url_name == 'artisan_studio' or request.resolver_match.url_name == 'seller_dashboard_alt' %}text-primary border-b-2 border-primary pb-1 font-label text-title-sm{% else %}text-on-surface-variant font-body text-body-md hover:text-primary{% endif %} transition-colors duration-200">
-          Artisan Studio
-        </a>
-        {% if user.is_staff or user.is_superuser %}
-          <a href="{% url 'accounts:admin_dashboard' %}" class="{% if request.resolver_match.url_name == 'admin_dashboard' or request.resolver_match.url_name == 'moderation' or request.resolver_match.url_name == 'admin_dashboard_alt' %}text-primary border-b-2 border-primary pb-1 font-label text-title-sm{% else %}text-on-surface-variant font-body text-body-md hover:text-primary{% endif %} transition-colors duration-200">
-            Admin Portal
+        {% if user.is_authenticated %}
+          {% if user.is_staff or user.is_superuser %}
+            <a href="{% url 'accounts:admin_dashboard' %}" class="{% if request.resolver_match.url_name == 'admin_dashboard' or request.resolver_match.url_name == 'moderation' or request.resolver_match.url_name == 'admin_dashboard_alt' %}text-primary border-b-2 border-primary pb-1 font-label text-title-sm{% else %}text-on-surface-variant font-body text-body-md hover:text-primary{% endif %} transition-colors duration-200">
+              Admin Portal
+            </a>
+          {% endif %}
+          {% if user.artisan_profile %}
+            <a href="{% url 'accounts:seller_dashboard' %}" class="{% if request.resolver_match.url_name == 'seller_dashboard' or request.resolver_match.url_name == 'artisan_studio' or request.resolver_match.url_name == 'seller_dashboard_alt' or request.resolver_match.url_name == 'artisan_dashboard_alias' %}text-primary border-b-2 border-primary pb-1 font-label text-title-sm{% else %}text-on-surface-variant font-body text-body-md hover:text-primary{% endif %} transition-colors duration-200">
+              Artisan Studio
+            </a>
+          {% endif %}
+          <a href="{% url 'accounts:buyer_dashboard' %}" class="{% if request.resolver_match.url_name == 'buyer_dashboard' or request.resolver_match.url_name == 'buyer_dashboard_alt' %}text-primary border-b-2 border-primary pb-1 font-label text-title-sm{% else %}text-on-surface-variant font-body text-body-md hover:text-primary{% endif %} transition-colors duration-200">
+            {% if user.artisan_profile %}My Purchases{% else %}My Orders &amp; Saved{% endif %}
           </a>
         {% endif %}
       </nav>
@@ -220,18 +226,22 @@
         <span class="material-symbols-outlined text-[18px]">auto_stories</span>
         Editorial Journal
       </a>
-      <a href="{% url 'accounts:buyer_dashboard' %}" class="block py-2 text-on-surface hover:text-primary font-medium flex items-center gap-2">
-        <span class="material-symbols-outlined text-[18px]">spa</span>
-        Patron Sanctuary
-      </a>
-      <a href="{% url 'accounts:artisan_studio' %}" class="block py-2 text-on-surface hover:text-primary font-medium flex items-center gap-2">
-        <span class="material-symbols-outlined text-[18px]">palette</span>
-        Artisan Studio
-      </a>
-      {% if user.is_staff %}
-        <a href="{% url 'accounts:moderation' %}" class="block py-2 text-on-surface hover:text-primary font-medium flex items-center gap-2">
-          <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
-          Curation Queue
+      {% if user.is_authenticated %}
+        {% if user.is_staff or user.is_superuser %}
+          <a href="{% url 'accounts:admin_dashboard' %}" class="block py-2 text-on-surface hover:text-primary font-medium flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">admin_panel_settings</span>
+            Admin Portal
+          </a>
+        {% endif %}
+        {% if user.artisan_profile %}
+          <a href="{% url 'accounts:seller_dashboard' %}" class="block py-2 text-on-surface hover:text-primary font-medium flex items-center gap-2">
+            <span class="material-symbols-outlined text-[18px]">palette</span>
+            Artisan Studio
+          </a>
+        {% endif %}
+        <a href="{% url 'accounts:buyer_dashboard' %}" class="block py-2 text-on-surface hover:text-primary font-medium flex items-center gap-2">
+          <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+          {% if user.artisan_profile %}My Purchases{% else %}My Orders &amp; Saved{% endif %}
         </a>
       {% endif %}
       {% if not user.is_authenticated %}

@@ -8,61 +8,35 @@
 
   <!-- ==================== SECTION 1: STUDIO HEADER & STATS ==================== -->
   <section class="space-y-6" data-animate>
-    <!-- Dedicated Role Status Bar -->
-    <div class="bg-surface-container-low border border-outline-variant p-4 px-5 rounded-xl flex flex-wrap items-center justify-between gap-3 text-sm shadow-xs">
-      <div class="flex items-center gap-2.5 text-on-surface-variant font-medium">
-        <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-emerald-100 text-emerald-900 border border-emerald-300">
-          <span class="pulse-dot"></span>
-          <span>Seller / Artisan Studio Workspace</span>
-        </span>
-        <span class="text-outline-variant">|</span>
-        <span>Atelier: <strong class="text-on-surface font-bold">{{ artisan.display_name }}</strong></span>
-        {% if artisan.is_verified %}
-          <span class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-bold bg-secondary/10 text-secondary">
-            <span class="material-symbols-outlined text-[13px]">verified</span>
-            Verified Master Maker
-          </span>
-        {% endif %}
-      </div>
-      <div class="flex items-center gap-4 text-xs font-semibold">
-        <a href="{% url 'accounts:buyer_dashboard' %}" class="inline-flex items-center gap-1.5 text-primary hover:underline font-bold">
-          <span class="material-symbols-outlined text-[16px]">shopping_bag</span>
-          <span>Switch to Buyer Sanctuary &rarr;</span>
-        </a>
-        <a href="{% url 'accounts:artisan_detail' pk=artisan.id %}" target="_blank" class="inline-flex items-center gap-1.5 text-on-surface-variant hover:text-on-surface font-bold">
-          <span class="material-symbols-outlined text-[16px]">visibility</span>
-          <span>Public Atelier View &rarr;</span>
-        </a>
-        {% if request.user.is_staff or request.user.is_superuser %}
-          <a href="{% url 'accounts:admin_dashboard' %}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-bold hover:bg-emerald-200 transition-all">
-            <span class="material-symbols-outlined text-[16px]">shield_person</span>
-            <span>Curator Portal &rarr;</span>
-          </a>
-        {% endif %}
-      </div>
-    </div>
-
-    <!-- Hero Header & Action Buttons -->
-    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
+    <!-- Clean Studio Header & Action Bar -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-6 border-b border-outline-variant pb-6">
       <div>
-        <span class="text-xs font-bold text-primary tracking-wider uppercase block mb-1.5 font-label">
-          CRAFT PROVENANCE REGISTRY · {{ artisan.location|default:"BHUJ, GUJARAT" }}
-        </span>
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary rounded-full text-xs font-bold uppercase tracking-wider mb-2 font-label">
+          <span class="pulse-dot"></span>
+          <span>{{ artisan.craft_speciality|default:"Traditional Craft Atelier" }} · {{ artisan.location|default:"India" }}</span>
+          {% if artisan.is_verified %}
+            <span class="text-secondary font-bold">• Verified Maker</span>
+          {% endif %}
+        </div>
         <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface tracking-tight">
-          Namaste, {{ artisan.display_name|default:"Devraj Kumhar" }}
+          Namaste, {{ artisan.display_name }}
         </h1>
         <p class="text-base sm:text-lg text-on-surface-variant mt-2 max-w-3xl leading-relaxed">
-          {{ artisan.bio|default:"Managing hand-thrown terracotta lines, slow-living culinary earthenware, and bespoke kiln batch commissions for conscious patrons." }}
+          {{ artisan.bio|default:"Manage your handcrafted inventory, track incoming patron orders, and use the AI Catalogue Assistant to craft rich storytelling listings." }}
         </p>
       </div>
-      <div class="flex flex-wrap gap-3.5 items-center">
-        <a href="#inventory-section" class="bg-surface-container-high hover:bg-surface-variant text-secondary border border-outline-variant text-sm font-bold px-4 py-3 rounded-lg flex items-center gap-2 transition-colors font-label shadow-xs hover-lift">
-          <span class="material-symbols-outlined text-[20px]">inventory_2</span>
-          View Atelier Inventory ({{ total_pieces }})
+      <div class="flex flex-wrap gap-3 items-center">
+        <a href="{% url 'accounts:artisan_detail' pk=artisan.id %}" target="_blank" class="bg-surface-container hover:bg-surface-container-high text-on-surface border border-outline-variant text-sm font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 transition-colors font-label shadow-xs">
+          <span class="material-symbols-outlined text-[18px]">visibility</span>
+          <span>View Public Profile</span>
         </a>
-        <a href="#ai-assistant-section" class="bg-primary hover:bg-primary-hover text-white text-sm font-bold px-5 py-3 rounded-lg flex items-center gap-2 shadow-sm transition-all font-label hover-lift active:scale-[0.98]">
-          <span class="material-symbols-outlined text-[20px]">auto_awesome</span>
-          AI Catalogue Assistant
+        <a href="#inventory-section" class="bg-surface-container hover:bg-surface-container-high text-secondary border border-outline-variant text-sm font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 transition-colors font-label shadow-xs">
+          <span class="material-symbols-outlined text-[18px]">inventory_2</span>
+          <span>Inventory ({{ total_pieces }})</span>
+        </a>
+        <a href="#ai-assistant-section" class="bg-primary hover:bg-primary-hover text-white text-sm font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition-all font-label hover-lift">
+          <span class="material-symbols-outlined text-[18px]">auto_awesome</span>
+          <span>AI Assistant</span>
         </a>
       </div>
     </div>

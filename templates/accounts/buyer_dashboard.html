@@ -6,133 +6,102 @@
 {% block content %}
 <div class="max-w-[1440px] mx-auto px-4 md:px-8 py-8 space-y-10">
   
-  <!-- Dedicated Role Status Bar -->
-  <div class="bg-surface-container-low border border-outline-variant p-4 px-5 rounded-xl flex flex-wrap items-center justify-between gap-3 text-sm shadow-xs" data-animate>
-    <div class="flex items-center gap-2.5 text-on-surface-variant font-medium">
-      <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-bold bg-amber-100 text-amber-900 border border-amber-300">
-        <span class="pulse-dot"></span>
-        <span>Buyer / Patron Workspace</span>
-      </span>
-      <span class="text-outline-variant">|</span>
-      <span>Authenticated as: <strong class="text-on-surface font-bold">{{ request.user.username }}</strong></span>
-    </div>
-    <div class="flex items-center gap-4 text-xs font-semibold">
-      {% if request.user.artisan_profile %}
-        <a href="{% url 'accounts:seller_dashboard' %}" class="inline-flex items-center gap-1.5 text-primary hover:underline font-bold">
-          <span class="material-symbols-outlined text-[16px]">palette</span>
-          <span>Switch to Artisan Studio &rarr;</span>
-        </a>
-      {% else %}
-        <a href="{% url 'accounts:become_artisan' %}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-primary/10 text-primary hover:bg-primary/20 font-bold transition-all">
-          <span class="material-symbols-outlined text-[16px]">storefront</span>
-          <span>Open Artisan Atelier (Become a Seller) &rarr;</span>
-        </a>
-      {% endif %}
-      {% if request.user.is_staff or request.user.is_superuser %}
-        <a href="{% url 'accounts:admin_dashboard' %}" class="inline-flex items-center gap-1.5 px-3 py-1 rounded-lg bg-emerald-100 text-emerald-900 font-bold hover:bg-emerald-200 transition-all">
-          <span class="material-symbols-outlined text-[16px]">shield_person</span>
-          <span>Curator Portal &rarr;</span>
-        </a>
-      {% endif %}
-    </div>
-  </div>
-
-  <!-- SECTION 1: Welcome Banner & Patron Impact Summary -->
-  <section class="bg-surface-container-low border border-outline-variant p-8 md:p-12 rounded-2xl shadow-xs relative overflow-hidden" data-animate>
-    <!-- Watermark Accent -->
-    <div class="absolute -right-8 -bottom-8 opacity-5 pointer-events-none select-none text-primary hidden md:block">
-      <span class="material-symbols-outlined" style="font-size: 260px;">spa</span>
-    </div>
-
-    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-center relative z-10">
-      
-      <!-- Narrative Welcome Column -->
-      <div class="lg:col-span-7 space-y-4">
-        <div class="inline-flex items-center gap-2 bg-white border border-outline-variant px-3.5 py-1.5 rounded-full text-secondary text-xs font-bold uppercase tracking-wider shadow-xs">
-          <span class="material-symbols-outlined text-base">verified</span>
-          <span>Conscious Living Patron · Tier 2 Supporter</span>
+  <!-- Clean Patron Header -->
+  <section class="bg-surface-container-low border border-outline-variant p-6 md:p-8 rounded-2xl shadow-xs" data-animate>
+    <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-6">
+      <div class="space-y-2">
+        <div class="inline-flex items-center gap-2 px-3 py-1 bg-amber-100 text-amber-900 border border-amber-300 rounded-full text-xs font-bold uppercase tracking-wider font-label">
+          <span class="pulse-dot"></span>
+          <span>Patron &amp; Customer Account · Member since {{ request.user.date_joined|date:"M Y" }}</span>
         </div>
-
         <h1 class="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-on-surface leading-tight">
-          Welcome back, <span class="italic text-primary">{{ request.user.first_name|default:"Priyamvada" }}</span>
+          Welcome back, <span class="italic text-primary">{{ request.user.first_name|default:request.user.username }}</span>
         </h1>
-
         <p class="text-base sm:text-lg text-on-surface-variant max-w-2xl leading-relaxed">
-          Your patron sanctuary reflects the quiet rhythm of handmade tradition. Every craft in your archive directly upholds living lineage, fair wage dignity, and zero-compromise environmental stewardship.
+          Manage your orders, track craft shipments, explore your saved pieces, and message master artisans directly.
         </p>
+      </div>
 
-        <div class="pt-2 flex flex-wrap gap-4 text-sm text-tertiary font-medium">
-          <span class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-base text-secondary">location_on</span>
-            Bangalore, Karnataka
+      <div class="flex flex-wrap items-center gap-3">
+        <a href="{% url 'marketplace:product_catalog' %}" class="bg-primary hover:bg-primary-hover text-white text-sm font-bold px-5 py-2.5 rounded-lg flex items-center gap-2 shadow-xs transition-all font-label hover-lift">
+          <span class="material-symbols-outlined text-[18px]">storefront</span>
+          <span>Browse Catalogue</span>
+        </a>
+        {% if not request.user.artisan_profile %}
+          <a href="{% url 'accounts:become_artisan' %}" class="bg-surface-container hover:bg-surface-container-high text-secondary border border-outline-variant text-sm font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 transition-colors font-label shadow-xs">
+            <span class="material-symbols-outlined text-[18px]">palette</span>
+            <span>Sell on CraftConnect</span>
+          </a>
+        {% else %}
+          <a href="{% url 'accounts:seller_dashboard' %}" class="bg-surface-container hover:bg-surface-container-high text-secondary border border-outline-variant text-sm font-bold px-4 py-2.5 rounded-lg flex items-center gap-2 transition-colors font-label shadow-xs">
+            <span class="material-symbols-outlined text-[18px]">palette</span>
+            <span>Artisan Studio &rarr;</span>
+          </a>
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Patron Metrics Bento Cards -->
+    <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 mt-6 pt-6 border-t border-outline-variant">
+      
+      <!-- Metric 1: Orders -->
+      <div class="bg-white p-4 sm:p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
+        <div class="flex items-center justify-between text-primary">
+          <span class="text-xs font-bold text-primary uppercase font-label">Acquisitions</span>
+          <span class="p-1.5 bg-primary/10 rounded-lg text-primary">
+            <span class="material-symbols-outlined text-xl">shopping_bag</span>
           </span>
-          <span>•</span>
-          <span class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-base text-primary">history_edu</span>
-            Patron since Nov 2023
-          </span>
-          <span>•</span>
-          <span class="flex items-center gap-1.5">
-            <span class="material-symbols-outlined text-base text-secondary">eco</span>
-            100% Carbon-Neutral Packaging
-          </span>
+        </div>
+        <div class="mt-3">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ orders_count|default:0 }}</span>
+          <span class="block text-xs text-on-surface-variant mt-1 font-medium">Orders Placed</span>
         </div>
       </div>
 
-      <!-- Patron Impact Metrics Bento Cards -->
-      <div class="lg:col-span-5 grid grid-cols-2 gap-4">
-        
-        <!-- Metric 1: Financial Contribution -->
-        <div class="bg-surface p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
-          <div class="flex items-center justify-between text-primary">
-            <span class="material-symbols-outlined text-2xl">payments</span>
-            <span class="text-xs font-bold text-secondary uppercase bg-secondary/10 px-2 py-0.5 rounded-md font-label">Direct Pay</span>
-          </div>
-          <div class="mt-4">
-            <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">₹{{ total_impact_inr }}</span>
-            <span class="block text-xs sm:text-sm text-on-surface-variant mt-1 font-medium">Rural Remittance</span>
-          </div>
+      <!-- Metric 2: Financial Contribution -->
+      <div class="bg-white p-4 sm:p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
+        <div class="flex items-center justify-between text-secondary">
+          <span class="text-xs font-bold text-secondary uppercase font-label">Direct Impact</span>
+          <span class="p-1.5 bg-secondary/10 rounded-lg text-secondary">
+            <span class="material-symbols-outlined text-xl">payments</span>
+          </span>
         </div>
-
-        <!-- Metric 2: Lineages Supported -->
-        <div class="bg-surface p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
-          <div class="flex items-center justify-between text-secondary">
-            <span class="material-symbols-outlined text-2xl">diversity_1</span>
-            <span class="text-xs font-bold text-secondary uppercase bg-secondary/10 px-2 py-0.5 rounded-md font-label">Guilds</span>
-          </div>
-          <div class="mt-4">
-            <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ artisans_supported_count }}</span>
-            <span class="block text-xs sm:text-sm text-on-surface-variant mt-1 font-medium">Master Lineages</span>
-          </div>
+        <div class="mt-3">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">₹{{ total_spent|default:0|floatformat:0 }}</span>
+          <span class="block text-xs text-on-surface-variant mt-1 font-medium">Paid Directly to Artisans</span>
         </div>
+      </div>
 
-        <!-- Metric 3: Acquired Orders -->
-        <div class="bg-surface p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
-          <div class="flex items-center justify-between text-primary">
-            <span class="material-symbols-outlined text-2xl">shopping_bag</span>
-            <span class="text-xs font-bold text-primary uppercase bg-primary/10 px-2 py-0.5 rounded-md font-label">Acquired</span>
-          </div>
-          <div class="mt-4">
-            <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ orders_count|default:0 }} Pieces</span>
-            <span class="block text-xs sm:text-sm text-on-surface-variant mt-1 font-medium">Orders in Sanctuary</span>
-          </div>
+      <!-- Metric 3: Saved Pieces -->
+      <div class="bg-white p-4 sm:p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
+        <div class="flex items-center justify-between text-secondary">
+          <span class="text-xs font-bold text-secondary uppercase font-label">Wishlist</span>
+          <span class="p-1.5 bg-secondary/10 rounded-lg text-secondary">
+            <span class="material-symbols-outlined text-xl">favorite</span>
+          </span>
         </div>
-
-        <!-- Metric 4: Saved Pieces -->
-        <div class="bg-surface p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
-          <div class="flex items-center justify-between text-secondary">
-            <span class="material-symbols-outlined text-2xl">favorite</span>
-            <span class="text-xs font-bold text-secondary uppercase bg-secondary/10 px-2 py-0.5 rounded-md font-label">Archive</span>
-          </div>
-          <div class="mt-4">
-            <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ saved_count }} Pieces</span>
-            <span class="block text-xs sm:text-sm text-on-surface-variant mt-1 font-medium">Saved in Sanctuary</span>
-          </div>
+        <div class="mt-3">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ saved_count|default:0 }}</span>
+          <span class="block text-xs text-on-surface-variant mt-1 font-medium">Saved Creations</span>
         </div>
+      </div>
 
+      <!-- Metric 4: Enquiries Sent -->
+      <div class="bg-white p-4 sm:p-5 rounded-xl border border-outline-variant shadow-xs flex flex-col justify-between hover-lift">
+        <div class="flex items-center justify-between text-primary">
+          <span class="text-xs font-bold text-primary uppercase font-label">Dialogue</span>
+          <span class="p-1.5 bg-primary/10 rounded-lg text-primary">
+            <span class="material-symbols-outlined text-xl">forum</span>
+          </span>
+        </div>
+        <div class="mt-3">
+          <span class="font-display text-2xl sm:text-3xl font-bold text-on-surface">{{ enquiries_count|default:0 }}</span>
+          <span class="block text-xs text-on-surface-variant mt-1 font-medium">Artisan Inquiries</span>
+        </div>
       </div>
 
     </div>
+  </section>
   </section>
 
   <!-- SECTION 2: Sanctuary Navigation Tabs -->
