@@ -20,7 +20,10 @@ urlpatterns = [
     # Dedicated Seller Dashboard (Artisan Studio)
     path("seller/", views.ArtisanStudioView.as_view(), name="seller_dashboard"),
     path("studio/", views.ArtisanStudioView.as_view(), name="artisan_studio"),
+    path("artisan/", views.ArtisanStudioView.as_view(), name="artisan_studio_alias"),
+    path("artisan/dashboard/", views.ArtisanStudioView.as_view(), name="artisan_dashboard_alias"),
     path("dashboard/seller/", views.ArtisanStudioView.as_view(), name="seller_dashboard_alt"),
+    path("dashboard/artisan/", views.ArtisanStudioView.as_view(), name="artisan_dashboard_alt"),
     path("become-artisan/", views.BecomeArtisanView.as_view(), name="become_artisan"),
     path("studio/ai-assistant/", views.AIAssistantSuggestView.as_view(), name="ai_assistant_suggest"),
 
