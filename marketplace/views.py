@@ -73,6 +73,7 @@ class ProductCatalogView(ListView):
         q = self.request.GET.get("q", "").strip()
         category_slug = self.request.GET.get("category", "").strip()
         material = self.request.GET.get("material", "").strip()
+        artisan_id = self.request.GET.get("artisan", "").strip()
         ordering = self.request.GET.get("ordering", "-created_at")
 
         # If natural language query is provided, use Smart Craft Discovery
@@ -87,6 +88,8 @@ class ProductCatalogView(ListView):
                     queryset = queryset.filter(category__slug=category_slug)
                 if material:
                     queryset = queryset.filter(material__icontains=material)
+                if artisan_id:
+                    queryset = queryset.filter(artisan_id=artisan_id)
             return queryset
 
         self.discovery_result = None
@@ -97,6 +100,9 @@ class ProductCatalogView(ListView):
 
         if material:
             queryset = queryset.filter(material__icontains=material)
+
+        if artisan_id:
+            queryset = queryset.filter(artisan_id=artisan_id)
 
         ordering_map = {
             "price_asc": "price",

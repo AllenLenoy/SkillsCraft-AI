@@ -138,17 +138,30 @@
           </div>
         </div>
 
-        {% if story.artisan %}
-          <a href="{% url 'marketplace:product_catalog' %}?q={{ story.author_name|urlencode }}" class="btn-primary shrink-0">
-            <span class="material-symbols-outlined text-[18px]">palette</span>
-            <span>View Creations</span>
-          </a>
-        {% else %}
-          <a href="{% url 'marketplace:product_catalog' %}" class="btn-primary shrink-0">
-            <span class="material-symbols-outlined text-[18px]">storefront</span>
-            <span>Browse Pieces</span>
-          </a>
-        {% endif %}
+        <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+          {% if story.related_products.exists %}
+            <a href="#story-creations" class="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-hover transition-all flex items-center gap-2 shadow-xs font-label hover-lift">
+              <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+              <span>View Creations to Buy ({{ story.related_products.count }})</span>
+            </a>
+          {% elif story.artisan %}
+            <a href="{% url 'accounts:artisan_detail' pk=story.artisan.id %}" class="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-hover transition-all flex items-center gap-2 shadow-xs font-label hover-lift">
+              <span class="material-symbols-outlined text-[18px]">shopping_bag</span>
+              <span>View Creations to Buy</span>
+            </a>
+          {% else %}
+            <a href="{% url 'marketplace:product_catalog' %}" class="px-5 py-2.5 bg-primary text-white text-sm font-bold rounded-lg hover:bg-primary-hover transition-all flex items-center gap-2 shadow-xs font-label hover-lift">
+              <span class="material-symbols-outlined text-[18px]">storefront</span>
+              <span>Browse Catalog</span>
+            </a>
+          {% endif %}
+          {% if story.artisan %}
+            <a href="{% url 'accounts:artisan_detail' pk=story.artisan.id %}" class="px-4 py-2.5 bg-surface-container-high border border-outline-variant text-on-surface text-sm font-bold rounded-lg hover:bg-surface-container transition-all flex items-center gap-1.5 font-label">
+              <span class="material-symbols-outlined text-[16px]">storefront</span>
+              <span>Artisan Atelier</span>
+            </a>
+          {% endif %}
+        </div>
       </div>
       <p class="text-xs sm:text-sm text-on-surface-variant font-body leading-relaxed">
         By purchasing certified handmade craft through CraftConnect, you support intergenerational guild survival, clean non-synthetic materials, and direct economic resilience for master artisans.
@@ -159,7 +172,7 @@
 
   <!-- ==================== FEATURED CRAFT PIECES IN THIS STORY ==================== -->
   {% if story.related_products.exists %}
-    <section class="max-w-5xl mx-auto pt-10 border-t border-outline-variant space-y-6" data-animate>
+    <section id="story-creations" class="max-w-5xl mx-auto pt-10 border-t border-outline-variant space-y-6 scroll-mt-24" data-animate>
       <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
         <div>
           <span class="provenance-tag text-primary">Living Atelier</span>
