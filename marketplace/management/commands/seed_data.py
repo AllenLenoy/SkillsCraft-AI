@@ -1,5 +1,8 @@
 import os
 import urllib.request
+import requests
+import urllib3
+urllib3.disable_warnings()
 from decimal import Decimal
 from django.core.management import call_command
 from django.core.management.base import BaseCommand
@@ -31,22 +34,24 @@ class Command(BaseCommand):
 
         headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"}
 
-        def download_image(url, target_subpath):
+        def download_image(url, target_subpath, force=False):
             """Helper to download image safely; returns relative subpath or empty."""
             try:
                 full_path = os.path.join(media_root, target_subpath)
-                if os.path.exists(full_path) and os.path.getsize(full_path) > 1000:
+                if not force and os.path.exists(full_path) and os.path.getsize(full_path) > 1000:
                     return target_subpath
                 os.makedirs(os.path.dirname(full_path), exist_ok=True)
-                req = urllib.request.Request(url, headers=headers)
-                with urllib.request.urlopen(req, timeout=12) as resp:
-                    data = resp.read()
+                resp = requests.get(url, headers=headers, verify=False, timeout=15)
+                if resp.status_code == 200 and len(resp.content) > 1000:
                     with open(full_path, "wb") as f:
-                        f.write(data)
-                return target_subpath
+                        f.write(resp.content)
+                    return target_subpath
+                else:
+                    self.stdout.write(self.style.WARNING(f"    ! Image fetch HTTP {resp.status_code} for {target_subpath}"))
+                    return target_subpath if os.path.exists(full_path) else ""
             except Exception as e:
                 self.stdout.write(self.style.WARNING(f"    ! Image download fallback for {target_subpath}: {e}"))
-                return ""
+                return target_subpath if os.path.exists(full_path) else ""
 
         # ----------------------------------------------------------------------
         # 2. Setup Role Groups and Provision Accounts & Profiles
@@ -255,13 +260,13 @@ class Command(BaseCommand):
                 "name": "Metalcraft & Dhokra",
                 "slug": "metalcraft-dhokra",
                 "description": "Ancient lost-wax bell metal casting, hand-beaten kansa bronze tableware, and temple brass diya lamps.",
-                "image_url": "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?auto=format&fit=crop&w=600&q=80",
+                "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f5/Dhokra.jpg/960px-Dhokra.jpg",
             },
             {
                 "name": "Woodwork & Carving",
                 "slug": "woodwork-carving",
                 "description": "Hand-chiseled Saharanpur sheesham wood chests, Kashmir walnut lattice jali screens, and reclaimed teak keepsakes.",
-                "image_url": "https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?auto=format&fit=crop&w=600&q=80",
+                "image_url": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80",
             },
             {
                 "name": "Heritage Keepsakes & Jewelry",
@@ -273,7 +278,7 @@ class Command(BaseCommand):
 
         categories_map = {}
         for cat_data in categories_data:
-            cat_img = download_image(cat_data["image_url"], f"categories/{cat_data['slug']}.jpg")
+            cat_img = download_image(cat_data["image_url"], f"categories/{cat_data['slug']}.jpg", force=True)
             cat, _ = Category.objects.update_or_create(
                 slug=cat_data["slug"],
                 defaults={
@@ -415,7 +420,7 @@ class Command(BaseCommand):
                 "colour": "Antique Patinated Brass",
                 "tags": "dhokra, lost-wax, tribal-art, brass-sculpture, bastar, antique-finish",
                 "stock_quantity": 5,
-                "image_url": "https://images.unsplash.com/photo-1569683795645-b62e50fbf103?auto=format&fit=crop&w=900&q=80",
+                "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Dhokra_(Man).jpg/960px-Dhokra_(Man).jpg",
             },
             # 8. Bell Metal Diya Lamp
             {
@@ -433,7 +438,7 @@ class Command(BaseCommand):
                 "colour": "Golden Lustre",
                 "tags": "diya, bell-metal, temple-lamp, peacock, brassware, ritual",
                 "stock_quantity": 12,
-                "image_url": "https://images.unsplash.com/photo-1605371924599-2d0365da1ae0?auto=format&fit=crop&w=900&q=80",
+                "image_url": "https://images.unsplash.com/photo-1605378624091-c53b02f6e666?auto=format&fit=crop&w=900&q=80",
             },
             # 9. Kansa Bronze Dinner Thali
             {
@@ -451,7 +456,7 @@ class Command(BaseCommand):
                 "colour": "Warm Muted Bronze",
                 "tags": "kansa, bronze-thali, ayurveda, tableware, hand-hammered, health",
                 "stock_quantity": 6,
-                "image_url": "https://images.unsplash.com/photo-1589301760014-d929f3979dbc?auto=format&fit=crop&w=900&q=80",
+                "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Thali.jpg/960px-Thali.jpg",
             },
             # 10. Saharanpur Carved Keepsake Box
             {
@@ -469,7 +474,7 @@ class Command(BaseCommand):
                 "colour": "Warm Walnut Stain",
                 "tags": "wood-carving, sheesham, keepsake-box, saharanpur, brass-inlay",
                 "stock_quantity": 11,
-                "image_url": "https://images.unsplash.com/photo-1533227268428-f9ed0900fb3b?auto=format&fit=crop&w=900&q=80",
+                "image_url": "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=900&q=80",
             },
             # 11. Kashmir Walnut Wood Book Stand
             {
@@ -487,7 +492,7 @@ class Command(BaseCommand):
                 "colour": "Rich Dark Walnut",
                 "tags": "walnut-wood, rehal, book-stand, kashmir-craft, lattice-carving",
                 "stock_quantity": 5,
-                "image_url": "https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?auto=format&fit=crop&w=900&q=80",
+                "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Rehal.jpg/960px-Rehal.jpg",
             },
             # 12. Cuttack Silver Filigree Pendant
             {
@@ -511,7 +516,7 @@ class Command(BaseCommand):
 
         created_products = []
         for pdata in products_data:
-            img_rel = download_image(pdata["image_url"], f"products/{pdata['slug']}.jpg")
+            img_rel = download_image(pdata["image_url"], f"products/{pdata['slug']}.jpg", force=True)
             prod, _ = Product.objects.update_or_create(
                 slug=pdata["slug"],
                 defaults={
