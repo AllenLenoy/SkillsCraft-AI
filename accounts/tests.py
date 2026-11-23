@@ -149,6 +149,12 @@ class LoginFormTests(TestCase):
         form = LoginForm()
         self.assertTrue(form.fields["remember_me"].initial)
 
+    def test_invalid_email_format_in_login(self):
+        """Entering malformed email in login username field should fail validation."""
+        form = LoginForm(data={"username": "bademail@notreal", "password": "password123"})
+        self.assertFalse(form.is_valid())
+        self.assertIn("__all__", form.errors)
+
 
 class RegisterFormTests(TestCase):
     """Tests for the RegisterForm."""
@@ -228,6 +234,124 @@ class RegisterFormTests(TestCase):
         })
         self.assertTrue(form.is_valid())
         self.assertEqual(form.cleaned_data["email"], "testcase@example.com")
+
+    def test_full_name_with_numbers_rejected(self):
+        """Full name containing numbers should be rejected."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "user_num",
+            "email": "user_num@example.com",
+            "full_name": "Ramesh123 Kumar",
+            "password": "securepass123",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("full_name", form.errors)
+
+    def test_full_name_with_symbols_rejected(self):
+        """Full name containing symbols should be rejected."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "user_sym",
+            "email": "user_sym@example.com",
+            "full_name": "User@Admin!",
+            "password": "securepass123",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("full_name", form.errors)
+
+    def test_full_name_valid_letters_and_spaces(self):
+        """Full name with letters, spaces, hyphens, and apostrophes should be valid."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "user_valid",
+            "email": "user_valid@example.com",
+            "full_name": "Mary-Jane O'Connor",
+            "password": "securepass123",
+        })
+        self.assertTrue(form.is_valid())
+
+    def test_invalid_email_format_rejected(self):
+        """Invalid email formats should be rejected."""
+        invalid_emails = ["notanemail", "user@", "user@domain", "user@.com", "user@domain..com"]
+        for bad_email in invalid_emails:
+            form = RegisterForm(data={
+                "role": "buyer",
+                "username": f"user_{hash(bad_email)}",
+                "email": bad_email,
+                "full_name": "Valid Name",
+                "password": "securepass123",
+            })
+            self.assertFalse(form.is_valid(), f"Email '{bad_email}' should be rejected as invalid")
+            self.assertIn("email", form.errors)
+
+    def test_indian_phone_number_valid(self):
+        """Indian phone (+91) with 10 digits starting with 6-9 should be valid."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "buyer_phone_in",
+            "email": "phone_in@example.com",
+            "full_name": "Aarav Sharma",
+            "country_code": "+91",
+            "phone_number": "9876543210",
+            "password": "securepass123",
+        })
+        self.assertTrue(form.is_valid(), form.errors)
+        self.assertEqual(form.cleaned_data["phone_number"], "9876543210")
+
+    def test_indian_phone_number_invalid_length(self):
+        """Indian phone (+91) with less or more than 10 digits should be rejected."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "buyer_short_phone",
+            "email": "short_phone@example.com",
+            "full_name": "Aarav Sharma",
+            "country_code": "+91",
+            "phone_number": "98765432",
+            "password": "securepass123",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("phone_number", form.errors)
+
+    def test_indian_phone_number_invalid_starting_digit(self):
+        """Indian phone (+91) starting with 1, 2, 3, 4, 5 should be rejected."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "buyer_bad_prefix",
+            "email": "bad_prefix@example.com",
+            "full_name": "Aarav Sharma",
+            "country_code": "+91",
+            "phone_number": "2876543210",
+            "password": "securepass123",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("phone_number", form.errors)
+
+    def test_us_phone_number_valid(self):
+        """US phone (+1) with 10 digits should be valid."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "buyer_phone_us",
+            "email": "phone_us@example.com",
+            "full_name": "John Doe",
+            "country_code": "+1",
+            "phone_number": "5551234567",
+            "password": "securepass123",
+        })
+        self.assertTrue(form.is_valid(), form.errors)
+
+    def test_us_phone_number_invalid_length(self):
+        """US phone (+1) with less than 10 digits should be rejected."""
+        form = RegisterForm(data={
+            "role": "buyer",
+            "username": "buyer_phone_us_short",
+            "email": "us_short@example.com",
+            "full_name": "John Doe",
+            "country_code": "+1",
+            "phone_number": "5551234",
+            "password": "securepass123",
+        })
+        self.assertFalse(form.is_valid())
+        self.assertIn("phone_number", form.errors)
 
 
 class BecomeArtisanFormTests(TestCase):

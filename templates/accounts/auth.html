@@ -159,11 +159,12 @@
 
             <div>
               <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label">
-                Full Name
+                Full Name <span class="text-xs text-on-surface-variant font-normal">(Letters only)</span>
               </label>
               <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
                 {{ register_form.full_name }}
               </div>
+              <p id="name-error-hint" class="text-xs text-red-600 mt-1 font-medium hidden">Full name can only contain letters, spaces, and hyphens.</p>
               {% if register_form.full_name.errors %}
                 <p class="text-xs text-red-600 mt-1 font-medium">{{ register_form.full_name.errors.0 }}</p>
               {% endif %}
@@ -172,7 +173,7 @@
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label">
-                  Username
+                  Username <span class="text-xs text-on-surface-variant font-normal">(3-30 chars)</span>
                 </label>
                 <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
                   {{ register_form.username }}
@@ -183,7 +184,7 @@
               </div>
               <div>
                 <label class="block text-xs font-bold uppercase tracking-wider text-on-surface mb-1.5 font-label">
-                  Email
+                  Email Address
                 </label>
                 <div class="rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
                   {{ register_form.email }}
@@ -192,6 +193,29 @@
                   <p class="text-xs text-red-600 mt-1 font-medium">{{ register_form.email.errors.0 }}</p>
                 {% endif %}
               </div>
+            </div>
+
+            <!-- Phone Number with Country Code Selection -->
+            <div>
+              <div class="flex items-center justify-between mb-1.5">
+                <label class="block text-xs font-bold uppercase tracking-wider text-on-surface font-label">
+                  Phone Number
+                </label>
+                <span class="text-[11px] text-on-surface-variant font-medium">Validated by country format</span>
+              </div>
+              <div class="flex rounded-lg overflow-hidden border border-outline-variant focus-within:border-primary shadow-xs">
+                <div class="shrink-0 border-r border-outline-variant bg-surface-container-low">
+                  {{ register_form.country_code }}
+                </div>
+                {{ register_form.phone_number }}
+              </div>
+              <div class="flex items-center justify-between text-xs text-on-surface-variant mt-1.5">
+                <span id="phone-hint-text" class="font-medium text-outline">Indian mobile: 10 digits starting with 6, 7, 8, or 9</span>
+                <span id="phone-counter-badge" class="font-mono text-xs px-2 py-0.5 rounded bg-surface-container font-semibold">0 digits</span>
+              </div>
+              {% if register_form.phone_number.errors %}
+                <p class="text-xs text-red-600 mt-1 font-medium">{{ register_form.phone_number.errors.0 }}</p>
+              {% endif %}
             </div>
 
             <div>
@@ -310,5 +334,82 @@
       if (icon) icon.innerText = 'visibility';
     }
   }
+
+  // Real-time Input Validation & Formatting
+  document.addEventListener('DOMContentLoaded', function() {
+    const nameInput = document.getElementById('id_full_name');
+    const nameHint = document.getElementById('name-error-hint');
+    const phoneInput = document.getElementById('phone-number-input');
+    const codeSelect = document.getElementById('country-code-select');
+    const phoneHint = document.getElementById('phone-hint-text');
+    const phoneBadge = document.getElementById('phone-counter-badge');
+
+    // 1. Name validation: only letters, spaces, hyphens
+    if (nameInput) {
+      nameInput.addEventListener('input', function() {
+        const val = this.value;
+        const valid = /^[a-zA-Z\s'-]*$/.test(val);
+        if (!valid && val.length > 0) {
+          nameHint.classList.remove('hidden');
+          this.classList.add('border-red-500');
+        } else {
+          nameHint.classList.add('hidden');
+          this.classList.remove('border-red-500');
+        }
+      });
+    }
+
+    // 2. Country-specific phone helper rules
+    const countryRules = {
+      '+91': { digits: 10, hint: 'Indian mobile: 10 digits starting with 6, 7, 8, or 9', placeholder: '9876543210' },
+      '+1':  { digits: 10, hint: 'US/Canada number: 10 digits (area code + number)', placeholder: '5551234567' },
+      '+44': { digits: 10, hint: 'UK phone number: 10 or 11 digits', placeholder: '7911123456' },
+      '+971':{ digits: 9,  hint: 'UAE mobile number: 9 digits', placeholder: '501234567' },
+      '+61': { digits: 9,  hint: 'Australian number: 9 digits', placeholder: '412345678' },
+      '+65': { digits: 8,  hint: 'Singapore mobile: 8 digits', placeholder: '81234567' },
+      '+49': { digits: 11, hint: 'Germany phone: 10 to 11 digits', placeholder: '15123456789' },
+      '+33': { digits: 9,  hint: 'France phone: 9 digits', placeholder: '612345678' },
+      '+81': { digits: 10, hint: 'Japan mobile: 10 digits', placeholder: '9012345678' }
+    };
+
+    function updatePhoneHints() {
+      if (!codeSelect || !phoneInput) return;
+      const code = codeSelect.value;
+      const rule = countryRules[code] || { digits: 10, hint: 'International number: 7 to 15 digits', placeholder: 'Phone digits' };
+      phoneInput.placeholder = rule.placeholder;
+      if (phoneHint) phoneHint.innerText = rule.hint;
+      updatePhoneCount();
+    }
+
+    function updatePhoneCount() {
+      if (!phoneInput || !phoneBadge) return;
+      // Strip formatting non-digits
+      const rawDigits = phoneInput.value.replace(/\D/g, '');
+      const code = codeSelect ? codeSelect.value : '+91';
+      const target = countryRules[code] ? countryRules[code].digits : 10;
+
+      phoneBadge.innerText = rawDigits.length + ' / ' + target + ' digits';
+      if (rawDigits.length === target) {
+        phoneBadge.className = 'font-mono text-xs px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold';
+      } else if (rawDigits.length > target) {
+        phoneBadge.className = 'font-mono text-xs px-2 py-0.5 rounded bg-red-100 text-red-800 font-bold';
+      } else {
+        phoneBadge.className = 'font-mono text-xs px-2 py-0.5 rounded bg-surface-container text-on-surface-variant font-semibold';
+      }
+    }
+
+    if (codeSelect) {
+      codeSelect.addEventListener('change', updatePhoneHints);
+    }
+
+    if (phoneInput) {
+      phoneInput.addEventListener('input', function() {
+        // Enforce digits only as typed
+        this.value = this.value.replace(/[^\d\s\-\(\)]/g, '');
+        updatePhoneCount();
+      });
+      updatePhoneHints();
+    }
+  });
 </script>
 {% endblock %}
