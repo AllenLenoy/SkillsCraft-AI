@@ -72,20 +72,40 @@ WSGI_APPLICATION = "craftconnect.wsgi.application"
 
 # Database Configuration
 # Supports Supabase PostgreSQL (via DATABASE_URL or discrete params) and SQLite dev fallback
-import dj_database_url
+import urllib.parse
+try:
+    import dj_database_url
+except ImportError:
+    dj_database_url = None
 
 DATABASE_URL = os.environ.get("DATABASE_URL", "").strip()
 USE_SQLITE = os.environ.get("USE_SQLITE", "True" if not DATABASE_URL else "False").lower() in ("true", "1", "yes")
 
 if DATABASE_URL and not USE_SQLITE:
-    DATABASES = {
-        "default": dj_database_url.config(
-            default=DATABASE_URL,
-            conn_max_age=600,
-            conn_health_checks=True,
-            ssl_require=True,
-        )
-    }
+    if dj_database_url:
+        DATABASES = {
+            "default": dj_database_url.config(
+                default=DATABASE_URL,
+                conn_max_age=600,
+                conn_health_checks=True,
+                ssl_require=True,
+            )
+        }
+    else:
+        parsed = urllib.parse.urlparse(DATABASE_URL)
+        DATABASES = {
+            "default": {
+                "ENGINE": "django.db.backends.postgresql",
+                "NAME": parsed.path.lstrip("/"),
+                "USER": urllib.parse.unquote(parsed.username or ""),
+                "PASSWORD": urllib.parse.unquote(parsed.password or ""),
+                "HOST": parsed.hostname or "127.0.0.1",
+                "PORT": str(parsed.port or 5432),
+                "OPTIONS": {
+                    "sslmode": "require" if "supabase" in (parsed.hostname or "") else "prefer",
+                },
+            }
+        }
 elif USE_SQLITE:
     DATABASES = {
         "default": {

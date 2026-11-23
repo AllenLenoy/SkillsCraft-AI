@@ -1,0 +1,46 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: skillscraft_postgres
+    restart: always
+    environment:
+      POSTGRES_DB: craftconnect
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    container_name: skillscraft_web
+    restart: always
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py populate_sample_data &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - USE_SQLITE=False
+      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/craftconnect
+      - SECRET_KEY=django-insecure-skillscraft-docker-secret-key-2026
+      - DEBUG=True
+      - ALLOWED_HOSTS=*
+      - AI_PROVIDER=openrouter
+      - AI_API_KEY=${AI_API_KEY:-}
+      - AI_MODEL=nvidia/nemotron-3.5-super-vl:free
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
