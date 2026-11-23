@@ -131,32 +131,8 @@ class Command(BaseCommand):
         )
         self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 1: ramesh_artisan / artisan123 (Mati & Agni)"))
 
-        # Master Artisan 2: Fatima Khatun (Kutch Handloom & Ajrakh)
-        artisan2_user, _ = User.objects.get_or_create(username="fatima_handloom", defaults={"email": "fatima.handloom@gmail.com"})
-        artisan2_user.email = "fatima.handloom@gmail.com"
-        artisan2_user.set_password("artisan123")
-        artisan2_user.first_name = "Fatima"
-        artisan2_user.last_name = "Khatun"
-        artisan2_user.save()
-        artisan_group.user_set.add(artisan2_user)
-
-        art2_img = download_image(
-            "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
-            "artisans/profiles/fatima_khatun.jpg"
-        )
-        artisan2_prof, _ = ArtisanProfile.objects.update_or_create(
-            user=artisan2_user,
-            defaults={
-                "display_name": "Kutch Heritage Handloom Guild",
-                "bio": "Specializing in resist-dyed Ajrakh block prints, natural indigo extraction, and pitloom woven tussar silk. Honoring 400 years of Khatri family dyeing traditions.",
-                "location": "Dhamadka, Kutch, Gujarat",
-                "craft_speciality": "Ajrakh & Chanderi Silk Handloom",
-                "is_approved": True,
-                "is_verified": True,
-                "profile_image": art2_img or None,
-            }
-        )
-        self.stdout.write(self.style.SUCCESS("  [OK] Master Artisan 2: fatima_handloom / artisan123 (fatima.handloom@gmail.com)"))
+        # Clean up obsolete textile artisan if present
+        User.objects.filter(username="fatima_handloom").delete()
 
         # Master Artisan 3: Somnath Baghel (Bastar Lost-Wax Bronze)
         artisan3_user, _ = User.objects.get_or_create(username="somnath_dhokra", defaults={"email": "somnath.dhokra@gmail.com"})
@@ -228,10 +204,10 @@ class Command(BaseCommand):
         artisan5_prof, _ = ArtisanProfile.objects.update_or_create(
             user=artisan5_user,
             defaults={
-                "display_name": "Royal Heritage Atelier",
-                "bio": "Specializing in traditional Jaipur quartz-dough Blue Pottery tableware and Cuttack 92.5 hallmark Tarakasi silver filigree. Handcrafted by master women artisans.",
-                "location": "Jaipur, Rajasthan & Cuttack, Odisha",
-                "craft_speciality": "Blue Pottery & Tarakasi Silver Filigree",
+                "display_name": "Jaipur Blue Pottery Atelier",
+                "bio": "Specializing in traditional Jaipur quartz-dough Blue Pottery tableware and artisanal glazed ceramics. Handcrafted by master artisans.",
+                "location": "Jaipur, Rajasthan",
+                "craft_speciality": "Jaipur Blue Pottery & Glazed Ceramics",
                 "is_approved": True,
                 "is_verified": True,
                 "profile_image": art5_img or None,
@@ -251,12 +227,6 @@ class Command(BaseCommand):
                 "image_url": "https://images.unsplash.com/photo-1578749556568-bc2c40e68b61?auto=format&fit=crop&w=600&q=80",
             },
             {
-                "name": "Textiles & Handloom",
-                "slug": "textiles-handloom",
-                "description": "Pitloom woven tussar silks, organic hand-spun khadi, and generational resist-dyed Ajrakh block prints.",
-                "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=600&q=80",
-            },
-            {
                 "name": "Metalcraft & Dhokra",
                 "slug": "metalcraft-dhokra",
                 "description": "Ancient lost-wax bell metal casting, hand-beaten kansa bronze tableware, and temple brass diya lamps.",
@@ -267,12 +237,6 @@ class Command(BaseCommand):
                 "slug": "woodwork-carving",
                 "description": "Hand-chiseled Saharanpur sheesham wood chests, Kashmir walnut lattice jali screens, and reclaimed teak keepsakes.",
                 "image_url": "https://images.unsplash.com/photo-1544816155-12df9643f363?auto=format&fit=crop&w=900&q=80",
-            },
-            {
-                "name": "Heritage Keepsakes & Jewelry",
-                "slug": "heritage-keepsakes",
-                "description": "Cuttack Tarakasi silver filigree, Jaipur Blue Pottery curios, and GI-certified artisanal collector artifacts.",
-                "image_url": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=600&q=80",
             },
         ]
 
@@ -290,10 +254,13 @@ class Command(BaseCommand):
             categories_map[cat.slug] = cat
             self.stdout.write(self.style.SUCCESS(f"  [OK] Category: {cat.name}"))
 
+        # Clean up removed categories if existing
+        Category.objects.filter(slug__in=["textiles-handloom", "heritage-keepsakes"]).delete()
+
         # ----------------------------------------------------------------------
-        # 4. Seed 12 Masterpiece Products with Exact Real Craft Imagery
+        # 4. Seed Authentic Masterpiece Craft Creations
         # ----------------------------------------------------------------------
-        self.stdout.write("\n[3/5] Seeding 12 Masterpiece Artisan Creations...")
+        self.stdout.write("\n[3/5] Seeding Masterpiece Artisan Creations...")
 
         products_data = [
             # 1. Gorakhpur Terracotta Chai Kulhad Set
@@ -350,61 +317,7 @@ class Command(BaseCommand):
                 "stock_quantity": 6,
                 "image_url": "https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?auto=format&fit=crop&w=900&q=80",
             },
-            # 4. Ajrakh Silk Dupatta
-            {
-                "artisan": artisan2_prof,
-                "category": categories_map["textiles-handloom"],
-                "title": "Natural Indigo Hand-Block Ajrakh Modal Silk Dupatta",
-                "slug": "natural-indigo-ajrakh-modal-silk-dupatta",
-                "description": (
-                    "A masterpiece of 16 sequential wash and resist-dye stages using hard-carved teak woodblocks. "
-                    "Dyed with true indigofera tinctoria and wild madder root for deep, rich jewel tones. "
-                    "Draped over lightweight mulberry modal silk that glides with fluid elegance."
-                ),
-                "price": Decimal("3200.00"),
-                "material": "Modal Silk & Natural Organic Indigo",
-                "colour": "Midnight Indigo & Crimson",
-                "tags": "ajrakh, block-print, indigo, modal-silk, dupatta, slow-fashion",
-                "stock_quantity": 10,
-                "image_url": "https://images.unsplash.com/photo-1606760227091-3dd870d97f1d?auto=format&fit=crop&w=900&q=80",
-            },
-            # 5. Chanderi Handloom Saree
-            {
-                "artisan": artisan2_prof,
-                "category": categories_map["textiles-handloom"],
-                "title": "Pure Chanderi Zari Handloom Saree in Forest Emerald",
-                "slug": "pure-chanderi-zari-handloom-saree-forest-emerald",
-                "description": (
-                    "Woven by master weavers on generational pitlooms in Madhya Pradesh. Blends gossamer fine cotton weft "
-                    "with pure silk warp, finished with delicate gold zari booti motifs across the border and pallu. "
-                    "Featherlight, breathable, and luminous under festive candlelight."
-                ),
-                "price": Decimal("6800.00"),
-                "material": "Silk-Cotton Blend with Fine Zari",
-                "colour": "Forest Emerald & Gold",
-                "tags": "chanderi, handloom, silk-saree, zari-border, wedding-craft",
-                "stock_quantity": 4,
-                "image_url": "https://images.unsplash.com/photo-1610030469983-98e550d6193c?auto=format&fit=crop&w=900&q=80",
-            },
-            # 6. Pochampally Ikat Throw
-            {
-                "artisan": artisan2_prof,
-                "category": categories_map["textiles-handloom"],
-                "title": "Pochampally Ikat Handwoven Geometric Cotton Throw",
-                "slug": "pochampally-ikat-handwoven-cotton-throw",
-                "description": (
-                    "Featuring complex double-ikat resist dying where both warp and weft threads are precision-dyed prior to loom setup. "
-                    "100% combed rain-fed organic cotton, offering plush tactile comfort as an accent bed runner or living room couch drape. "
-                    "Pre-washed with soapnuts for natural softness."
-                ),
-                "price": Decimal("2450.00"),
-                "material": "100% Organic Handspun Cotton",
-                "colour": "Saffron & Charcoal",
-                "tags": "ikat, pochampally, handwoven, throw-blanket, home-decor",
-                "stock_quantity": 7,
-                "image_url": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?auto=format&fit=crop&w=900&q=80",
-            },
-            # 7. Bastar Lost-Wax Brass Sculpture
+            # 4. Bastar Lost-Wax Brass Sculpture
             {
                 "artisan": artisan3_prof,
                 "category": categories_map["metalcraft-dhokra"],
@@ -422,7 +335,7 @@ class Command(BaseCommand):
                 "stock_quantity": 5,
                 "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/7/74/Dhokra_(Man).jpg/960px-Dhokra_(Man).jpg",
             },
-            # 8. Bell Metal Diya Lamp
+            # 5. Bell Metal Diya Lamp
             {
                 "artisan": artisan3_prof,
                 "category": categories_map["metalcraft-dhokra"],
@@ -440,7 +353,7 @@ class Command(BaseCommand):
                 "stock_quantity": 12,
                 "image_url": "https://images.unsplash.com/photo-1605378624091-c53b02f6e666?auto=format&fit=crop&w=900&q=80",
             },
-            # 9. Kansa Bronze Dinner Thali
+            # 6. Kansa Bronze Dinner Thali
             {
                 "artisan": artisan3_prof,
                 "category": categories_map["metalcraft-dhokra"],
@@ -458,7 +371,7 @@ class Command(BaseCommand):
                 "stock_quantity": 6,
                 "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/9/9c/Thali.jpg/960px-Thali.jpg",
             },
-            # 10. Saharanpur Carved Keepsake Box
+            # 7. Saharanpur Carved Keepsake Box
             {
                 "artisan": artisan4_prof,
                 "category": categories_map["woodwork-carving"],
@@ -476,7 +389,7 @@ class Command(BaseCommand):
                 "stock_quantity": 11,
                 "image_url": "https://images.unsplash.com/photo-1565793298595-6a879b1d9492?auto=format&fit=crop&w=900&q=80",
             },
-            # 11. Kashmir Walnut Wood Book Stand
+            # 8. Kashmir Walnut Wood Book Stand
             {
                 "artisan": artisan4_prof,
                 "category": categories_map["woodwork-carving"],
@@ -493,24 +406,6 @@ class Command(BaseCommand):
                 "tags": "walnut-wood, rehal, book-stand, kashmir-craft, lattice-carving",
                 "stock_quantity": 5,
                 "image_url": "https://thumb.wikimedia.org/wikipedia/commons/thumb/f/f7/Rehal.jpg/960px-Rehal.jpg",
-            },
-            # 12. Cuttack Silver Filigree Pendant
-            {
-                "artisan": artisan5_prof,
-                "category": categories_map["heritage-keepsakes"],
-                "title": "Cuttack Tarakasi Silver Filigree Floral Pendant with Pearl",
-                "slug": "cuttack-tarakasi-silver-filigree-floral-pendant",
-                "description": (
-                    "Delicate as a spider's web, this pendant is hand-drawn from pure 92.5 sterling silver wires hammered hair-thin. "
-                    "Master silversmiths of Cuttack bend and fuse each scroll by hand with a micro blowtorch. "
-                    "Anchored by a natural freshwater pearl teardrop. Certified hallmark 925 sterling silver."
-                ),
-                "price": Decimal("3400.00"),
-                "material": "92.5 Sterling Silver & Freshwater Pearl",
-                "colour": "Bright Sterling Silver",
-                "tags": "silver-filigree, tarakasi, cuttack, handmade-jewelry, 925-sterling",
-                "stock_quantity": 9,
-                "image_url": "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908?auto=format&fit=crop&w=900&q=80",
             },
         ]
 
@@ -543,17 +438,17 @@ class Command(BaseCommand):
         self.stdout.write("\n[4/5] Seeding Patron Interactions & Studio Inquiries...")
 
         # Save products for mindful patrons
-        if len(created_products) >= 12:
+        if len(created_products) >= 8:
             SavedProduct.objects.get_or_create(buyer=buyer_user, product=created_products[0])
-            SavedProduct.objects.get_or_create(buyer=buyer_user, product=created_products[3])
+            SavedProduct.objects.get_or_create(buyer=buyer_user, product=created_products[2])
+            SavedProduct.objects.get_or_create(buyer=buyer2_user, product=created_products[3])
             SavedProduct.objects.get_or_create(buyer=buyer2_user, product=created_products[4])
-            SavedProduct.objects.get_or_create(buyer=buyer2_user, product=created_products[11])
+            SavedProduct.objects.get_or_create(buyer=buyer3_user, product=created_products[5])
             SavedProduct.objects.get_or_create(buyer=buyer3_user, product=created_products[6])
-            SavedProduct.objects.get_or_create(buyer=buyer3_user, product=created_products[9])
             self.stdout.write(self.style.SUCCESS("  [OK] Saved bookmarked pieces for Priya, Ananya, and Vikram"))
 
         # Seed realistic inquiries
-        if len(created_products) >= 12:
+        if len(created_products) >= 8:
             Enquiry.objects.get_or_create(
                 buyer=buyer_user,
                 product=created_products[0],
@@ -565,16 +460,16 @@ class Command(BaseCommand):
             )
             Enquiry.objects.get_or_create(
                 buyer=buyer_user,
-                product=created_products[3],
+                product=created_products[2],
                 defaults={
-                    "subject": "Washing and care instructions for natural indigo silk",
-                    "message": "Hello Fatima ji. For the Ajrakh modal silk dupatta, should it be dry cleaned exclusively or is handwashing with cold water and soapnuts safe? Warm regards.",
+                    "subject": "Care instructions for glazed blue pottery tableware",
+                    "message": "Hello Leela ji. Can the Jaipur blue pottery serving bowl be used for warm curries, and is it microwave safe? Warm regards.",
                     "is_resolved": True,
                 }
             )
             Enquiry.objects.get_or_create(
                 buyer=buyer2_user,
-                product=created_products[6],
+                product=created_products[3],
                 defaults={
                     "subject": "Question about Bastar lost-wax foundry casting technique",
                     "message": "Respected Somnath ji. Is the drummer sculpture hollow or solid bell-metal? We would love to feature it in our architectural showcase.",
@@ -583,7 +478,7 @@ class Command(BaseCommand):
             )
             Enquiry.objects.get_or_create(
                 buyer=buyer3_user,
-                product=created_products[9],
+                product=created_products[6],
                 defaults={
                     "subject": "Custom dimensions for seasoned sheesham architectural chest",
                     "message": "Iqbal ji, can your woodwright guild carve a custom 18x12 inch jali keepsake box with brass hardware for our library?",
@@ -596,6 +491,12 @@ class Command(BaseCommand):
         # 6. Seed Editorial Stories & Journal Chronicles
         # ----------------------------------------------------------------------
         self.stdout.write("\n[5/5] Seeding Editorial Journal & Craft Chronicles...")
+
+        # Clean up obsolete stories
+        Story.objects.filter(slug__in=[
+            "indigo-in-the-veins-16-steps-of-living-desert-alchemy",
+            "sun-salt-and-silk-reviving-ashavali-brocade"
+        ]).delete()
 
         stories_data = [
             {
@@ -622,29 +523,6 @@ class Command(BaseCommand):
                 "related_indices": [0, 1],
             },
             {
-                "title": "Indigo in the Veins: 16 Steps of Living Desert Alchemy",
-                "slug": "indigo-in-the-veins-16-steps-of-living-desert-alchemy",
-                "volume_tag": "Editorial Journal • Vol. 03",
-                "pull_quote": "Natural indigo is not a dye; it is a living organism. When it sleeps, you must whisper to it with jaggery and lime water.",
-                "author_name": "Fatima Khatun",
-                "author_role": "Master Weaver & Dyer, Kutch Handloom Collective",
-                "reading_time": "6 min read",
-                "craft_region": "Bhuj, Kutch, Gujarat",
-                "category": "Textiles & Handloom",
-                "image_url": "https://images.unsplash.com/photo-1607344645866-009c320c5ab8?auto=format&fit=crop&w=1200&q=80",
-                "subpath": "stories/indigo_desert_alchemy.jpg",
-                "lead_paragraph": "In the arid expanse of Dhamadka, master artisan Fatima Khatun commands clay pits that ferment Indigofera tinctoria using age-old formulas unchanged since the Indus Valley civilization.",
-                "body_content": (
-                    "Ajrakh block printing is mathematics, chemistry, and poetry synchronized to the rhythm of wooden mallets. A single saree undergoes sixteen separate washing, mordanting, printing, and sun-curing stages over the course of three weeks.\n\n"
-                    "\"Modern fast fashion treats cloth as disposable plastic,\" Fatima says, smoothing the folds of an indigo stole. \"We treat each thread as an heirloom. We use hard river water for mineral binding, crushed pomegranate rinds for ochre yellow, and fermented scrap iron and jaggery for our indelible blacks.\"\n\n"
-                    "On the rhythmic printing tables, teakwood blocks carved with geometric star-patterns land with a resolute thud. The registration of motifs relies entirely on the artisan's muscle memory and eyesight—an intuitive mastery that no automated digital print can replicate.\n\n"
-                    "When patrons purchase handloom Ajrakh directly through CraftConnect, they ensure that the water tables, non-toxic dye traditions, and women-led printing cooperatives of Kutch thrive with dignity and financial autonomy."
-                ),
-                "is_featured": False,
-                "artisan": artisan2_prof,
-                "related_indices": [3, 4],
-            },
-            {
                 "title": "Whispers of Molten Wax: Inside the 4,000-Year Foundries of Bastar",
                 "slug": "whispers-of-molten-wax-inside-bastar-foundries",
                 "volume_tag": "Editorial Journal • Vol. 02",
@@ -665,7 +543,7 @@ class Command(BaseCommand):
                 ),
                 "is_featured": False,
                 "artisan": artisan3_prof,
-                "related_indices": [5, 6],
+                "related_indices": [3, 4, 5],
             },
             {
                 "title": "The Living Grain: Monsoon Seasoning of Saharanpur Sheesham",
@@ -688,30 +566,7 @@ class Command(BaseCommand):
                 ),
                 "is_featured": False,
                 "artisan": artisan4_prof,
-                "related_indices": [9, 10],
-            },
-            {
-                "title": "Sun, Salt, and Silk: Reviving the Vanishing Ashavali Brocade",
-                "slug": "sun-salt-and-silk-reviving-ashavali-brocade",
-                "volume_tag": "Special Heritage Edition • Autumn 2026",
-                "pull_quote": "When the pit loom dances, centuries of forgotten lullabies awaken in the golden zari border.",
-                "author_name": "Kavita Verma & Ananya Sen",
-                "author_role": "Guild Curators & Textile Archivists",
-                "reading_time": "8 min read",
-                "craft_region": "Ahmedabad & Patan, Gujarat",
-                "category": "Heritage Keepsakes & Jewelry",
-                "image_url": "https://images.unsplash.com/photo-1513519245088-0e12902e5a38?auto=format&fit=crop&w=1200&q=80",
-                "subpath": "stories/ashavali_silk_brocade.jpg",
-                "lead_paragraph": "Pre-dating the famed Banarasi brocades by two centuries, Gujarat's ancient Ashavali weave used real metallic zari threads wrapped around fine silk to depict parrots, lions, and flowering vines.",
-                "body_content": (
-                    "In the narrow pols (historical gated quarters) of old Ahmedabad, the rhythmic click-clack of wooden shuttles was once a daily symphony. The Ashavali brocade—treasured in royal courts of the Mughal and Maratha empires—faced near extinction as power looms flooded the market with polyester imitations.\n\n"
-                    "Today, a passionate revival collective of master weavers is recovering archival punch cards and natural mulberry silk to weave limited-edition runs of this sovereign textile.\n\n"
-                    "\"On an authentic pit loom, a master weaver weaves at most four to six inches per day,\" explains archival curator Kavita Verma. \"The metallic gold threads must be interlaced by hand without breaking the tension of the fine silk warp. It is living meditation.\"\n\n"
-                    "CraftConnect provides conscious patrons with transparent provenance documentation, certifying the authenticity of real silk filaments and fair-wage artisan compensation for every metre woven."
-                ),
-                "is_featured": False,
-                "artisan": artisan5_prof,
-                "related_indices": [2, 11],
+                "related_indices": [6, 7],
             },
         ]
 
@@ -751,7 +606,7 @@ class Command(BaseCommand):
         # 7. Seed Sample Orders (Direct Acquisitions across All Studios)
         # ----------------------------------------------------------------------
         self.stdout.write(self.style.HTTP_INFO("\n[7/7] Seeding Authentic Craft Orders (Acquisitions)..."))
-        if len(created_products) >= 12:
+        if len(created_products) >= 8:
             orders_to_seed = [
                 {
                     "order_number": "ORD-2026-CC101",
@@ -771,10 +626,10 @@ class Command(BaseCommand):
                 {
                     "order_number": "ORD-2026-CC102",
                     "buyer": buyer_user,
-                    "product": created_products[3],
-                    "artisan": created_products[3].artisan,
+                    "product": created_products[2],
+                    "artisan": created_products[2].artisan,
                     "quantity": 1,
-                    "unit_price": created_products[3].price,
+                    "unit_price": created_products[2].price,
                     "shipping_address": "Flat 4B, Gulmohar Enclave, 12th Main Indiranagar",
                     "shipping_city": "Bengaluru",
                     "shipping_postal_code": "560038",
@@ -786,10 +641,10 @@ class Command(BaseCommand):
                 {
                     "order_number": "ORD-2026-CC103",
                     "buyer": buyer2_user,
-                    "product": created_products[6],
-                    "artisan": created_products[6].artisan,
+                    "product": created_products[3],
+                    "artisan": created_products[3].artisan,
                     "quantity": 1,
-                    "unit_price": created_products[6].price,
+                    "unit_price": created_products[3].price,
                     "shipping_address": "B-12, Alaknanda Heritage Apartments, Greater Kailash",
                     "shipping_city": "New Delhi",
                     "shipping_postal_code": "110019",
@@ -801,10 +656,10 @@ class Command(BaseCommand):
                 {
                     "order_number": "ORD-2026-CC104",
                     "buyer": buyer3_user,
-                    "product": created_products[9],
-                    "artisan": created_products[9].artisan,
+                    "product": created_products[4],
+                    "artisan": created_products[4].artisan,
                     "quantity": 1,
-                    "unit_price": created_products[9].price,
+                    "unit_price": created_products[4].price,
                     "shipping_address": "Penthouse 14A, Sea Face Towers, Worli",
                     "shipping_city": "Mumbai",
                     "shipping_postal_code": "400018",
@@ -816,10 +671,10 @@ class Command(BaseCommand):
                 {
                     "order_number": "ORD-2026-CC105",
                     "buyer": buyer2_user,
-                    "product": created_products[11],
-                    "artisan": created_products[11].artisan,
+                    "product": created_products[5],
+                    "artisan": created_products[5].artisan,
                     "quantity": 1,
-                    "unit_price": created_products[11].price,
+                    "unit_price": created_products[5].price,
                     "shipping_address": "B-12, Alaknanda Heritage Apartments, Greater Kailash",
                     "shipping_city": "New Delhi",
                     "shipping_postal_code": "110019",
@@ -831,10 +686,10 @@ class Command(BaseCommand):
                 {
                     "order_number": "ORD-2026-CC106",
                     "buyer": buyer3_user,
-                    "product": created_products[8],
-                    "artisan": created_products[8].artisan,
+                    "product": created_products[6],
+                    "artisan": created_products[6].artisan,
                     "quantity": 1,
-                    "unit_price": created_products[8].price,
+                    "unit_price": created_products[6].price,
                     "shipping_address": "Penthouse 14A, Sea Face Towers, Worli",
                     "shipping_city": "Mumbai",
                     "shipping_postal_code": "400018",
@@ -846,10 +701,10 @@ class Command(BaseCommand):
                 {
                     "order_number": "ORD-2026-CC107",
                     "buyer": buyer_user,
-                    "product": created_products[2],
-                    "artisan": created_products[2].artisan,
+                    "product": created_products[7],
+                    "artisan": created_products[7].artisan,
                     "quantity": 1,
-                    "unit_price": created_products[2].price,
+                    "unit_price": created_products[7].price,
                     "shipping_address": "Flat 4B, Gulmohar Enclave, 12th Main Indiranagar",
                     "shipping_city": "Bengaluru",
                     "shipping_postal_code": "560038",
@@ -883,7 +738,6 @@ class Command(BaseCommand):
         self.stdout.write("  Conscious Buyer 2: ananya_buyer / buyer123 (New Delhi)")
         self.stdout.write("  Conscious Buyer 3: vikram_buyer / buyer123 (Mumbai)")
         self.stdout.write("  Master Artisan 1:  ramesh_artisan / artisan123 (Gorakhpur Terracotta)")
-        self.stdout.write("  Master Artisan 2:  fatima_handloom / artisan123 (Kutch Handloom)")
-        self.stdout.write("  Master Artisan 3:  somnath_dhokra / artisan123 (Bastar Bronze)")
-        self.stdout.write("  Master Artisan 4:  iqbal_woodcraft / artisan123 (Saharanpur Woodcraft)")
-        self.stdout.write("  Master Artisan 5:  leela_crafts / artisan123 (Royal Heritage Filigree)")
+        self.stdout.write("  Master Artisan 2:  somnath_dhokra / artisan123 (Bastar Bronze)")
+        self.stdout.write("  Master Artisan 3:  iqbal_woodcraft / artisan123 (Saharanpur Woodcraft)")
+        self.stdout.write("  Master Artisan 4:  leela_crafts / artisan123 (Jaipur Blue Pottery)")
